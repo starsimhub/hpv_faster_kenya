@@ -144,7 +144,6 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
         sims = sc.autolist()
         for seed in range(n_seeds):
             # Get the upper age for catch-up vaccination from the scenario name
-            upper_age = None
             upper_age_str = 'Catch-up to age '
             if name.startswith(upper_age_str):
                 upper_age = int(name[len(upper_age_str):])
@@ -176,8 +175,8 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
-    do_run = True
-    do_save = True
+    do_run = False
+    do_save = False
     do_process = True
     location = 'kenya'
 
@@ -200,40 +199,43 @@ if __name__ == '__main__':
         calib_pars = sc.loadobj(f'results/{location}_pars.obj')
         msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
 
-        if do_save: msim.save(f'results/scens_{location}.msim')
+        if do_save: sc.saveobj(f'results/scens_{location}.msim', msim)
 
-        if do_process:
-            print('Post-processing results...')
+    if do_process:
+        print('Post-processing results...')
+        if not do_run:
+            msim = sc.loadobj(f'results/scens_{location}.msim')
 
-            metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
+        metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
 
-            # Process results
-            scen_labels = list(scenarios.keys())
-            print(f'Processing {len(scen_labels)} scenarios: ' + ', '.join(scen_labels))
-            mlist = msim.split(chunks=len(scen_labels))
+        # Process results
+        scen_labels = list(scenarios.keys())
+        print(f'Processing {len(scen_labels)} scenarios: ' + ', '.join(scen_labels))
+        mlist = msim.split(chunks=len(scen_labels))
 
-            msim_dict = sc.objdict()
-            for si, scen_label in enumerate(scen_labels):
+        msim_dict = sc.objdict()
+        for si, scen_label in enumerate(scen_labels):
 
-                msim = mlist[si]
-                mres = sc.objdict()
+            msim = mlist[si]
+            mres = sc.objdict()
 
-                # Deal with analyzers
-                analyzer_labels = [a.label for a in msim.sims[0].analyzers]
-                for alabel in analyzer_labels:
-                    base_analyzer = msim.sims[0].get_analyzer(alabel)
-                    alist = [sim.get_analyzer(alabel) for sim in msim.sims]
-                    reduced_analyzer = base_analyzer.reduce(alist)
-                    mres[alabel] = reduced_analyzer.cum_cancers_best
-                    mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
-                    mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
-                    mres[f'raw_{alabel}'] = reduced_analyzer.raw
+            # Deal with analyzers
+            analyzer_labels = [a.label for a in msim.sims[0].analyzers]
+            for alabel in analyzer_labels:
+                base_analyzer = msim.sims[0].get_analyzer(alabel)
+                alist = [sim.get_analyzer(alabel) for sim in msim.sims]
+                reduced_analyzer = base_analyzer.reduce(alist)
+                mres[alabel] = reduced_analyzer.cum_cancers_best
+                mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
+                mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
+                mres[f'raw_{alabel}'] = reduced_analyzer.raw
 
-                reduced_sim = msim.reduce(output=True)
-                mres = sc.objdict({metric: reduced_sim.results[metric] for metric in metrics})
+            reduced_sim = msim.reduce(output=True)
+            for metric in metrics:
+                mres[metric] = reduced_sim.results[metric]
 
-                msim_dict[scen_label] = mres
+            msim_dict[scen_label] = mres
 
-            sc.saveobj(f'results/scens_{location}.obj', msim_dict)
+        sc.saveobj(f'results/scens_{location}.obj', msim_dict)
 
     print('Done.')
