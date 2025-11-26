@@ -9,11 +9,11 @@ import numpy as np
 import utils as ut
 
  
-def make_table1():
+def make_table1(location):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj('results/scens_kenya.obj')
+    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
 
     # Define scenarios and cohorts
     scenarios = ['Baseline', 'Catch-up to age 15', 'Catch-up to age 20', 'Catch-up to age 25',
@@ -82,7 +82,7 @@ def make_table1():
 
     # Display table
     print("\n" + "="*80)
-    print("Cumulative cancers by birth cohort (2025-2100), Kenya")
+    print(f"Cumulative cancers by birth cohort (2025-2100), {location.capitalize()}")
     print("="*80)
     print(df.to_string())
     print("="*80)
@@ -227,21 +227,117 @@ def make_table1():
     ax.set_xticks(x)
     ax.set_xticklabels(scen_labels)
     ax.set_ylabel('Cumulative cancers (2025-2100)')
-    ax.set_title('Cumulative cancers by birth cohort and catch-up vaccination strategy')
+    ax.set_title(f'Cumulative cancers by birth cohort and catch-up vaccination strategy - {location.capitalize()}')
     ax.legend(title='Birth Cohort', loc='upper right', frameon=False, ncol=2)
     sc.SIticks()
 
     fig.tight_layout()
-    fig_name = 'figures/catchup_vax_cohorts.png'
+    fig_name = f'figures/catchup_vax_cohorts_{location}.png'
     sc.savefig(fig_name, dpi=100)
+    return
+
+
+def make_single_bar(location):
+    import pandas as pd
+
+    # Load catch-up vaccination scenario data
+    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
+
+    # Define age groups and corresponding scenarios
+    age_groups = {
+        'Up to 25': 'Catch-up to age 25',
+        '25-30': 'Catch-up to age 30',
+        '30-45': 'Catch-up to age 45',
+        '45+': 'Catch-up to age 60'
+    }
+
+    # Get baseline cancers
+    baseline_cancers = msim_dict['Baseline']['cancers'].values[sc.findinds(msim_dict['Baseline'].year, 2025)[0]:].sum()
+
+    # Calculate cancers for each scenario
+    cancers_by_scenario = {}
+    for label, scenario in age_groups.items():
+        cancers_by_scenario[label] = msim_dict[scenario]['cancers'].values[sc.findinds(msim_dict[scenario].year, 2025)[0]:].sum()
+
+    # Calculate incremental benefit for each age group
+    incremental_benefits = {}
+
+    # Up to 25: benefit from baseline to age 25
+    incremental_benefits['Up to 25'] = baseline_cancers - cancers_by_scenario['Up to 25']
+
+    # 25-30: additional benefit from age 25 to age 30
+    incremental_benefits['25-30'] = cancers_by_scenario['Up to 25'] - cancers_by_scenario['25-30']
+
+    # 30-45: additional benefit from age 30 to age 45
+    incremental_benefits['30-45'] = cancers_by_scenario['25-30'] - cancers_by_scenario['30-45']
+
+    # 45+: additional benefit from age 45 to age 60
+    incremental_benefits['45+'] = cancers_by_scenario['30-45'] - cancers_by_scenario['45+']
+
+    # Calculate total benefit
+    total_benefit = sum(incremental_benefits.values())
+
+    # Calculate percentages
+    percentages = {label: (benefit / total_benefit) * 100 for label, benefit in incremental_benefits.items()}
+
+    print("\nIncremental benefits by age group:")
+    for label, benefit in incremental_benefits.items():
+        print(f"{label}: {benefit:.1f} cancers averted ({percentages[label]:.1f}%)")
+    print(f"Total benefit: {total_benefit:.1f} cancers averted")
+
+    ######################################################
+    # Create simplified stacked bar chart (vertical)
+    ######################################################
+    ut.set_font(20)
+    fig, ax = pl.subplots(figsize=(6, 10))
+
+    # Define colors for age groups
+    age_colors = sc.vectocolor(4).tolist()
+
+    # Create single stacked bar
+    bar_width = 0.5
+    x_pos = 0
+
+    bottom = 0
+    labels_list = list(percentages.keys())
+    values_list = list(percentages.values())
+
+    for idx, (label, pct) in enumerate(zip(labels_list, values_list)):
+        ax.bar(x_pos, pct, bottom=bottom, width=bar_width,
+               color=age_colors[idx], label=label)
+
+        # Add text label showing just percentage
+        center = bottom + pct / 2
+        ax.text(x_pos, center,
+                f'{pct:.1f}%',
+                ha='center', va='center', fontsize=14, fontweight='bold',
+                color='white' if idx < 2 else 'black')
+
+        bottom += pct
+
+    ax.set_ylim(0, 109)
+    ax.set_xlim(-0.5, 1)
+    ax.set_ylabel('Percentage of total vaccination benefit (%)')
+    ax.set_title('Distribution of vaccination benefit\nby age group - Kenya\nCancers averted, 2025-2100')
+    ax.set_xticks([])
+
+    # Add legend
+    ax.legend(title='Age group', loc='upper right', frameon=False, fontsize=12)
+
+    fig.tight_layout()
+    fig_name = 'figures/catchup_vax_benefit_distribution.png'
+    sc.savefig(fig_name, dpi=100)
+
+    print(f"\nFigure saved to: {fig_name}")
     return
 
 
 # %% Run as a script
 if __name__ == '__main__':
 
-    location = 'kenya'
-    make_table1()
+    location = 'nigeria'
+    # make_table1(location)
+    make_single_bar(location)
 
-    msim_dict = sc.loadobj('results/scens_kenya.obj')
+    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
 
