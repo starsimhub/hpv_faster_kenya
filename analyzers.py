@@ -10,12 +10,13 @@ import hpvsim.utils as hpu
 
  
 class cohort_cancers(hpv.Analyzer):
-    def __init__(self, cohort_age=None, start=None, **kwargs):
+    def __init__(self, cohort_age=None, label=None, start=None, **kwargs):
         super().__init__(**kwargs)
         self.start = start or 2026
         self.cohort_age = cohort_age or [10, 15]
         self.years = None
         self.results = None
+        self.label = label or f'cohort_cancers_{self.cohort_age[0]}_{self.cohort_age[1]}'
         return
 
     def initialize(self, sim):

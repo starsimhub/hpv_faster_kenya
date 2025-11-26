@@ -149,8 +149,12 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
             if name.startswith(upper_age_str):
                 upper_age = int(name[len(upper_age_str):])
                 print(f'Creating scenario "{name}" with catch-up to age {upper_age}')
-            az = cohort_cancers(cohort_age=[10, upper_age or 15], start=2026)
-            sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=interventions, analyzers=az, end=end, seed=seed, verbose=-1)
+
+            # Create analyzers for each aga cohort
+            analyzers = []
+            for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40]]:
+                analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
+            sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=interventions, analyzers=analyzers, end=end, seed=seed, verbose=-1)
             sim.label = name
             sims += sim
         all_msims += hpv.MultiSim(sims)
@@ -211,19 +215,22 @@ if __name__ == '__main__':
             msim_dict = sc.objdict()
             for si, scen_label in enumerate(scen_labels):
 
-                # Deal with analyzer
                 msim = mlist[si]
-                base_analyzer = msim.sims[0].get_analyzer('cohort_cancers')
-                alist = [sim.get_analyzer('cohort_cancers') for sim in msim.sims]
-                reduced_analyzer = base_analyzer.reduce(alist)
+                mres = sc.objdict()
 
-                reduced_sim = mlist[si].reduce(output=True)
+                # Deal with analyzers
+                analyzer_labels = [a.label for a in msim.sims[0].analyzers]
+                for alabel in analyzer_labels:
+                    base_analyzer = msim.sims[0].get_analyzer(alabel)
+                    alist = [sim.get_analyzer('cohort_cancers') for sim in msim.sims]
+                    reduced_analyzer = base_analyzer.reduce(alist)
+                    mres[alabel] = reduced_analyzer.cum_cancers_best
+                    mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
+                    mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
+                    mres[f'raw_{alabel}'] = reduced_analyzer.raw
+
+                reduced_sim = msim.reduce(output=True)
                 mres = sc.objdict({metric: reduced_sim.results[metric] for metric in metrics})
-
-                mres['cohort_cancers'] = reduced_analyzer.cum_cancers_best
-                mres['cohort_cancers_low'] = reduced_analyzer.cum_cancers_low
-                mres['cohort_cancers_high'] = reduced_analyzer.cum_cancers_high
-                mres['raw_cohort_cancers'] = reduced_analyzer.raw
 
                 msim_dict[scen_label] = mres
 
