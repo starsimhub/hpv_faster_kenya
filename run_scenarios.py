@@ -151,7 +151,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
 
             # Create analyzers for each aga cohort
             analyzers = []
-            for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50]]:
+            for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50], [50, 55], [55, 60]]:
                 analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
             sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=interventions, analyzers=analyzers, end=end, seed=seed, verbose=-1)
             sim.label = name+f'-{seed}'
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     scenarios['Baseline'] = background_intvs
 
     # Add catch-up vaccination scenarios
-    upper_ages = [15, 20, 25, 30, 35, 40, 45, 50]
+    upper_ages = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     for upper_age in upper_ages:
         scen_name = f'Catch-up to age {upper_age}'
         catchup_intvs = make_catchup_vx(upper_age=upper_age)
