@@ -232,6 +232,15 @@ if __name__ == '__main__':
             for metric in metrics:
                 mres[metric] = reduced_sim.results[metric]
 
+            # Pull out characteristics of sim to decide what resources we need
+            programs = {
+                "Catchup vx": "vaccinations",
+            }
+            for intv_name in set(programs.values()): mres[intv_name] = np.zeros_like(mres.year)
+            for intv_name, df_key in programs.items():
+                if reduced_sim.get_intervention(intv_name, die=False) is not None:
+                    mres[df_key] += reduced_sim.get_intervention(intv_name).n_products_used.values
+
             msim_dict[scen_label] = mres
 
         sc.saveobj(f'results/scens_{location}.obj', msim_dict)
