@@ -177,7 +177,7 @@ if __name__ == '__main__':
 
     T = sc.timer()
     do_run = True
-    do_save = False 
+    do_save = True
     do_process = True
     location = 'kenya'
 
