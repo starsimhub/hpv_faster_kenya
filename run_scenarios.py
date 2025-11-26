@@ -222,7 +222,7 @@ if __name__ == '__main__':
                 analyzer_labels = [a.label for a in msim.sims[0].analyzers]
                 for alabel in analyzer_labels:
                     base_analyzer = msim.sims[0].get_analyzer(alabel)
-                    alist = [sim.get_analyzer('cohort_cancers') for sim in msim.sims]
+                    alist = [sim.get_analyzer(alabel) for sim in msim.sims]
                     reduced_analyzer = base_analyzer.reduce(alist)
                     mres[alabel] = reduced_analyzer.cum_cancers_best
                     mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
