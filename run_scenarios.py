@@ -166,8 +166,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
 def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
     """ Run the simulations """
     msim = make_sims(location=location, calib_pars=calib_pars, scenarios=scenarios)
-    parallel = ~(debug)
-    msim.run(verbose=verbose, parallel=parallel)
+    msim.run(verbose=verbose)
     return msim
 
 
@@ -175,8 +174,8 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
-    do_run = True
-    do_save = True
+    do_run = False
+    do_save = False
     do_process = True
     location = 'kenya'
 
