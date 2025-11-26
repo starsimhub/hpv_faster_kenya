@@ -7,6 +7,8 @@ import numpy as np
 import sciris as sc
 import hpvsim as hpv
 import pandas as pd
+import matplotlib.pyplot as pl
+import seaborn as sns
 
 # Imports from this repository
 import utils as ut
@@ -214,6 +216,34 @@ def run_parsets(debug=False, verbose=.1, analyzers=None, save_results=True, **kw
     return msim
 
 
+def get_age_causal_df(sim=None):
+    """
+    Make age causal dataframe
+    """
+    dt_res = sim.get_analyzer('age_causal_infection')
+    dt_dfs = sc.autolist()
+
+    dt_df = pd.DataFrame()
+    dt_df['Age'] = np.array(dt_res.age_causal)[np.array(dt_res.age_causal)<50]
+    dt_df['Health event'] = 'Causal\ninfection'
+    dt_dfs += dt_df
+
+    dt_df = pd.DataFrame()
+    dt_df['Age'] = np.array(dt_res.age_cin)[np.array(dt_res.age_causal)<65]
+    dt_df['Health event'] = 'HSIL'
+    dt_dfs += dt_df
+
+    dt_df = pd.DataFrame()
+    dt_df['Age'] = np.array(dt_res.age_cancer)[np.array(dt_res.age_causal)<90]
+    dt_df['Health event'] = 'Cancer'
+    dt_dfs += dt_df
+
+    age_causal_df = pd.concat(dt_dfs)
+
+    return age_causal_df
+
+
+
 # %% Run as a script
 if __name__ == '__main__':
 
@@ -222,17 +252,18 @@ if __name__ == '__main__':
         # 'run_sim',
         # 'age_pyramids',
         # 'run_calib',
-        'plot_calib'
+        # 'plot_calib'
         # 'run_parsets'
+        'plot_age_causal'
     ]
 
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
-        # calib_pars = None
-        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False)  # Run the simulation
-        sim.plot()  # Plot the simulation
+        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=hpv.age_causal_infection(start_year=2020))
+        df = get_age_causal_df(sim)
+        sc.saveobj(f'results/age_causal_infection.obj', df)
 
     if 'age_pyramids' in to_run:
         # calib_pars = sc.loadobj('results/kenya_pars.obj')
@@ -253,5 +284,24 @@ if __name__ == '__main__':
 
     if 'run_parsets' in to_run:
         msim = run_parsets()
+
+    if 'plot_age_causal' in to_run:
+        ac_df = sc.loadobj(f'results/age_causal_infection.obj')
+        ac_colors = sc.gridcolors(3)
+
+        ut.set_font(20)
+        fig, ax = pl.subplots(1, 1, figsize=(6, 5))
+        sns.boxplot(
+            x="Health event", y="Age", data=ac_df, ax=ax,
+            showfliers=False, palette=ac_colors, hue='Health event', hue_order=['Causal\ninfection', 'HSIL', 'Cancer']
+        )
+        ax.set_title(f'Age distribution\nof key health events')
+        ax.set_xlabel('')
+        ax.set_ylim([0, 100])
+
+        fig.tight_layout()
+        fig_name = f'figures/age_causal_kenya.png'
+        sc.savefig(fig_name, dpi=100)
+
 
     T.toc('Done')  # Print out how long the run took
