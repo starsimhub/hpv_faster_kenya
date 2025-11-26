@@ -154,7 +154,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
             for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40]]:
                 analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
             sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=interventions, analyzers=analyzers, end=end, seed=seed, verbose=-1)
-            sim.label = name
+            sim.label = name+f'-{seed}'
             sims += sim
         all_msims += hpv.MultiSim(sims)
 
