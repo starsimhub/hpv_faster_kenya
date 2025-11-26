@@ -176,7 +176,7 @@ if __name__ == '__main__':
     T = sc.timer()
     do_run = True
     do_save = True
-    do_process = True
+    do_process = False
     location = 'kenya'
 
     scenarios = dict()
@@ -215,7 +215,6 @@ if __name__ == '__main__':
         msim_dict = sc.objdict()
         for si, scen_label in enumerate(scen_labels):
 
-            msim = mlist[si]
             mres = sc.objdict()
 
             # Deal with analyzers
@@ -229,7 +228,7 @@ if __name__ == '__main__':
                 mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
                 mres[f'raw_{alabel}'] = reduced_analyzer.raw
 
-            reduced_sim = msim.reduce(output=True)
+            reduced_sim = mlist[si].reduce(output=True)
             for metric in metrics:
                 mres[metric] = reduced_sim.results[metric]
 
