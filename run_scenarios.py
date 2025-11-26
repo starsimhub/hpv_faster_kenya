@@ -174,7 +174,7 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
-    do_run = False
+    do_run = True
     do_save = False
     do_process = True
     location = 'kenya'
