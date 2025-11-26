@@ -205,6 +205,7 @@ if __name__ == '__main__':
 
             # Process results
             scen_labels = list(scenarios.keys())
+            print(f'Processing {len(scen_labels)} scenarios: ' + ', '.join(scen_labels))
             mlist = msim.split(chunks=len(scen_labels))
 
             msim_dict = sc.objdict()
