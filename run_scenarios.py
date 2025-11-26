@@ -174,9 +174,9 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
-    do_run = True
-    do_save = True
-    do_process = False
+    do_run = False
+    do_save = False
+    do_process = True
     location = 'kenya'
 
     scenarios = dict()
@@ -218,10 +218,10 @@ if __name__ == '__main__':
             mres = sc.objdict()
 
             # Deal with analyzers
-            analyzer_labels = [a.label for a in msim.sims[0].analyzers]
+            analyzer_labels = [a.label for a in mlist[si].sims[0].analyzers]
             for alabel in analyzer_labels:
-                base_analyzer = msim.sims[0].get_analyzer(alabel)
-                alist = [sim.get_analyzer(alabel) for sim in msim.sims]
+                base_analyzer = mlist[si].sims[0].get_analyzer(alabel)
+                alist = [sim.get_analyzer(alabel) for sim in mlist[si].sims]
                 reduced_analyzer = base_analyzer.reduce(alist)
                 mres[alabel] = reduced_analyzer.cum_cancers_best
                 mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
