@@ -64,6 +64,15 @@ def make_table1():
                 results[cohort_label][scenario] = 'N/A'
                 results_values[cohort_label][scenario] = 0
 
+    # Extract vaccination data
+    vaccinations = {}
+    for scenario in scenarios:
+        if 'vaccinations' in msim_dict[scenario]:
+            vaccinations[scenario] = msim_dict[scenario]['vaccinations'].sum()
+            print(f'{scenario}: {vaccinations[scenario]} vaccinations')
+        else:
+            vaccinations[scenario] = 0
+
     # Create DataFrame for table
     df = pd.DataFrame(results).T
     df.index.name = 'Birth Cohort'
@@ -118,12 +127,21 @@ def make_table1():
     # Calculate total heights
     total_heights = np.sum(bottom_tracker, axis=1)
 
-    # Add total height labels on top of each bar
+    # Add total height labels with % reduction on top of each bar
     for bar_idx in range(len(scenarios)):
         total_height = total_heights[bar_idx]
+
+        # Calculate percent reduction from previous bar
+        if bar_idx > 0:
+            prev_height = total_heights[bar_idx - 1]
+            percent_reduction = ((prev_height - total_height) / prev_height) * 100
+            label_text = f'{sc.sigfig(total_height, 3, SI=True)}\n(-{percent_reduction:.1f}%)'
+        else:
+            label_text = f'{sc.sigfig(total_height, 3, SI=True)}'
+
         ax.text(x[bar_idx], total_height,
-                f'{sc.sigfig(total_height, 3, SI=True)}',
-                ha='center', va='bottom', fontsize=11, fontweight='bold',
+                label_text,
+                ha='center', va='bottom', fontsize=10, fontweight='bold',
                 color='black')
 
     # Add arrows showing reductions when cohort is added to catch-up
@@ -172,10 +190,44 @@ def make_table1():
                     bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor=color_rgba, linewidth=2),
                     zorder=11)
 
+    # Add vaccination numbers and NNV at the bottom
+    ax2 = ax.twiny()
+    ax2.set_xlim(ax.get_xlim())
+    ax2.set_xticks(x)
+
+    # Create labels with vaccinations and NNV
+    bottom_labels = []
+    for bar_idx in range(len(scenarios)):
+        vax_count = vaccinations[scenarios[bar_idx]]
+
+        if bar_idx > 0:
+            # Calculate cancers averted
+            cancers_averted = total_heights[bar_idx - 1] - total_heights[bar_idx]
+
+            # Calculate additional vaccinations
+            vax_added = vax_count - vaccinations[scenarios[bar_idx - 1]]
+
+            # Calculate NNV
+            if cancers_averted > 0:
+                nnv = vax_added / cancers_averted
+                label = f'{sc.sigfig(vax_count, 3, SI=True)}\n{int(nnv):,}'
+            else:
+                label = f'{sc.sigfig(vax_count, 3, SI=True)}\nN/A'
+        else:
+            label = f'Total doses: \nNNV: '
+
+        bottom_labels.append(label)
+
+    ax2.set_xticklabels(bottom_labels, fontsize=9)
+    ax2.tick_params(axis='x', which='both', length=0)  # Remove tick marks
+    ax2.xaxis.set_ticks_position('bottom')
+    ax2.xaxis.set_label_position('bottom')
+    ax2.spines['bottom'].set_position(('outward', 60))
+
     ax.set_xticks(x)
     ax.set_xticklabels(scen_labels)
     ax.set_ylabel('Cumulative cancers (2025-2100)')
-    ax.set_title('Cumulative cancers by birth cohort and catch-up vaccination strategy - Kenya')
+    ax.set_title('Cumulative cancers by birth cohort and catch-up vaccination strategy')
     ax.legend(title='Birth Cohort', loc='upper right', frameon=False, ncol=2)
     sc.SIticks()
 
