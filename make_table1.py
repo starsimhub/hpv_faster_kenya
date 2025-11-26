@@ -17,10 +17,10 @@ def make_table1():
 
     # Define scenarios and cohorts
     scenarios = ['Baseline', 'Catch-up to age 15', 'Catch-up to age 20', 'Catch-up to age 25',
-                 'Catch-up to age 30', 'Catch-up to age 35', 'Catch-up to age 40']
-    scen_labels = ['Baseline', 'CU 10-15', 'CU 10-20', 'CU 10-25', 'CU 10-30', 'CU 10-35', 'CU 10-40']
-    cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40']  #, '40_45', '45_50']
-    cohort_labels = ['10-15', '15-20', '20-25', '25-30', '30-35', '35-40']  #, '40-45', '45-50']
+                 'Catch-up to age 30', 'Catch-up to age 35', 'Catch-up to age 40', 'Catch-up to age 45', 'Catch-up to age 50']
+    scen_labels = ['Baseline', 'CU 10-15', 'CU 10-20', 'CU 10-25', 'CU 10-30', 'CU 10-35', 'CU 10-40', 'CU 10-45', 'CU 10-50']
+    cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40', '40_45', '45_50']
+    cohort_labels = ['10-15', '15-20', '20-25', '25-30', '30-35', '35-40', '40-45', '45-50']
 
     # Mapping from cohort to catch-up scenario index where they're first included
     cohort_to_scenario = {
@@ -30,6 +30,8 @@ def make_table1():
         '25-30': 4,  # Catch-up to age 30
         '30-35': 5,  # Catch-up to age 35
         '35-40': 6,  # Catch-up to age 40
+        '40-45': 7,  # Catch-up to age 45
+        '45-50': 8,  # Catch-up to age 50
     }
 
     # Create dictionary to store results

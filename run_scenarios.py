@@ -184,7 +184,7 @@ if __name__ == '__main__':
     scenarios['Baseline'] = background_intvs
 
     # Add catch-up vaccination scenarios
-    upper_ages = [15, 20, 25, 30, 35, 40]
+    upper_ages = [15, 20, 25, 30, 35, 40, 45, 50]
     for upper_age in upper_ages:
         scen_name = f'Catch-up to age {upper_age}'
         catchup_intvs = make_catchup_vx(upper_age=upper_age)
