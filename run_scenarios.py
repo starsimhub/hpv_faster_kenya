@@ -274,6 +274,8 @@ if __name__ == '__main__':
             upper_age = lower_age + age_band
             for add_vx in [True, False]:
                 for add_tt in [True, False]:
+                    if not add_vx and not add_tt:
+                        continue
                     scen_name = f'Catch-up {lower_age}-{upper_age}: '
                     if add_tt:
                         scen_name += 'TT'
