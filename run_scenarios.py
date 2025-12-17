@@ -129,10 +129,10 @@ def make_hpv_test():
 def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026, add_tt=False, add_vx=True):
 
     intvs = []
+    age_range = [10, upper_age]
 
     if add_vx:
         eligibility = lambda sim: (sim.people.doses == 0)
-        age_range = [10, upper_age]
 
         routine_vx = hpv.campaign_vx(
             prob=catchup_cov,
