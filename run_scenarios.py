@@ -219,7 +219,9 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
             # Get the upper age for catch-up vaccination from the scenario name
             upper_age_str = 'Catch-up to age '
             if name.startswith(upper_age_str):
-                upper_age = int(name[len(upper_age_str):])
+                # strip TT if present
+                tmp_name = name.split(' + ')[0]
+                upper_age = int(tmp_name[len(upper_age_str):])
                 print(f'Creating scenario "{name}" with catch-up to age {upper_age}')
 
             # Create analyzers for each aga cohort
