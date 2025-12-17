@@ -259,7 +259,7 @@ if __name__ == '__main__':
 
     # Add scenarios
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
-    age_bands = [5, 10, 15, 20, 25, 30, 40, 45, 50]
+    age_bands = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     for lower_age in lower_ages:
         for age_band in age_bands:
             if lower_age + age_band > 60:
