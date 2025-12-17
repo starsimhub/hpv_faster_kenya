@@ -255,7 +255,7 @@ if __name__ == '__main__':
     do_run = True
     do_save = False
     do_process = True
-    location = 'nigeria'  #'kenya'
+    location = 'kenya'  #'kenya'
 
     scenarios = dict()
     background_intvs = make_st() + make_routine_vx()
