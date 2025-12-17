@@ -9,7 +9,7 @@ import numpy as np
 import utils as ut
 
  
-def make_table1(location):
+def make_table1(location, add_tt=False):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
@@ -20,6 +20,8 @@ def make_table1(location):
                  'Catch-up to age 30', 'Catch-up to age 35', 'Catch-up to age 40',
                   'Catch-up to age 45', 'Catch-up to age 50',
                   'Catch-up to age 55', 'Catch-up to age 60']
+    if add_tt:
+        scenarios = ['Baseline'] + [s + ' + TT' for s in scenarios if s != 'Baseline']
     scen_labels = ['Baseline', 'CU\n10-15', 'CU\n10-20', 'CU\n10-25', 'CU\n10-30', 'CU\n10-35', 'CU\n10-40',
                     'CU\n10-45', 'CU\n10-50',
                     'CU\n10-55', 'CU\n10-60']
@@ -227,12 +229,18 @@ def make_table1(location):
     ax.set_xticks(x)
     ax.set_xticklabels(scen_labels)
     ax.set_ylabel('Cumulative cancers (2025-2100)')
-    ax.set_title(f'Cumulative cancers by birth cohort and catch-up vaccination strategy - {location.capitalize()}')
+    title = f'Cumulative cancers by birth cohort and HPV-Faster target age - {location.capitalize()}\n'
+    if add_tt:
+        title += 'WITH test and treat'
+    else:
+        title += 'WITHOUT test and treat'
+    ax.set_title(title)
     ax.legend(title='Birth Cohort', loc='upper right', frameon=False, ncol=2)
     sc.SIticks()
 
     fig.tight_layout()
-    fig_name = f'figures/catchup_vax_cohorts_{location}.png'
+    figname = f'catchup_vax_cohorts_{location}' + ('_tt' if add_tt else '') + '.png'
+    fig_name = f'figures/{figname}'
     sc.savefig(fig_name, dpi=100)
     return
 
@@ -335,9 +343,9 @@ def make_single_bar(location):
 # %% Run as a script
 if __name__ == '__main__':
 
-    location = 'nigeria'
-    # make_table1(location)
-    make_single_bar(location)
+    location = 'kenya'
+    make_table1(location, add_tt=False)
+    # make_single_bar(location)
 
     msim_dict = sc.loadobj(f'results/scens_{location}.obj')
 

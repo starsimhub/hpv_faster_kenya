@@ -126,28 +126,35 @@ def make_hpv_test():
     return hpvdna
 
 
-def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026, add_tt=False):
+def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026, add_tt=False, add_vx=True):
 
-    eligibility = lambda sim: (sim.people.doses == 0)
-    age_range = [10, upper_age]
+    intvs = []
 
-    routine_vx = hpv.campaign_vx(
-        prob=catchup_cov,
-        years=start_year,
-        product=product,
-        age_range=age_range,
-        eligibility=eligibility,
-        interpolate=False,
-        annual_prob=False,
-        label='Catchup vx'
-    )
+    if add_vx:
+        eligibility = lambda sim: (sim.people.doses == 0)
+        age_range = [10, upper_age]
 
-    intvs = [routine_vx]
+        routine_vx = hpv.campaign_vx(
+            prob=catchup_cov,
+            years=start_year,
+            product=product,
+            age_range=age_range,
+            eligibility=eligibility,
+            interpolate=False,
+            annual_prob=False,
+            label='Catchup vx'
+        )
+
+        intvs = [routine_vx]
 
     if add_tt:
-        def is_el(sim):
-            return ((sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
-                    (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1]))
+        if add_vx:
+            def is_el(sim):
+                return ((sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
+                        (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1]))
+        else:
+            def is_el(sim):
+                return (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1]))
 
         # Add test & treat
         primary = make_hpv_test()
@@ -266,10 +273,11 @@ if __name__ == '__main__':
     # Add catch-up vaccination scenarios
     upper_ages = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     for upper_age in upper_ages:
-        for add_tt in [True, False]:
-            scen_name = f'Catch-up to age {upper_age}'+(' + TT' if add_tt else '')
-            catchup_intvs = make_catchup_vx(upper_age=upper_age, add_tt=add_tt)
-            scenarios[scen_name] = background_intvs + catchup_intvs
+        for add_vx in [True, False]:
+            for add_tt in [True, False]:
+                scen_name = f'Catch-up to age {upper_age}'+(' + TT' if add_tt else '')
+                catchup_intvs = make_catchup_vx(upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
+                scenarios[scen_name] = background_intvs + catchup_intvs
     print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
