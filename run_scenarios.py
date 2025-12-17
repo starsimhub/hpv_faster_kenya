@@ -20,6 +20,7 @@ os.environ.update(
 import numpy as np
 import sciris as sc
 import hpvsim as hpv
+import pandas as pd
 
 # Imports from this repository
 import run_sims as rs
@@ -119,22 +120,93 @@ def make_routine_vx(product='nonavalent', start_year=2019):
     return [routine_vx]
 
 
-def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026):
+def make_hpv_test():
+    hpvdna = hpv.default_dx('hpv')
+    hpvdna.df = pd.read_csv('hpvdna.csv')
+    return hpvdna
+
+
+def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026, add_tt=False):
 
     eligibility = lambda sim: (sim.people.doses == 0)
+    age_range = [10, upper_age]
 
     routine_vx = hpv.campaign_vx(
         prob=catchup_cov,
         years=start_year,
         product=product,
-        age_range=[10, upper_age],
+        age_range=age_range,
         eligibility=eligibility,
         interpolate=False,
         annual_prob=False,
         label='Catchup vx'
     )
 
-    return [routine_vx]
+    intvs = [routine_vx]
+
+    if add_tt:
+        def is_el(sim):
+            return (sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
+                    (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1])
+
+        # Add test & treat
+        primary = make_hpv_test()
+        screening = hpv.campaign_screening(
+            prob=catchup_cov,
+            interpolate=False,
+            annual_prob=False,
+            eligibility=is_el,
+            years=[start_year],
+            product=primary,
+            age_range=age_range,
+            label='screening_older'
+        )
+
+        # Assign treatment
+        tx_assigner = hpv.default_dx('tx_assigner')
+        tx_assigner.df = pd.read_csv('tx_assigner_faster.csv')
+        screen_positive = lambda sim: sim.get_intervention('screening_older').outcomes['positive']
+        assign_treatment = hpv.campaign_triage(
+            years=start_year,
+            prob=1,  # ASSUME NO LTFU
+            annual_prob=False,
+            interpolate=False,
+            product=tx_assigner,
+            eligibility=screen_positive,
+            label='tx_assigner_faster'
+        )
+
+        # Ablation treatment
+        ablation_eligible = lambda sim: sim.get_intervention('tx_assigner_faster').outcomes['ablation']
+        ablation = hpv.treat_num(
+            prob=0.9,
+            product='ablation',
+            eligibility=ablation_eligible,
+            label='ablation_faster'
+        )
+        # Excision treatment
+        excision_eligible = lambda sim: list(set(sim.get_intervention('tx_assigner_faster').outcomes['excision'].tolist()
+                                                + sim.get_intervention('ablation_faster').outcomes['unsuccessful'].tolist()))
+        excision = hpv.treat_num(
+            prob=0.9,
+            product='excision',
+            eligibility=excision_eligible,
+            label='excision_faster'
+        )
+        # Radiation treatment
+        radiation_eligible = lambda sim: sim.get_intervention('tx_assigner_faster').outcomes['radiation']
+        radiation = hpv.treat_num(
+            prob=0.9,  # assume an additional dropoff in CaTx coverage
+            product=hpv.radiation(),
+            eligibility=radiation_eligible,
+            label='radiation_faster'
+        )
+
+        intvs += [
+            screening, assign_treatment, ablation, excision, radiation,
+        ]
+
+    return intvs
 
 
 def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
@@ -192,9 +264,10 @@ if __name__ == '__main__':
     # Add catch-up vaccination scenarios
     upper_ages = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     for upper_age in upper_ages:
-        scen_name = f'Catch-up to age {upper_age}'
-        catchup_intvs = make_catchup_vx(upper_age=upper_age)
-        scenarios[scen_name] = background_intvs + catchup_intvs
+        for add_tt in [True, False]:
+            scen_name = f'Catch-up to age {upper_age}'+(' + TT' if add_tt else '')
+            catchup_intvs = make_catchup_vx(upper_age=upper_age, add_tt=add_tt)
+            scenarios[scen_name] = background_intvs + catchup_intvs
     print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
