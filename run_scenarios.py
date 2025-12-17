@@ -126,10 +126,10 @@ def make_hpv_test():
     return hpvdna
 
 
-def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_year=2026, add_tt=False, add_vx=True):
+def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_age=15, start_year=2026, add_tt=False, add_vx=True):
 
     intvs = []
-    age_range = [10, upper_age]
+    age_range = [lower_age, upper_age]
 
     if add_vx:
         eligibility = lambda sim: (sim.people.doses == 0)
@@ -223,13 +223,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
     for name, interventions in scenarios.items():
         sims = sc.autolist()
         for seed in range(n_seeds):
-            # Get the upper age for catch-up vaccination from the scenario name
-            upper_age_str = 'Catch-up to age '
-            if name.startswith(upper_age_str):
-                # strip TT if present
-                tmp_name = name.split(' + ')[0]
-                upper_age = int(tmp_name[len(upper_age_str):])
-                print(f'Creating scenario "{name}" with catch-up to age {upper_age}')
+            print(f'Creating scenario "{name}"')
 
             # Create analyzers for each aga cohort
             analyzers = []
@@ -270,14 +264,23 @@ if __name__ == '__main__':
     background_intvs = make_st() + make_routine_vx()
     scenarios['Baseline'] = background_intvs
 
-    # Add catch-up vaccination scenarios
-    upper_ages = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-    for upper_age in upper_ages:
-        for add_vx in [True, False]:
-            for add_tt in [True, False]:
-                scen_name = f'Catch-up to age {upper_age}'+(' + TT' if add_tt else '')
-                catchup_intvs = make_catchup_vx(upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
-                scenarios[scen_name] = background_intvs + catchup_intvs
+    # Add scenarios
+    lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+    age_bands = [5, 10, 15, 20, 25, 30, 40, 45, 50]
+    for lower_age in lower_ages:
+        for age_band in age_bands:
+            if lower_age + age_band > 60:
+                continue
+            upper_age = lower_age + age_band
+            for add_vx in [True, False]:
+                for add_tt in [True, False]:
+                    scen_name = f'Catch-up {lower_age}-{upper_age}: '
+                    if add_tt:
+                        scen_name += 'TT'
+                    if add_vx:
+                        scen_name += 'V'
+                    catchup_intvs = make_catchup_vx(lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
+                    scenarios[scen_name] = background_intvs + catchup_intvs
     print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
