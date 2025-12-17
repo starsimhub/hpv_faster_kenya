@@ -30,7 +30,7 @@ from analyzers import cohort_cancers
 
 # What to run
 debug = 0
-n_seeds = [10, 1][debug]  # How many seeds to run per cluster
+n_seeds = [2, 1][debug]  # How many seeds to run per cluster
 
 
 # %% Functions
@@ -136,7 +136,7 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_a
 
         routine_vx = hpv.campaign_vx(
             prob=catchup_cov,
-            years=start_year,
+            years=[start_year],
             product=product,
             age_range=age_range,
             eligibility=eligibility,
@@ -148,13 +148,6 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_a
         intvs = [routine_vx]
 
     if add_tt:
-        if add_vx:
-            def is_el(sim):
-                return ((sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
-                        (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1]))
-        else:
-            def is_el(sim):
-                return (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1])
 
         # Add test & treat
         primary = make_hpv_test()
@@ -162,7 +155,7 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_a
             prob=catchup_cov,
             interpolate=False,
             annual_prob=False,
-            eligibility=is_el,
+            # eligibility=eligibility,
             years=[start_year],
             product=primary,
             age_range=age_range,
