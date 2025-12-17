@@ -146,8 +146,8 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, upper_age=15, start_y
 
     if add_tt:
         def is_el(sim):
-            return (sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
-                    (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1])
+            return ((sim.people.doses == 1) & (sim.people.date_vaccinated == sim.t) &
+                    (sim.people.age >= age_range[0]) & (sim.people.age <= age_range[1]))
 
         # Add test & treat
         primary = make_hpv_test()
