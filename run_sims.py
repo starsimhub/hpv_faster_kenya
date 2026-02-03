@@ -249,12 +249,12 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        # 'run_sim',
+        'run_sim',
         # 'age_pyramids',
         # 'run_calib',
         # 'plot_calib'
         # 'run_parsets'
-        'plot_age_causal'
+        # 'plot_age_causal'
     ]
 
     T = sc.timer()  # Start a timer
