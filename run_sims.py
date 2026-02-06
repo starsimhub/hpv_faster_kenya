@@ -261,7 +261,9 @@ if __name__ == '__main__':
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
-        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=hpv.age_causal_infection(start_year=2020))
+        from analyzers import person_years
+        analyzers = [person_years(start_year=2000, end_year=2020), hpv.age_causal_infection(start_year=2020)]
+        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
         df = get_age_causal_df(sim)
         sc.saveobj(f'results/age_causal_infection.obj', df)
 
@@ -269,7 +271,7 @@ if __name__ == '__main__':
         # calib_pars = sc.loadobj('results/kenya_pars.obj')
         ap = hpv.age_pyramid(
             timepoints=['2025', '2050', '2075', '2100'],
-            datafile='data/ethiopia_age_pyramid.csv',
+            datafile=f'data/{location}_age_pyramid.csv',
             edges=np.linspace(0, 100, 21),
         )
         sim = run_sim(end=2100, calib_pars=calib_pars, analyzers=[ap], do_save=True, do_shrink=True)

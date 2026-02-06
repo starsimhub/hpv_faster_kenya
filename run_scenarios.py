@@ -25,7 +25,7 @@ import pandas as pd
 # Imports from this repository
 import run_sims as rs
 import run_sims_nigeria as rsn
-from analyzers import cohort_cancers
+from analyzers import cohort_cancers, person_years, vx_potential
 
 
 # What to run
@@ -219,7 +219,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
             print(f'Creating scenario "{name}"')
 
             # Create analyzers for each aga cohort
-            analyzers = []
+            analyzers = [person_years()]
             for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50], [50, 55], [55, 60]]:
                 analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
 
@@ -248,10 +248,12 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
+    debug_run = False
     do_run = True
     do_save = False
     do_process = True
     location = 'kenya'  #'kenya'
+    catchup_cov = 0.7
 
     scenarios = dict()
     background_intvs = make_st() + make_routine_vx()
@@ -274,11 +276,29 @@ if __name__ == '__main__':
                         scen_name += 'TT'
                     if add_vx:
                         scen_name += 'V'
-                    catchup_intvs = make_catchup_vx(lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
+                    catchup_intvs = make_catchup_vx(catchup_cov=catchup_cov, lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
                     scenarios[scen_name] = background_intvs + catchup_intvs
     print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
+    if debug_run:
+        print(f'Debugging and investigating location: {location}')
+
+        calib_pars = sc.loadobj(f'results/{location}_pars.obj')
+
+        # Create analyzers for each age cohort
+        analyzers = [vx_potential()]
+        for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50], [50, 55], [55, 60]]:
+            analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
+
+        sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=None, analyzers=analyzers, end=2100)
+        sim.run()
+
+        sc.saveobj(f'results/sim_{location}.sim', sim)
+
+        print('Done')
+
+
     if do_run:
         print(f'Running scenarios for location: {location}')
 

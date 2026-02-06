@@ -7,6 +7,9 @@ import pylab as pl
 import sciris as sc
 import numpy as np
 import utils as ut
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
  
 def make_table1(location, add_tt=False):
@@ -340,12 +343,325 @@ def make_single_bar(location):
     return
 
 
+def plot_baseline(sim, data_file='data/kenya_cancer_cases.csv', 
+                             years_to_plot=[2020, 2050, 2075, 2100],
+                             figsize=(14, 10)):
+    """
+    Create a 4-panel plot showing:
+    A) Cancers by age for selected years vs data
+    B) Total cancers over time
+    C) Female population over time
+    D) Age-standardized cancer incidence over time
+    
+    Args:
+        sim: HPVsim simulation object after running
+        data_file: Path to kenya_cancer_cases.csv
+        years_to_plot: List of years to show in panel A
+        figsize: Figure size tuple
+    """
+    
+    # Load the data
+    try:
+        cancer_data = pd.read_csv(data_file)
+    except:
+        print(f"Warning: Could not load {data_file}")
+        cancer_data = None
+    
+    # Set up the figure
+    fig, axes = plt.subplots(2, 2, figsize=figsize)
+    fig.suptitle('HPV-FASTER Kenya: Model Results', fontsize=16, fontweight='bold')
+    
+    # Define age bin labels (18 bins of 5 years each: 0-4, 5-9, ..., 85+)
+    age_bins = [f'{i}-{i+4}' if i < 85 else '85+' 
+                for i in range(0, 90, 5)][:18]
+    age_bin_centers = np.arange(2.5, 90, 5)[:18]  # Midpoints for plotting
+    
+    # Color scheme
+    colors = plt.cm.viridis(np.linspace(0.2, 0.9, len(years_to_plot)))
+    
+    # ========== PANEL A: Cancers by Age ==========
+    ax_a = axes[0, 0]
+    
+    # Get the start year and timestep info
+    start_year = sim['start']
+    dt = sim['dt']
+    
+    # Plot model results for each year
+    for i, year in enumerate(years_to_plot):
+        # Calculate the index for this year
+        year_idx = int((year - start_year))
+        
+        if year_idx < sim.results['cancers_by_age'].shape[1]:
+            cancers_by_age = sim.results['cancers_by_age'][:, year_idx]
+            ax_a.plot(age_bin_centers, cancers_by_age, 
+                     color=colors[i], linewidth=2.5, 
+                     label=f'{year} (model)', marker='o', markersize=5)
+    
+    # Plot data 
+    plot_years = cancer_data.year.unique()
+    if cancer_data is not None:
+        for year in plot_years:
+            if 'year' in cancer_data.columns:
+                year_data = cancer_data[cancer_data['year'] == year]
+                if len(year_data) > 0:
+                    age_mid = year_data['age']                    
+                    cases = year_data['value']
+                    
+                    ax_a.scatter(age_mid, cases, s=100, marker='s', 
+                               edgecolors='black', linewidths=1.5,
+                               label=f'{year} (data)', zorder=10, alpha=0.7)
+    
+    ax_a.set_xlabel('Age (years)', fontsize=11, fontweight='bold')
+    ax_a.set_ylabel('Number of cancers', fontsize=11, fontweight='bold')
+    ax_a.set_title('A) Cancer cases by age', fontsize=12, fontweight='bold', loc='left')
+    ax_a.legend(fontsize=8, ncol=2)
+    ax_a.grid(alpha=0.3, linestyle='--')
+    ax_a.set_xlim(-5, 95)
+    
+    # Get indices for year >= 2000 for panels B-D
+    years = sim.results['year']
+    idx_2000 = np.where(years >= 2000)[0]
+    years_subset = years[idx_2000]
+    
+    # ========== PANEL B: Total Cancers Over Time ==========
+    ax_b = axes[0, 1]
+    
+    total_cancers = sim.results['cancers'][idx_2000]
+    
+    ax_b.plot(years_subset, total_cancers, linewidth=2.5, color='#e74c3c', label='Annual cancers')
+    
+    ax_b.set_xlabel('Year', fontsize=11, fontweight='bold')
+    ax_b.set_ylabel('Annual cancer cases', fontsize=11, fontweight='bold')
+    ax_b.set_title('B) Cancer cases over time', fontsize=12, fontweight='bold', loc='left')
+    ax_b.grid(alpha=0.3, linestyle='--')
+    ax_b.legend(fontsize=9, loc='upper left')
+    sc.SIticks(ax_b)
+    
+    # ========== PANEL C: Female Population Over Time ==========
+    ax_c = axes[1, 0]
+    
+    female_pop = sim.results['n_alive_by_sex'][0, idx_2000]  # Index 0 for females
+    
+    ax_c.plot(years_subset, female_pop, linewidth=2.5, color='#9b59b6')
+    ax_c.fill_between(years_subset, female_pop, alpha=0.3, color='#9b59b6')
+    
+    ax_c.set_xlabel('Year', fontsize=11, fontweight='bold')
+    ax_c.set_ylabel('Number of women', fontsize=11, fontweight='bold')
+    ax_c.set_title('C) Female population over time', fontsize=12, fontweight='bold', loc='left')
+    ax_c.grid(alpha=0.3, linestyle='--')
+    sc.SIticks(ax_c)
+    
+    # ========== PANEL D: Cancer Incidence Over Time ==========
+    ax_d = axes[1, 1]
+    
+    asr_incidence = sim.results['asr_cancer_incidence'][idx_2000]
+    
+    # Apply smoothing using a rolling average
+    from scipy.ndimage import uniform_filter1d
+    window_size = 5  # Smooth over 5 years
+    asr_incidence_smooth = uniform_filter1d(asr_incidence, size=window_size, mode='nearest')
+    
+    ax_d.plot(years_subset, asr_incidence_smooth, linewidth=2.5, color='#27ae60')
+    
+    # Add a horizontal line for reference (e.g., baseline year)
+    baseline_year = 2020
+    if baseline_year >= years_subset[0] and baseline_year <= years_subset[-1]:
+        baseline_idx = np.where(years_subset == baseline_year)[0]
+        if len(baseline_idx) > 0:
+            baseline_value = asr_incidence_smooth[baseline_idx[0]]
+            ax_d.axhline(y=baseline_value, color='gray', linestyle='--', 
+                       linewidth=1.5, alpha=0.7, label=f'{baseline_year} baseline')
+            ax_d.legend(fontsize=9)
+    
+    ax_d.set_xlabel('Year', fontsize=11, fontweight='bold')
+    ax_d.set_ylabel('Age-standardized rate\n(per 100,000 women)', fontsize=11, fontweight='bold')
+    ax_d.set_title('D) Cancer incidence (ASR) over time', fontsize=12, fontweight='bold', loc='left')
+    ax_d.grid(alpha=0.3, linestyle='--')
+    ax_d.set_ylim(bottom=0)  # Set y-axis to start at 0
+    sc.SIticks(ax_d)
+    
+    # Adjust layout
+    plt.tight_layout()
+
+    # Print summary statistics
+    print("\n=== Summary Statistics ===")
+    print(f"Total cancers (2025-2100): {sim.results['cancers'][65:].sum():,.0f}")
+    print(f"Female population in 2025: {sim.results['n_alive_by_sex'][0, 65]:,.0f}")
+    print(f"Female population in 2100: {sim.results['n_alive_by_sex'][0, -1]:,.0f}")
+    print(f"ASR incidence in 2025: {sim.results['asr_cancer_incidence'][65]:.1f}")
+    print(f"ASR incidence in 2100: {sim.results['asr_cancer_incidence'][-1]:.1f}")
+
+    # Save the figure
+    plt.savefig('figures/baseline_sim.png', dpi=300, bbox_inches='tight')
+
+    return fig, axes
+
+
+def plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60, figsize=(16, 8)):
+    """
+    Create a plot showing incident cancers by birth cohort over time.
+    
+    Args:
+        sim: HPVsim simulation object after running
+        start_cohort_year: Year to define cohorts (default: 2025)
+        max_cohort_age: Maximum age for cohorts to plot (default: 60)
+        figsize: Figure size tuple
+    """
+    
+    # Get the start year and timestep info
+    start_year = sim['start']
+    dt = sim['dt']
+    
+    # Get years and filter to 2000 onwards
+    years = sim.results['year']
+    idx_2000 = np.where(years >= 2000)[0]
+    years_subset = years[idx_2000]
+    
+    # Define cohorts based on age in start_cohort_year
+    # Age bins: 0-10, 10-15, 15-20, 20-25, ..., up to max_cohort_age
+    cohort_edges = [0, 10, 15] + list(range(20, max_cohort_age + 5, 5))
+    if cohort_edges[-1] < max_cohort_age:
+        cohort_edges.append(max_cohort_age)
+    
+    cohort_labels = []
+    cohort_midpoints = []
+    
+    for i in range(len(cohort_edges) - 1):
+        lower = cohort_edges[i]
+        upper = cohort_edges[i + 1]
+        cohort_labels.append(f'{lower}-{upper}')
+        cohort_midpoints.append((lower + upper) / 2)
+    
+    n_cohorts = len(cohort_labels)
+    
+    # Define age bins for cancers_by_age (18 bins of 5 years: 0-4, 5-9, ..., 85+)
+    age_bin_edges = list(range(0, 90, 5)) + [150]
+    age_bin_midpoints = np.arange(2.5, 90, 5)
+    
+    # Map age bins to cohorts
+    def get_cohort_idx(age_in_2025):
+        """Get the cohort index for a given age in 2025, or None if outside range"""
+        if age_in_2025 > max_cohort_age:
+            return None
+        for i in range(len(cohort_edges) - 1):
+            if cohort_edges[i] <= age_in_2025 < cohort_edges[i + 1]:
+                return i
+        return None
+    
+    # Prepare data structure: cohort x year
+    cohort_cancers = np.zeros((n_cohorts, len(years_subset)))
+    
+    # For each year after start_cohort_year
+    cohort_year_idx = int(start_cohort_year - start_year)
+    
+    for year_i, year in enumerate(years_subset):
+        year_idx = int(year - start_year)
+        
+        # Skip if before cohort definition year
+        if year < start_cohort_year:
+            continue
+        
+        # Get cancers by age for this year
+        if year_idx < sim.results['cancers_by_age'].shape[1]:
+            cancers_this_year = sim.results['cancers_by_age'][:, year_idx]
+            
+            # For each age bin, determine which cohort it belongs to
+            years_since_cohort = year - start_cohort_year
+            
+            for age_bin_i, age_bin_mid in enumerate(age_bin_midpoints):
+                # What was this person's age in start_cohort_year?
+                age_in_cohort_year = age_bin_mid - years_since_cohort
+                
+                # Only include if they were alive in the cohort year (age >= 0) and in plotted cohorts
+                if age_in_cohort_year >= 0:
+                    cohort_idx = get_cohort_idx(age_in_cohort_year)
+                    if cohort_idx is not None:
+                        cohort_cancers[cohort_idx, year_i] += cancers_this_year[age_bin_i]
+    
+    # Create the plot
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Total cancers line (for comparison)
+    total_cancers = sim.results['cancers'][idx_2000]
+    ax.plot(years_subset, total_cancers, linewidth=3, color='black', 
+            label='Total incident cancers', zorder=100, linestyle='--', alpha=0.8)
+    
+    # Create stacked bar chart for cohorts
+    # Use a colormap
+    colors = sc.vectocolor(n_cohorts).tolist()
+    
+    # Create stacked bars
+    bottom = np.zeros(len(years_subset))
+    bar_width = 0.8  # Width of bars
+    
+    for cohort_i in range(n_cohorts):
+        ax.bar(years_subset, cohort_cancers[cohort_i, :], 
+               bottom=bottom, width=bar_width,
+               label=f'Age {cohort_labels[cohort_i]} in {start_cohort_year}',
+               color=colors[cohort_i], edgecolor='white', linewidth=0.5)
+        bottom += cohort_cancers[cohort_i, :]
+    
+    ax.set_xlabel('Year', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Incident cancer cases', fontsize=12, fontweight='bold')
+    ax.set_title(f'Incident Cervical Cancers by Birth Cohort (age 0-{max_cohort_age} in {start_cohort_year})', 
+                 fontsize=14, fontweight='bold')
+    ax.grid(alpha=0.3, linestyle='--', axis='y')
+    
+    # Add legend with smaller font and multiple columns
+    ax.legend(fontsize=8, ncol=3, loc='upper left', framealpha=0.9)
+    
+    sc.SIticks(ax)
+    
+    plt.tight_layout()
+    
+    # Save the figure
+    plt.savefig(f'figures/cohort_decomposition_{start_cohort_year}.png', dpi=300, bbox_inches='tight')
+    
+    # Print summary statistics
+    print(f"\n=== Cohort Decomposition Summary (cohorts age 0-{max_cohort_age} in {start_cohort_year}) ===")
+    total_in_cohorts = cohort_cancers.sum()
+    total_all_cancers = total_cancers[years_subset >= start_cohort_year].sum()
+    print(f"Total cancers in plotted cohorts: {total_in_cohorts:,.0f}")
+    print(f"Total cancers overall ({start_cohort_year}-{int(years_subset[-1])}): {total_all_cancers:,.0f}")
+    print(f"Percentage captured by plotted cohorts: {100 * total_in_cohorts / total_all_cancers:.1f}%")
+    print(f"\nCancers by cohort (age in {start_cohort_year}):")
+    for cohort_i in range(n_cohorts):
+        cohort_total = cohort_cancers[cohort_i, :].sum()
+        pct = 100 * cohort_total / total_in_cohorts if total_in_cohorts > 0 else 0
+        print(f"  Age {cohort_labels[cohort_i]}: {cohort_total:,.0f} ({pct:.1f}%)")
+    
+    return fig, ax, cohort_cancers
+
+
+# Example usage:
+# fig, ax, cohort_data = plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60)
+# plt.show()
+
+
 # %% Run as a script
 if __name__ == '__main__':
 
     location = 'kenya'
-    make_table1(location, add_tt=False)
+
+    sim = sc.loadobj(f'results/sim_{location}.sim')
+    plot_baseline(sim)
+    plot_cohort_decomposition(sim, start_cohort_year=2025)
+
+    # Access results
+    analyzer = sim.analyzers[0]
+    print(analyzer.summary_df)
+
+    # Visualize
+    fig = analyzer.plot()
+    plt.savefig('figures/cohort_vaccination_eligibility.png', dpi=300, bbox_inches='tight')
+
+    # Export to CSV
+    analyzer.to_csv('results/cohort_status_2025.csv')
+
+
+
+    # make_table1(location, add_tt=False)
     # make_single_bar(location)
 
-    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
+    # msim_dict = sc.loadobj(f'results/scens_{location}.obj')
 
