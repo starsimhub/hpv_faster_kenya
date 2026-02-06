@@ -219,7 +219,7 @@ def make_sims(location='kenya', calib_pars=None, scenarios=None, end=2100):
             print(f'Creating scenario "{name}"')
 
             # Create analyzers for each aga cohort
-            analyzers = [person_years()]
+            analyzers = []
             for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50], [50, 55], [55, 60]]:
                 analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
 
