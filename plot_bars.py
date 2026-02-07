@@ -12,11 +12,11 @@ import matplotlib.pyplot as plt
 
 
  
-def make_table1(location, add_tt=False):
+def make_table1(location, coverage=90, add_tt=False):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
+    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
 
     # Define scenarios and cohorts
     scenarios = ['Baseline', 'Catch-up 10-15', 'Catch-up 15-20', 'Catch-up 20-25',
@@ -243,24 +243,24 @@ def make_table1(location, add_tt=False):
     sc.SIticks()
 
     fig.tight_layout()
-    figname = f'catchup_vax_cohorts_{location}' + ('_tt' if add_tt else '') + '.png'
+    figname = f'catchup_vax_cohorts_{location}_{coverage}' + ('_tt' if add_tt else '') + '.png'
     fig_name = f'figures/{figname}'
     sc.savefig(fig_name, dpi=100)
     return
 
 
-def make_single_bar(location):
+def make_single_bar(location, coverage=90):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}.obj')
+    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
 
     # Define age groups and corresponding scenarios
     age_groups = {
-        'Up to 25': 'Catch-up to age 25',
-        '25-30': 'Catch-up to age 30',
-        '30-45': 'Catch-up to age 45',
-        '45+': 'Catch-up to age 60'
+        'Up to 25': 'Catch-up 20-25: V',
+        '25-30': 'Catch-up 25-30: V',
+        '30-45': 'Catch-up 40-45: V',
+        '45+': 'Catch-up 55-60: V'
     }
 
     # Get baseline cancers
@@ -337,7 +337,7 @@ def make_single_bar(location):
     ax.legend(title='Age group', loc='upper right', frameon=False, fontsize=12)
 
     fig.tight_layout()
-    fig_name = 'figures/catchup_vax_benefit_distribution.png'
+    fig_name = f'figures/catchup_vax_benefit_distribution_{coverage}.png'
     sc.savefig(fig_name, dpi=100)
 
     print(f"\nFigure saved to: {fig_name}")
@@ -645,6 +645,7 @@ if __name__ == '__main__':
     location = 'kenya'
     do_plot_base = False
     do_plot_bars = True
+    coverage = 70
 
     if do_plot_base:
         sim = sc.loadobj(f'results/sim_{location}.sim')
@@ -663,7 +664,7 @@ if __name__ == '__main__':
         analyzer.to_csv('results/cohort_status_2025.csv')
 
     if do_plot_bars:
-        make_table1(location, add_tt=False)
-        make_single_bar(location)
-        msim_dict = sc.loadobj(f'results/scens_{location}.obj')
+        make_table1(location, coverage=coverage, add_tt=False)
+        make_single_bar(location, coverage=coverage)
+        msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
 
