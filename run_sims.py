@@ -51,8 +51,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
     # Sexual behavior parameters
     # Debut: derived by fitting to 2014 DHS
     # Women:
-    #           Age:   15,   18,   20,   22,   25
-    #   Prop_active: 15.1, 50.3, 70.4, 82, 89.7
+
     # Men:
     #           Age:   15,   18,   20,   22,   25
     #   Prop_active: 21.3	56.1	75.8	87.2	92.8
@@ -261,8 +260,7 @@ if __name__ == '__main__':
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
-        from analyzers import person_years
-        analyzers = [person_years(start_year=2000, end_year=2020), hpv.age_causal_infection(start_year=2020)]
+        analyzers = [hpv.age_causal_infection(start_year=2020)]
         sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
         df = get_age_causal_df(sim)
         sc.saveobj(f'results/age_causal_infection.obj', df)

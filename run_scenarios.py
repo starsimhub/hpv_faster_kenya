@@ -196,7 +196,7 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_a
         # Radiation treatment
         radiation_eligible = lambda sim: sim.get_intervention('tx_assigner_faster').outcomes['radiation']
         radiation = hpv.treat_num(
-            prob=0.9,  # assume an additional dropoff in CaTx coverage
+            prob=0.9, 
             product=hpv.radiation(),
             eligibility=radiation_eligible,
             label='radiation_faster'
@@ -253,7 +253,8 @@ if __name__ == '__main__':
     do_save = False
     do_process = True
     location = 'kenya'  #'kenya'
-    catchup_cov = 0.7
+    coverage = 90
+    catchup_cov = coverage/10
 
     scenarios = dict()
     background_intvs = make_st() + make_routine_vx()
@@ -305,12 +306,12 @@ if __name__ == '__main__':
         calib_pars = sc.loadobj(f'results/{location}_pars.obj')
         msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
 
-        if do_save: sc.saveobj(f'results/scens_{location}.msim', msim)
+        if do_save: sc.saveobj(f'results/scens_{location}_{coverage}.msim', msim)
 
     if do_process:
         print('Post-processing results...')
         if not do_run:
-            msim = sc.loadobj(f'results/scens_{location}.msim')
+            msim = sc.loadobj(f'results/scens_{location}_{coverage}.msim')
 
         metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
 
@@ -350,6 +351,6 @@ if __name__ == '__main__':
 
             msim_dict[scen_label] = mres
 
-        sc.saveobj(f'results/scens_{location}.obj', msim_dict)
+        sc.saveobj(f'results/scens_{location}_{coverage}.obj', msim_dict)
 
     print('Done.')

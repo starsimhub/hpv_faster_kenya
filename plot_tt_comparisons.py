@@ -11,6 +11,53 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+# ========== GLOBAL FIGURE SIZE SETTINGS ==========
+# Standard width per panel for consistency
+FIG_WIDTH_PER_PANEL = 8     # inches per panel
+
+# Figure dimensions (width, height) - standardized for consistent appearance
+FIGSIZE_2PANEL = (16, 6)       # 2 panels side-by-side (standard)
+FIGSIZE_2PANEL_TALL = (16, 7)  # 2 panels side-by-side (taller for more content)
+FIGSIZE_3PANEL = (24, 7)       # 3 panels side-by-side
+FIGSIZE_6PANEL = (24, 12)      # 6 panels in 2x3 grid
+
+# ========== GLOBAL FONT SIZE SETTINGS ==========
+# Base font sizes defined for reference figure height of 6 inches
+# Fonts will be scaled proportionally for taller figures to maintain visual consistency
+FONT_SCALE_REF_HEIGHT = 6   # Reference height for base font sizes
+
+FONT_BASE = 18              # Base font size for matplotlib
+FONT_SUPTITLE = 16          # Main figure title (reduced)
+FONT_PANEL_TITLE = 16       # Individual panel titles (A, B, C, etc.)
+FONT_AXIS_LABEL = 10        # X and Y axis labels (reduced for better spacing)
+FONT_LEGEND = 10            # Legend text (same as axis labels)
+FONT_BAR_LABEL_LARGE = 11   # Value labels on bars (standard panels)
+FONT_BAR_LABEL_SMALL = 9    # Value labels on bars (dense panels with multiple groups)
+
+
+def scale_fonts(figure_height):
+    """
+    Scale font sizes proportionally based on figure height to maintain visual consistency.
+    Returns a dict of scaled font sizes.
+
+    Args:
+        figure_height: Height of the figure in inches
+
+    Returns:
+        dict with keys: 'base', 'suptitle', 'panel_title', 'axis_label', 'legend', 'bar_large', 'bar_small'
+    """
+    scale_factor = figure_height / FONT_SCALE_REF_HEIGHT
+    return {
+        'base': int(FONT_BASE * scale_factor),
+        'suptitle': int(FONT_SUPTITLE * scale_factor),
+        'panel_title': int(FONT_PANEL_TITLE * scale_factor),
+        'axis_label': int(FONT_AXIS_LABEL * scale_factor),
+        'legend': int(FONT_LEGEND * scale_factor),
+        'bar_large': int(FONT_BAR_LABEL_LARGE * scale_factor),
+        'bar_small': int(FONT_BAR_LABEL_SMALL * scale_factor),
+    }
+
+
 def plot_tt_comparison(location, coverage=90):
     """
     Create a 2-panel figure comparing test & treat vs vaccination interventions.
@@ -69,8 +116,10 @@ def plot_tt_comparison(location, coverage=90):
             print(f'{label}: {total_cohort_cancers:,.0f} cancers in 10-60 cohort')
 
     # Create the 2-panel figure
-    ut.set_font(14)
-    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+    figsize = FIGSIZE_2PANEL
+    fonts = scale_fonts(figsize[1])
+    ut.set_font(fonts['base'])
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
 
     # Panel A: Time series
     ax_a = axes[0]
@@ -100,14 +149,14 @@ def plot_tt_comparison(location, coverage=90):
                      color=colors[label], linestyle=linestyles[label],
                      linewidth=linewidths[label], label=label, alpha=0.9)
 
-    ax_a.set_xlabel('Year', fontsize=12, fontweight='bold')
-    ax_a.set_ylabel('Annual incident cancers', fontsize=12, fontweight='bold')
-    ax_a.set_title('A) Annual incident cancers in women aged 10-60 in 2025', fontsize=14, fontweight='bold', loc='left')
-    ax_a.legend(fontsize=11, loc='upper left', framealpha=0.95)
+    ax_a.set_ylabel('Annual incident cancers', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_a.set_title('A) Annual incident cancers in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_a.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     ax_a.grid(alpha=0.3, linestyle='--', axis='y')
     ax_a.set_ylim(bottom=0)
-    ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+    ax_a.tick_params(axis='both', labelsize=fonts['axis_label'])
     sc.SIticks(ax_a)
+    ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
     # Panel B: Bar chart of cancers averted
     ax_b = axes[1]
@@ -134,7 +183,7 @@ def plot_tt_comparison(location, coverage=90):
         height = bar.get_height()
         ax_b.text(bar.get_x() + bar.get_width() / 2., height,
                  f'{sc.sigfig(val, 3, SI=True)}',
-                 ha='center', va='bottom', fontsize=12, fontweight='bold')
+                 ha='center', va='bottom', fontsize=fonts['bar_large'], fontweight='bold')
 
     # Format x-tick labels with line breaks
     x_labels_formatted = [
@@ -144,15 +193,16 @@ def plot_tt_comparison(location, coverage=90):
     ]
     ax_b.set_xticks(x_pos)
     ax_b.set_xticklabels(x_labels_formatted, ha='center')
-    ax_b.set_ylabel('Cancers averted', fontsize=12, fontweight='bold')
-    ax_b.set_title('B) Total cancers averted in women aged 10-60 in 2025', fontsize=14, fontweight='bold', loc='left')
+    ax_b.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_b.set_title('B) Total cancers averted in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_b.grid(alpha=0.3, linestyle='--', axis='y')
     ax_b.set_ylim(bottom=0)
-    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
     sc.SIticks(ax_b)
+    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
     plt.suptitle(f'Impact of test & treat vs vaccination on cervical cancer - {location.capitalize()}',
-                 fontsize=16, fontweight='bold')
+                 fontsize=fonts['suptitle'], fontweight='bold')
 
     fig.tight_layout(rect=[0, 0, 1, 0.96])
     fig_name = f'figures/tt_vs_vax_comparison_{location}_{coverage}.png'
@@ -236,8 +286,10 @@ def plot_efficiency_frontier(location, coverage=90):
     df = pd.DataFrame(results)
 
     # Create figure
-    ut.set_font(14)
-    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+    figsize = FIGSIZE_2PANEL_TALL
+    fonts = scale_fonts(figsize[1])
+    ut.set_font(fonts['base'])
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
 
     colors = {'V': '#3498db', 'TTV': '#27ae60'}
 
@@ -264,17 +316,18 @@ def plot_efficiency_frontier(location, coverage=90):
                     height = bar.get_height()
                     ax_a.text(bar.get_x() + bar.get_width() / 2., height,
                             f'{sc.sigfig(val, 2, SI=True)}',
-                            ha='center', va='bottom', fontsize=8, fontweight='bold')
+                            ha='center', va='bottom', fontsize=fonts['bar_small'], fontweight='bold')
 
-    ax_a.set_xlabel('Upper age limit (starting from 10)', fontsize=12, fontweight='bold')
-    ax_a.set_ylabel('Incremental cancers averted', fontsize=12, fontweight='bold')
-    ax_a.set_title('A) Marginal health impact:\nIncremental cancers averted', fontsize=14, fontweight='bold', loc='left')
+    ax_a.set_ylabel('Incremental cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_a.set_title('A) Marginal health impact:\nIncremental cancers averted', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_a.set_xticks(x_pos)
     ax_a.set_xticklabels([int(u) for u in uppers], rotation=0)
     ax_a.set_ylim(bottom=0)
     ax_a.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_a.legend(fontsize=11, loc='upper left', framealpha=0.95)
+    ax_a.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_a.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_a)
+    ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
     # Panel B: Incremental NNV
     ax_b = axes[1]
@@ -299,19 +352,20 @@ def plot_efficiency_frontier(location, coverage=90):
                 height = bar.get_height()
                 ax_b.text(bar.get_x() + bar.get_width() / 2., height,
                         f'{int(val)}',
-                        ha='center', va='bottom', fontsize=9, fontweight='bold')
+                        ha='center', va='bottom', fontsize=fonts['bar_small'], fontweight='bold')
 
-    ax_b.set_xlabel('Upper age limit (starting from 10)', fontsize=12, fontweight='bold')
-    ax_b.set_ylabel('Incremental NNV\n(doses per additional cancer averted)', fontsize=12, fontweight='bold')
-    ax_b.set_title('B) Marginal efficiency:\nIncremental NNV (V only)', fontsize=14, fontweight='bold', loc='left')
+    ax_b.set_ylabel('Incremental NNV\n(doses per additional cancer averted)', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_b.set_title('B) Marginal efficiency:\nIncremental NNV (V only)', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_b.set_xticks(x_pos)
     ax_b.set_xticklabels([int(u) for u in uppers], rotation=0)
     ax_b.set_ylim(bottom=0)
     ax_b.grid(alpha=0.3, linestyle='--', axis='y')
+    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
     sc.SIticks(ax_b)
+    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
     plt.suptitle(f'Incremental analysis for catch-up vaccination - {location.capitalize()}',
-                 fontsize=16, fontweight='bold')
+                 fontsize=fonts['suptitle'], fontweight='bold')
 
     fig.tight_layout(rect=[0, 0, 1, 0.96])
     fig_name = f'figures/efficiency_frontier_{location}_{coverage}.png'
@@ -336,9 +390,9 @@ def plot_efficiency_frontier(location, coverage=90):
     return fig, axes, df
 
 
-def plot_efficiency_4panel(location, coverage=90):
+def plot_combined_impact(location, coverage=90):
     """
-    Create comprehensive 6-panel efficiency analysis figure.
+    Create comprehensive 6-panel combined impact analysis figure.
 
     Column 1 (Total impact):
     - Panel A: Total cancers averted extending upwards from age 10 (V vs TTV)
@@ -352,15 +406,6 @@ def plot_efficiency_4panel(location, coverage=90):
     - Panel C: Incremental NNV for extending from age 10 (V only)
     - Panel F: Comparison of all interventions (V, TT, TTV) by age band
     """
-
-    # ========== FONT SIZE SETTINGS ==========
-    FONT_BASE = 18              # Base font size for matplotlib
-    FONT_SUPTITLE = 18          # Main figure title
-    FONT_PANEL_TITLE = 16       # Individual panel titles (A, B, C, etc.)
-    FONT_AXIS_LABEL = 15        # X and Y axis labels
-    FONT_LEGEND = 13            # Legend text
-    FONT_BAR_LABEL_LARGE = 11   # Value labels on bars (panels A, B, C, D, E)
-    FONT_BAR_LABEL_SMALL = 9    # Value labels on bars (panel F with multiple groups)
 
     # Load data
     msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
@@ -417,9 +462,11 @@ def plot_efficiency_4panel(location, coverage=90):
     df = pd.DataFrame(results)
 
     # Create 2x3 figure (6 panels)
-    ut.set_font(FONT_BASE)
-    fig = plt.figure(figsize=(28, 16))
-    gs = fig.add_gridspec(2, 3, hspace=0.35, wspace=0.3)
+    figsize = FIGSIZE_6PANEL
+    fonts = scale_fonts(figsize[1])
+    ut.set_font(fonts['base'])
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(2, 3, hspace=0.45, wspace=0.3)
 
     colors = {'V': '#3498db', 'TT': '#e74c3c', 'TTV': '#27ae60'}
 
@@ -440,24 +487,17 @@ def plot_efficiency_4panel(location, coverage=90):
             bars = ax_a.bar(x_pos + offset, cancers, width,
                           label=intv_type, color=colors[intv_type], alpha=0.7)
 
-            for bar, val in zip(bars, cancers):
-                if val > 0:
-                    height = bar.get_height()
-                    ax_a.text(bar.get_x() + bar.get_width() / 2., height,
-                            f'{sc.sigfig(val, 2, SI=True)}',
-                            ha='center', va='bottom', fontsize=FONT_BAR_LABEL_LARGE, fontweight='bold')
-
     # Create age band labels for x-axis
     age_band_labels_total = ['10-15', '10-20', '10-25', '10-30', '10-35', '10-40', '10-45', '10-50', '10-55', '10-60']
 
-    ax_a.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_a.set_ylabel('Total cancers averted', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_a.set_title('A) Total impact: Extending upwards from age 10', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_a.set_ylabel('Total cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_a.set_title('A) Total impact:\nExtending upwards from age 10', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_a.set_xticks(x_pos)
     ax_a.set_xticklabels(age_band_labels_total, rotation=45, ha='right')
     ax_a.set_ylim(bottom=0)
     ax_a.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_a.legend(fontsize=FONT_LEGEND, loc='upper left', framealpha=0.95)
+    ax_a.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_a.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_a)
 
     # ========== Panel B: Marginal cancers averted (extending from 10 upwards) ==========
@@ -478,24 +518,17 @@ def plot_efficiency_4panel(location, coverage=90):
             bars = ax_b.bar(x_pos + offset, incremental_cancers, width,
                           label=intv_type, color=colors[intv_type], alpha=0.7)
 
-            for bar, val in zip(bars, incremental_cancers):
-                if val > 0:
-                    height = bar.get_height()
-                    ax_b.text(bar.get_x() + bar.get_width() / 2., height,
-                            f'{sc.sigfig(val, 2, SI=True)}',
-                            ha='center', va='bottom', fontsize=FONT_BAR_LABEL_LARGE, fontweight='bold')
-
     # Create incremental age band labels (10-15, 15-20, etc.)
     age_band_labels_incr = ['10-15', '15-20', '20-25', '25-30', '30-35', '35-40', '40-45', '45-50', '50-55', '55-60']
 
-    ax_b.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_b.set_ylabel('Incremental cancers averted', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_b.set_title('B) Marginal impact: By 5-year age band', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_b.set_ylabel('Incremental cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_b.set_title('B) Marginal impact:\nBy 5-year age band', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_b.set_xticks(x_pos)
     ax_b.set_xticklabels(age_band_labels_incr, rotation=45, ha='right')
     ax_b.set_ylim(bottom=0)
     ax_b.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_b.legend(fontsize=FONT_LEGEND, loc='upper left', framealpha=0.95)
+    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_b.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_b)
 
     # ========== Panel C: Incremental NNV (extending from 10 upwards) ==========
@@ -521,16 +554,16 @@ def plot_efficiency_4panel(location, coverage=90):
                 height = bar.get_height()
                 ax_c.text(bar.get_x() + bar.get_width() / 2., height,
                         f'{int(val)}',
-                        ha='center', va='bottom', fontsize=FONT_BAR_LABEL_LARGE, fontweight='bold')
+                        ha='center', va='bottom', fontsize=fonts['bar_large'], fontweight='bold')
 
-    ax_c.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_c.set_ylabel('Incremental NNV\n(doses per additional cancer averted)', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_c.set_title('C) Marginal efficiency: Incremental NNV (V only)', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_c.set_ylabel('Incremental NNV\n(doses per additional cancer averted)', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_c.set_title('C) Marginal efficiency:\nIncremental NNV (V only)', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_c.set_xticks(x_pos)
     ax_c.set_xticklabels(age_band_labels_incr, rotation=45, ha='right')
-    ax_c.set_ylim(bottom=0)
+    ax_c.set_ylim(bottom=0, top=175)
     ax_c.grid(alpha=0.3, linestyle='--', axis='y')
-    sc.SIticks(ax_c)
+    ax_c.tick_params(axis='both', labelsize=fonts['axis_label'])
+    # sc.SIticks(ax_c)
 
     # ========== Panel D: Total cancers averted (fixing upper at 60, varying lower) - REVERSED ==========
     ax_d = fig.add_subplot(gs[1, 0])
@@ -552,24 +585,17 @@ def plot_efficiency_4panel(location, coverage=90):
             bars = ax_d.bar(x_pos + offset, cancers, width,
                           label=intv_type, color=colors[intv_type], alpha=0.7)
 
-            for bar, val in zip(bars, cancers):
-                if val > 0:
-                    height = bar.get_height()
-                    ax_d.text(bar.get_x() + bar.get_width() / 2., height,
-                            f'{sc.sigfig(val, 2, SI=True)}',
-                            ha='center', va='bottom', fontsize=FONT_BAR_LABEL_LARGE, fontweight='bold')
-
     # Create age band labels for x-axis (reversed)
     age_band_labels_total_rev = ['55-60', '50-60', '45-60', '40-60', '35-60', '30-60', '25-60', '20-60', '15-60', '10-60']
 
-    ax_d.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_d.set_ylabel('Total cancers averted', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_d.set_title('D) Total impact: Extending downwards to age 60', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_d.set_ylabel('Total cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_d.set_title('D) Total impact:\nExtending downwards to age 60', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_d.set_xticks(np.arange(len(lowers)))
     ax_d.set_xticklabels(age_band_labels_total_rev, rotation=45, ha='right')
     ax_d.set_ylim(bottom=0)
     ax_d.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_d.legend(fontsize=FONT_LEGEND, loc='upper left', framealpha=0.95)
+    ax_d.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_d.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_d)
 
     # ========== Panel E: Marginal cancers averted (fixing upper at 60, varying lower) - REVERSED ==========
@@ -596,24 +622,17 @@ def plot_efficiency_4panel(location, coverage=90):
             bars = ax_e.bar(x_pos + offset, incremental_cancers, width,
                           label=intv_type, color=colors[intv_type], alpha=0.7)
 
-            for bar, val in zip(bars, incremental_cancers):
-                if val > 0:
-                    height = bar.get_height()
-                    ax_e.text(bar.get_x() + bar.get_width() / 2., height,
-                            f'{sc.sigfig(val, 2, SI=True)}',
-                            ha='center', va='bottom', fontsize=FONT_BAR_LABEL_LARGE, fontweight='bold')
-
     # Create incremental age band labels (reversed: 55-60, 50-55, etc.)
     age_band_labels_incr_rev = ['55-60', '50-55', '45-50', '40-45', '35-40', '30-35', '25-30', '20-25', '15-20', '10-15']
 
-    ax_e.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_e.set_ylabel('Incremental cancers averted', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_e.set_title('E) Marginal impact: By 5-year age band', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_e.set_ylabel('Incremental cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_e.set_title('E) Marginal impact:\nBy 5-year age band', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_e.set_xticks(np.arange(len(lowers)))
     ax_e.set_xticklabels(age_band_labels_incr_rev, rotation=45, ha='right')
     ax_e.set_ylim(bottom=0)
     ax_e.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_e.legend(fontsize=FONT_LEGEND, loc='upper left', framealpha=0.95)
+    ax_e.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_e.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_e)
 
     # ========== Panel F: Cancers averted by intervention for each age band ==========
@@ -644,32 +663,24 @@ def plot_efficiency_4panel(location, coverage=90):
         bars = ax_f.bar(x_pos + offset, band_results[intv_type], width,
                        label=intv_type, color=colors[intv_type], alpha=0.7)
 
-        # Add value labels on bars
-        for bar, val in zip(bars, band_results[intv_type]):
-            if val > 0:
-                height = bar.get_height()
-                ax_f.text(bar.get_x() + bar.get_width() / 2., height,
-                        f'{sc.sigfig(val, 2, SI=True)}',
-                        ha='center', va='bottom', fontsize=FONT_BAR_LABEL_SMALL, fontweight='bold', rotation=0)
-
-    ax_f.set_xlabel('Age band', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_f.set_ylabel('Cancers averted', fontsize=FONT_AXIS_LABEL, fontweight='bold')
-    ax_f.set_title('F) Which intervention for which age band?', fontsize=FONT_PANEL_TITLE, fontweight='bold', loc='left')
+    ax_f.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_f.set_title('F) Which intervention\nfor which age band?', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
     ax_f.set_xticks(x_pos)
     ax_f.set_xticklabels(band_labels, rotation=45, ha='right')
     ax_f.set_ylim(bottom=0)
     ax_f.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_f.legend(fontsize=FONT_LEGEND, loc='upper left', framealpha=0.95)
+    ax_f.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_f.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
     sc.SIticks(ax_f)
 
     plt.suptitle(f'Total and marginal impact of catch-up interventions - {location.capitalize()}',
-                 fontsize=FONT_SUPTITLE, fontweight='bold', y=0.995)
+                 fontsize=fonts['suptitle'], fontweight='bold', y=0.995)
 
-    fig_name = f'figures/efficiency_4panel_{location}_{coverage}.png'
+    fig_name = f'figures/combined_impact_6panel_{location}_{coverage}.png'
     fig.tight_layout()
     sc.savefig(fig_name, dpi=150)
 
-    print(f"\n6-panel efficiency plot saved to: {fig_name}")
+    print(f"\n6-panel combined impact plot saved to: {fig_name}")
 
     return fig, (ax_a, ax_b, ax_c, ax_d, ax_e, ax_f), df
 
@@ -757,8 +768,10 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
     ######################################################
     # Create three side-by-side heatmaps
     ######################################################
-    ut.set_font(12)
-    fig, axes = plt.subplots(1, 3, figsize=(20, 7))
+    figsize = FIGSIZE_3PANEL
+    fonts = scale_fonts(figsize[1])
+    ut.set_font(fonts['base'])
+    fig, axes = plt.subplots(1, 3, figsize=figsize)
 
     # Define common colormap limits for consistency
     vmin = 0
@@ -778,10 +791,10 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
         ax.set_yticklabels(upper_ages)
 
         # Labels
-        ax.set_xlabel('Lower age', fontsize=12, fontweight='bold')
         if idx == 0:
-            ax.set_ylabel('Upper age', fontsize=12, fontweight='bold')
-        ax.set_title(title, fontsize=14, fontweight='bold', pad=10)
+            ax.set_ylabel('Upper age', fontsize=fonts['axis_label'], fontweight='bold')
+        ax.set_title(title, fontsize=fonts['panel_title'], fontweight='bold', pad=10)
+        ax.tick_params(axis='both', labelsize=fonts['axis_label'])
 
         # Add text annotations with sigfigs
         for i in range(n_upper):
@@ -789,7 +802,7 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
                 if not np.isnan(data[i, j]):
                     text_label = sc.sigfig(data[i, j], 3, SI=True)
                     text = ax.text(j, i, text_label,
-                                  ha="center", va="center", color="black", fontsize=8,
+                                  ha="center", va="center", color="black", fontsize=fonts['bar_small'],
                                   fontweight='bold')
 
         # Add grid
@@ -807,9 +820,9 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
     tick_labels = [sc.sigfig(val, 3, SI=True) for val in tick_locs]
     cbar.set_ticklabels(tick_labels)
 
-    cbar.set_label('Cancers averted (2025-2100)', rotation=270, labelpad=20, fontsize=12, fontweight='bold')
+    cbar.set_label('Cancers averted (2025-2100)', rotation=270, labelpad=20, fontsize=fonts['axis_label'], fontweight='bold')
 
-    plt.suptitle('Impact of catch-up interventions by age range', fontsize=16, fontweight='bold', y=0.98)
+    plt.suptitle('Impact of catch-up interventions by age range', fontsize=fonts['suptitle'], fontweight='bold', y=0.98)
 
     fig.tight_layout(rect=[0, 0, 0.9, 0.96])
     fig_name = 'figures/cohort_interventions_heatmap.png'
@@ -828,8 +841,8 @@ if __name__ == '__main__':
     # Create test & treat comparison plot
     plot_tt_comparison(location, coverage=coverage)
 
-    # Create 4-panel efficiency analysis
-    plot_efficiency_4panel(location, coverage=coverage)
+    # Create 6-panel combined impact analysis
+    plot_combined_impact(location, coverage=coverage)
 
     # Create heatmaps
     plot_heatmaps(location, coverage=coverage)
