@@ -30,7 +30,7 @@ from analyzers import cohort_cancers, person_years, vx_potential
 
 # What to run
 debug = 0
-n_seeds = [2, 1][debug]  # How many seeds to run per cluster
+n_seeds = [10, 1][debug]  # How many seeds to run per cluster
 
 
 # %% Functions

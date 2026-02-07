@@ -19,10 +19,10 @@ def make_table1(location, coverage=90, add_tt=False):
     msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
 
     # Define scenarios and cohorts
-    scenarios = ['Baseline', 'Catch-up 10-15', 'Catch-up 15-20', 'Catch-up 20-25',
-                 'Catch-up 25-30', 'Catch-up 30-35', 'Catch-up 35-40',
-                  'Catch-up 40-45', 'Catch-up 45-50',
-                  'Catch-up 50-55', 'Catch-up 55-60']
+    scenarios = ['Baseline', 'Catch-up 10-15', 'Catch-up 10-20', 'Catch-up 10-25',
+                 'Catch-up 10-30', 'Catch-up 10-35', 'Catch-up 10-40',
+                  'Catch-up 10-45', 'Catch-up 10-50',
+                  'Catch-up 10-55', 'Catch-up 10-60']
     scenarios = ['Baseline'] + [s + ': V' for s in scenarios if s != 'Baseline']
     if add_tt:
         scenarios = ['Baseline'] + [s + ': TTV' for s in scenarios if s != 'Baseline']
@@ -645,7 +645,7 @@ if __name__ == '__main__':
     location = 'kenya'
     do_plot_base = False
     do_plot_bars = True
-    coverage = 70
+    coverage = 90
 
     if do_plot_base:
         sim = sc.loadobj(f'results/sim_{location}.sim')
