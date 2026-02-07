@@ -682,6 +682,27 @@ def plot_combined_impact(location, coverage=90):
 
     print(f"\n6-panel combined impact plot saved to: {fig_name}")
 
+    # Export data to CSV and Excel
+    csv_name = f'figures/combined_impact_data_{location}_{coverage}.csv'
+    excel_name = f'figures/combined_impact_data_{location}_{coverage}.xlsx'
+
+    # Sort dataframe for better readability
+    df_export = df.sort_values(['intervention', 'lower', 'upper']).reset_index(drop=True)
+
+    # Add age range column for clarity
+    df_export['age_range'] = df_export['lower'].astype(str) + '-' + df_export['upper'].astype(str)
+
+    # Reorder columns
+    df_export = df_export[['age_range', 'lower', 'upper', 'intervention', 'cancers_averted', 'doses']]
+
+    # Export to CSV
+    df_export.to_csv(csv_name, index=False)
+    print(f"Data exported to CSV: {csv_name}")
+
+    # Export to Excel
+    df_export.to_excel(excel_name, index=False, sheet_name='Combined Impact Data')
+    print(f"Data exported to Excel: {excel_name}")
+
     return fig, (ax_a, ax_b, ax_c, ax_d, ax_e, ax_f), df
 
 
