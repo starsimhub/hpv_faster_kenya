@@ -253,7 +253,7 @@ if __name__ == '__main__':
     do_save = False
     do_process = True
     location = 'kenya'  #'kenya'
-    catchup_cov = 0.9
+    catchup_cov = 0.7
 
     scenarios = dict()
     background_intvs = make_st() + make_routine_vx()

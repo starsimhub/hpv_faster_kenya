@@ -498,10 +498,194 @@ def plot_baseline(sim, data_file='data/kenya_cancer_cases.csv',
     return fig, axes
 
 
+def plot_cohort_simplified(sim, start_cohort_year=2025, max_cohort_age=85, figsize=(16, 8)):
+    """
+    Create a simplified stacked area plot showing incident cancers by age group in 2025.
+
+    Four segments:
+    - Age 0-10 in 2025: Averted through routine vaccination
+    - Age 10-15 in 2025: Averted through MACs
+    - Age 15-85 in 2025: Additional potential lives saved
+    - Remaining (grey): Future cancers avertable through sustained routine vaccination
+
+    Args:
+        sim: HPVsim simulation object after running
+        start_cohort_year: Year to define cohorts (default: 2025)
+        max_cohort_age: Maximum age for cohorts to plot (default: 85)
+        figsize: Figure size tuple
+    """
+
+    # Get the start year and timestep info
+    start_year = sim['start']
+    dt = sim['dt']
+
+    # Get years and filter to start_cohort_year onwards
+    years = sim.results['year']
+    idx_start = np.where(years >= start_cohort_year)[0]
+    years_subset = years[idx_start]
+
+    # Define simplified cohort groups
+    cohort_groups = {
+        'routine_vax': (0, 10, 'Averted through routine vaccination'),
+        'macs': (10, 15, 'Averted through MACs'),
+        'additional': (15, max_cohort_age, 'Additional potential lives saved'),
+    }
+
+    # Define age bins for cancers_by_age (18 bins of 5 years: 0-4, 5-9, ..., 85+)
+    age_bin_midpoints = np.arange(2.5, 90, 5)
+
+    # Helper function to get cohort group for a given age in 2025
+    def get_cohort_group(age_in_2025):
+        """Get the cohort group name for a given age in 2025, or None if outside range"""
+        if age_in_2025 > max_cohort_age:
+            return None
+        for group_name, (lower, upper, label) in cohort_groups.items():
+            if lower <= age_in_2025 < upper:
+                return group_name
+        return None
+
+    # Prepare data structure: group x year
+    group_cancers = {group: np.zeros(len(years_subset)) for group in cohort_groups.keys()}
+
+    # For each year after start_cohort_year
+    for year_i, year in enumerate(years_subset):
+        year_idx = int(year - start_year)
+
+        # Get cancers by age for this year
+        if year_idx < sim.results['cancers_by_age'].shape[1]:
+            cancers_this_year = sim.results['cancers_by_age'][:, year_idx]
+
+            # For each age bin, determine which cohort group it belongs to
+            years_since_cohort = year - start_cohort_year
+
+            for age_bin_i, age_bin_mid in enumerate(age_bin_midpoints):
+                # What was this person's age in start_cohort_year?
+                age_in_cohort_year = age_bin_mid - years_since_cohort
+
+                # Only include if they were alive in the cohort year (age >= 0)
+                if age_in_cohort_year >= 0:
+                    group_name = get_cohort_group(age_in_cohort_year)
+                    if group_name is not None:
+                        group_cancers[group_name][year_i] += cancers_this_year[age_bin_i]
+
+    # Get total cancers for calculating the grey section
+    total_cancers = sim.results['cancers'][idx_start]
+
+    # Calculate the grey section (future cancers from sustained vaccination)
+    sum_three_groups = (group_cancers['routine_vax'] +
+                        group_cancers['macs'] +
+                        group_cancers['additional'])
+    future_cancers = total_cancers - sum_three_groups
+
+    # Create the plot
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Define colors
+    colors = {
+        'routine_vax': '#2ecc71',  # Green
+        'macs': '#3498db',         # Blue
+        'additional': '#e67e22',   # Orange
+        'future': '#95a5a6'        # Grey
+    }
+
+    # Create stacked area plot from bottom to top
+    # Start with bottom = 0
+    bottom = np.zeros(len(years_subset))
+
+    # Layer 1: Routine vaccination (0-10)
+    ax.fill_between(years_subset, bottom, bottom + group_cancers['routine_vax'],
+                    color=colors['routine_vax'], alpha=0.8,
+                    label=cohort_groups['routine_vax'][2])
+    bottom += group_cancers['routine_vax']
+
+    # Layer 2: MACs (10-15)
+    ax.fill_between(years_subset, bottom, bottom + group_cancers['macs'],
+                    color=colors['macs'], alpha=0.8,
+                    label=cohort_groups['macs'][2])
+    bottom += group_cancers['macs']
+
+    # Layer 3: Additional potential (15-85)
+    ax.fill_between(years_subset, bottom, bottom + group_cancers['additional'],
+                    color=colors['additional'], alpha=0.8,
+                    label=cohort_groups['additional'][2])
+    bottom += group_cancers['additional']
+
+    # Layer 4: Future cancers (grey)
+    ax.fill_between(years_subset, bottom, bottom + future_cancers,
+                    color=colors['future'], alpha=0.6,
+                    label='Future cancers avertable through\nsustained routine vaccination')
+
+    # Add total cancers line for reference
+    ax.plot(years_subset, total_cancers, linewidth=2, color='black',
+            linestyle='--', alpha=0.7, label='Total incident cancers')
+
+    ax.set_xlabel('Year', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Incident cancer cases', fontsize=12, fontweight='bold')
+    ax.set_title(f'Incident Cervical Cancers by Age Group in {start_cohort_year}',
+                 fontsize=14, fontweight='bold')
+    ax.grid(alpha=0.3, linestyle='--', axis='y')
+
+    # Add legend
+    ax.legend(fontsize=10, loc='upper left', framealpha=0.9)
+
+    sc.SIticks(ax)
+
+    plt.tight_layout()
+
+    # Save the figure
+    plt.savefig(f'figures/cohort_simplified_{start_cohort_year}.png', dpi=300, bbox_inches='tight')
+
+    # Calculate and print total cancers in each segment
+    print(f"\n=== Simplified Cohort Summary (age groups in {start_cohort_year}) ===")
+    print(f"Time period: {start_cohort_year}-{int(years_subset[-1])}\n")
+
+    total_routine = group_cancers['routine_vax'].sum()
+    total_macs = group_cancers['macs'].sum()
+    total_additional = group_cancers['additional'].sum()
+    total_future = future_cancers.sum()
+    grand_total = total_cancers.sum()
+
+    print(f"1. {cohort_groups['routine_vax'][2]} (age 0-10 in {start_cohort_year}):")
+    print(f"   Total cancers: {total_routine:,.0f} ({100*total_routine/grand_total:.1f}%)\n")
+
+    print(f"2. {cohort_groups['macs'][2]} (age 10-15 in {start_cohort_year}):")
+    print(f"   Total cancers: {total_macs:,.0f} ({100*total_macs/grand_total:.1f}%)\n")
+
+    print(f"3. {cohort_groups['additional'][2]} (age 15-{max_cohort_age} in {start_cohort_year}):")
+    print(f"   Total cancers: {total_additional:,.0f} ({100*total_additional/grand_total:.1f}%)\n")
+
+    print(f"4. Future cancers avertable through sustained routine vaccination:")
+    print(f"   Total cancers: {total_future:,.0f} ({100*total_future/grand_total:.1f}%)\n")
+
+    print(f"Total incident cancers ({start_cohort_year}-{int(years_subset[-1])}): {grand_total:,.0f}")
+
+    # Export data to CSV
+    df = pd.DataFrame({
+        'year': years_subset,
+        'routine_vax_0_10': group_cancers['routine_vax'],
+        'macs_10_15': group_cancers['macs'],
+        'additional_15_85': group_cancers['additional'],
+        'future_cancers': future_cancers,
+        'total_cancers': total_cancers
+    })
+
+    csv_filename = f'results/cohort_simplified_{start_cohort_year}.csv'
+    df.to_csv(csv_filename, index=False)
+    print(f"\nData exported to: {csv_filename}")
+
+    return fig, ax, {
+        'routine_vax': group_cancers['routine_vax'],
+        'macs': group_cancers['macs'],
+        'additional': group_cancers['additional'],
+        'future': future_cancers,
+        'years': years_subset
+    }
+
+
 def plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60, figsize=(16, 8)):
     """
     Create a plot showing incident cancers by birth cohort over time.
-    
+
     Args:
         sim: HPVsim simulation object after running
         start_cohort_year: Year to define cohorts (default: 2025)
@@ -651,6 +835,9 @@ if __name__ == '__main__':
         sim = sc.loadobj(f'results/sim_{location}.sim')
         plot_baseline(sim)
         plot_cohort_decomposition(sim, start_cohort_year=2025)
+
+        # Create the new simplified cohort plot
+        plot_cohort_simplified(sim, start_cohort_year=2025, max_cohort_age=85)
 
         # Access results
         analyzer = sim.analyzers[0]

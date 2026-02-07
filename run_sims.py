@@ -249,12 +249,12 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        'run_sim',
+        # 'run_sim',
         # 'age_pyramids',
         # 'run_calib',
         # 'plot_calib'
         # 'run_parsets'
-        # 'plot_age_causal'
+        'plot_age_causal'
     ]
 
     T = sc.timer()  # Start a timer
@@ -305,5 +305,69 @@ if __name__ == '__main__':
         fig_name = f'figures/age_causal_kenya.png'
         sc.savefig(fig_name, dpi=100)
 
+    if 'plot_age_causal_violin' in to_run:
+        ac_df = sc.loadobj(f'results/age_causal_infection.obj')
+
+        # Filter for just causal infection
+        causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
+
+        # Calculate percentiles for vaccination ages
+        vax_ages = [15, 20, 25, 30, 35, 40]
+        percentages = []
+        for age in vax_ages:
+            pct = (causal_df['Age'] <= age).sum() / len(causal_df) * 100
+            percentages.append(pct)
+            print(f'Age {age}: {pct:.1f}% of causal infections')
+
+        # Create the violin plot
+        ut.set_font(20)
+        fig, ax = pl.subplots(1, 1, figsize=(6, 8))
+
+        # Create violin plot
+        parts = ax.violinplot([causal_df['Age'].values], positions=[0], widths=0.6,
+                              showmeans=False, showmedians=True, vert=True)
+
+        # Customize violin plot colors
+        for pc in parts['bodies']:
+            pc.set_facecolor('#3498db')
+            pc.set_alpha(0.7)
+            pc.set_edgecolor('black')
+            pc.set_linewidth(1.5)
+
+        # Style the median line
+        parts['cmedians'].set_edgecolor('red')
+        parts['cmedians'].set_linewidth(2)
+
+        # Add horizontal lines for vaccination ages
+        colors = ['#27ae60', '#1abc9c', '#f39c12', '#e74c3c', '#9b59b6', '#34495e']
+        for i, (age, pct, color) in enumerate(zip(vax_ages, percentages, colors)):
+            # Draw horizontal line
+            ax.axhline(y=age, color=color, linestyle='--', linewidth=2, alpha=0.6, zorder=5)
+
+            # Add text label on the right side - positioned outside the violin
+            ax.text(0.45, age, f'{pct:.0f}%',
+                   fontsize=13, fontweight='bold', color=color,
+                   va='center', ha='left', zorder=15,
+                   bbox=dict(boxstyle='round,pad=0.4', facecolor='white',
+                            edgecolor=color, linewidth=2.5, alpha=1.0))
+
+        ax.set_ylabel('Age at causal infection (years)', fontsize=12, fontweight='bold')
+        ax.set_title('Distribution of age at causal infection\nwith vaccination coverage thresholds',
+                    fontsize=14, fontweight='bold')
+        ax.set_xlim(-0.5, 0.6)
+        ax.set_ylim([10, 55])
+        ax.set_xticks([])
+        ax.grid(alpha=0.3, linestyle='--', axis='y')
+
+        # Add text box explaining the percentages
+        textstr = 'Lines show % of causal\ninfections occurring by\neach age (vaccination target)'
+        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+        ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=10,
+               verticalalignment='bottom', horizontalalignment='right', bbox=props)
+
+        fig.tight_layout()
+        fig_name = 'figures/age_causal_violin_kenya.png'
+        sc.savefig(fig_name, dpi=300)
+        print(f'\nFigure saved to: {fig_name}')
 
     T.toc('Done')  # Print out how long the run took
