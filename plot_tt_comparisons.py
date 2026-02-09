@@ -60,10 +60,11 @@ def scale_fonts(figure_height):
 
 def plot_tt_comparison(location, coverage=90):
     """
-    Create a 2-panel figure comparing test & treat vs vaccination interventions.
+    Create a 3-panel figure comparing test & treat vs vaccination interventions.
 
     Panel A: Time series of cancers in the 10-60 cohort under different scenarios
-    Panel B: Bar chart of total cancers averted
+    Panel B: Time series of ASR cancer incidence
+    Panel C: Bar chart of total cancers averted
 
     Demonstrates that test & treat alone averts some cancers, but without vaccination
     women can get reinfected. Vaccination prevents reinfection.
@@ -94,14 +95,22 @@ def plot_tt_comparison(location, coverage=90):
             years = msim_dict[scen_key]['year']
             cancers = msim_dict[scen_key]['cancers'].values
 
+            # Get ASR cancer incidence if available
+            if 'asr_cancer_incidence' in msim_dict[scen_key]:
+                asr = msim_dict[scen_key]['asr_cancer_incidence'].values
+            else:
+                asr = None
+
             # Filter to 2025 onwards
             idx_2025 = sc.findinds(years, 2025)[0]
             years_subset = years[idx_2025:]
             cancers_subset = cancers[idx_2025:]
+            asr_subset = asr[idx_2025:] if asr is not None else None
 
             scenario_data[label] = {
                 'years': years_subset,
-                'cancers': cancers_subset
+                'cancers': cancers_subset,
+                'asr': asr_subset
             }
 
             # Calculate total cancers in 10-60 cohort
@@ -115,11 +124,11 @@ def plot_tt_comparison(location, coverage=90):
 
             print(f'{label}: {total_cohort_cancers:,.0f} cancers in 10-60 cohort')
 
-    # Create the 2-panel figure
-    figsize = FIGSIZE_2PANEL
+    # Create the 3-panel figure
+    figsize = FIGSIZE_3PANEL
     fonts = scale_fonts(figsize[1])
     ut.set_font(fonts['base'])
-    fig, axes = plt.subplots(1, 2, figsize=figsize)
+    fig, axes = plt.subplots(1, 3, figsize=figsize)
 
     # Panel A: Time series
     ax_a = axes[0]
@@ -158,8 +167,27 @@ def plot_tt_comparison(location, coverage=90):
     sc.SIticks(ax_a)
     ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
-    # Panel B: Bar chart of cancers averted
+    # Panel B: Time series of ASR cancer incidence
     ax_b = axes[1]
+
+    for label in ['Baseline', 'Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
+        if label in scenario_data and scenario_data[label]['asr'] is not None:
+            data = scenario_data[label]
+            ax_b.plot(data['years'], data['asr'],
+                     color=colors[label], linestyle=linestyles[label],
+                     linewidth=linewidths[label], label=label, alpha=0.9)
+
+    ax_b.set_ylabel('ASR cancer incidence\n(per 100,000)', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_b.set_title('B) Age-standardized cancer incidence', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_b.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
+    ax_b.grid(alpha=0.3, linestyle='--', axis='y')
+    ax_b.set_ylim(bottom=0)
+    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
+    sc.SIticks(ax_b)
+    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x:.1f}'))
+
+    # Panel C: Bar chart of cancers averted
+    ax_c = axes[2]
 
     # Calculate cancers averted relative to baseline
     baseline_total = scenario_totals['Baseline']
@@ -176,12 +204,12 @@ def plot_tt_comparison(location, coverage=90):
 
     # Create bar chart
     x_pos = np.arange(len(labels))
-    bars = ax_b.bar(x_pos, cancers_averted, color=bar_colors, alpha=0.8)
+    bars = ax_c.bar(x_pos, cancers_averted, color=bar_colors, alpha=0.8)
 
     # Add value labels on bars
     for bar, val in zip(bars, cancers_averted):
         height = bar.get_height()
-        ax_b.text(bar.get_x() + bar.get_width() / 2., height,
+        ax_c.text(bar.get_x() + bar.get_width() / 2., height,
                  f'{sc.sigfig(val, 3, SI=True)}',
                  ha='center', va='bottom', fontsize=fonts['bar_large'], fontweight='bold')
 
@@ -191,15 +219,15 @@ def plot_tt_comparison(location, coverage=90):
         'Vaccination\nonly',
         'Both T&T\n+ Vax'
     ]
-    ax_b.set_xticks(x_pos)
-    ax_b.set_xticklabels(x_labels_formatted, ha='center')
-    ax_b.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_b.set_title('B) Total cancers averted in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_b.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_b.set_ylim(bottom=0)
-    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
-    sc.SIticks(ax_b)
-    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+    ax_c.set_xticks(x_pos)
+    ax_c.set_xticklabels(x_labels_formatted, ha='center')
+    ax_c.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_c.set_title('C) Total cancers averted in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_c.grid(alpha=0.3, linestyle='--', axis='y')
+    ax_c.set_ylim(bottom=0)
+    ax_c.tick_params(axis='both', labelsize=fonts['axis_label'])
+    sc.SIticks(ax_c)
+    ax_c.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
     plt.suptitle(f'Impact of test & treat vs vaccination on cervical cancer - {location.capitalize()}',
                  fontsize=fonts['suptitle'], fontweight='bold')
