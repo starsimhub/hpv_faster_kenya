@@ -6,12 +6,10 @@ Define an HPVsim simulation for Kenya, including calibration
 import numpy as np
 import sciris as sc
 import hpvsim as hpv
-import pandas as pd
-import matplotlib.pyplot as pl
-import seaborn as sns
 
 # Imports from this repository
 import utils as ut
+import plot_age_causal as pac
 
 # %% Settings and filepaths
 
@@ -51,8 +49,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
     # Sexual behavior parameters
     # Debut: derived by fitting to 2014 DHS
     # Women:
-    #           Age:   15,   18,   20,   22,   25
-    #   Prop_active: 15.1, 50.3, 70.4, 82, 89.7
+
     # Men:
     #           Age:   15,   18,   20,   22,   25
     #   Prop_active: 21.3	56.1	75.8	87.2	92.8
@@ -121,7 +118,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
 
     # Optionally save
     if do_save:
-        sim.save(f'results/kenya.sim')
+        sim.save(f'raw_results/kenya.sim')
 
     return sim
 
@@ -172,7 +169,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     filename = f'kenya_calib{filestem}'
 
     if do_save:
-        sc.saveobj(f'results/{filename}.obj', calib)
+        sc.saveobj(f'raw_results/{filename}.obj', calib)
         calib_pars = calib.trial_pars_to_sim_pars(which_pars=0)
         sc.save(f'results/kenya_pars{filestem}.obj', calib_pars)
 
@@ -183,7 +180,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
 
 def plot_calib(which_pars=0, save_pars=True, filestem=''):
     filename = f'kenya_calib{filestem}'
-    calib = sc.load(f'results/{filename}.obj')
+    calib = sc.load(f'raw_results/{filename}.obj')
 
     sc.fonts(add=sc.thisdir(aspath=True) / 'Libertinus Sans')
     sc.options(font='Libertinus Sans')
@@ -211,36 +208,11 @@ def run_parsets(debug=False, verbose=.1, analyzers=None, save_results=True, **kw
     msim = hpv.MultiSim(simlist)
     msim.reduce()
     if save_results:
-        sc.saveobj(f'results/kenya_msim.obj', msim.results)
+        sc.saveobj(f'raw_results/kenya_msim.obj', msim.results)
 
     return msim
 
 
-def get_age_causal_df(sim=None):
-    """
-    Make age causal dataframe
-    """
-    dt_res = sim.get_analyzer('age_causal_infection')
-    dt_dfs = sc.autolist()
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_causal)[np.array(dt_res.age_causal)<50]
-    dt_df['Health event'] = 'Causal\ninfection'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cin)[np.array(dt_res.age_causal)<65]
-    dt_df['Health event'] = 'HSIL'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cancer)[np.array(dt_res.age_causal)<90]
-    dt_df['Health event'] = 'Cancer'
-    dt_dfs += dt_df
-
-    age_causal_df = pd.concat(dt_dfs)
-
-    return age_causal_df
 
 
 
@@ -249,27 +221,28 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        # 'run_sim',
+        'run_sim',
         # 'age_pyramids',
         # 'run_calib',
         # 'plot_calib'
         # 'run_parsets'
-        'plot_age_causal'
+        # 'plot_age_causal'
     ]
 
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
-        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=hpv.age_causal_infection(start_year=2020))
-        df = get_age_causal_df(sim)
-        sc.saveobj(f'results/age_causal_infection.obj', df)
+        analyzers = [hpv.age_causal_infection(start_year=2020)]
+        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
+        df = pac.get_age_causal_df(sim)
+        sc.saveobj(f'results/age_causal_infection_kenya.obj', df)
 
     if 'age_pyramids' in to_run:
         # calib_pars = sc.loadobj('results/kenya_pars.obj')
         ap = hpv.age_pyramid(
             timepoints=['2025', '2050', '2075', '2100'],
-            datafile='data/ethiopia_age_pyramid.csv',
+            datafile=f'data/{location}_age_pyramid.csv',
             edges=np.linspace(0, 100, 21),
         )
         sim = run_sim(end=2100, calib_pars=calib_pars, analyzers=[ap], do_save=True, do_shrink=True)
@@ -280,28 +253,15 @@ if __name__ == '__main__':
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')
         calib = ut.shrink_calib(calib, n_results=200)
-        sc.saveobj(f'results/kenya_calib_reduced.obj', calib)
+        sc.saveobj(f'raw_results/kenya_calib_reduced.obj', calib)
 
     if 'run_parsets' in to_run:
         msim = run_parsets()
 
     if 'plot_age_causal' in to_run:
-        ac_df = sc.loadobj(f'results/age_causal_infection.obj')
-        ac_colors = sc.gridcolors(3)
+        pac.plot_age_causal(location='kenya')
 
-        ut.set_font(20)
-        fig, ax = pl.subplots(1, 1, figsize=(6, 5))
-        sns.boxplot(
-            x="Health event", y="Age", data=ac_df, ax=ax,
-            showfliers=False, palette=ac_colors, hue='Health event', hue_order=['Causal\ninfection', 'HSIL', 'Cancer']
-        )
-        ax.set_title(f'Age distribution\nof key health events')
-        ax.set_xlabel('')
-        ax.set_ylim([0, 100])
-
-        fig.tight_layout()
-        fig_name = f'figures/age_causal_kenya.png'
-        sc.savefig(fig_name, dpi=100)
-
+    if 'plot_age_causal_violin' in to_run:
+        pac.plot_age_causal_violin(location='kenya')
 
     T.toc('Done')  # Print out how long the run took

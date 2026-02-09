@@ -25,12 +25,12 @@ import pandas as pd
 # Imports from this repository
 import run_sims as rs
 import run_sims_nigeria as rsn
-from analyzers import cohort_cancers
+from analyzers import cohort_cancers, person_years, vx_potential
 
 
 # What to run
 debug = 0
-n_seeds = [2, 1][debug]  # How many seeds to run per cluster
+n_seeds = [10, 1][debug]  # How many seeds to run per cluster
 
 
 # %% Functions
@@ -196,7 +196,7 @@ def make_catchup_vx(product='nonavalent', catchup_cov=0.9, lower_age=10, upper_a
         # Radiation treatment
         radiation_eligible = lambda sim: sim.get_intervention('tx_assigner_faster').outcomes['radiation']
         radiation = hpv.treat_num(
-            prob=0.9,  # assume an additional dropoff in CaTx coverage
+            prob=0.9, 
             product=hpv.radiation(),
             eligibility=radiation_eligible,
             label='radiation_faster'
@@ -248,10 +248,13 @@ def run_sims(location='kenya', calib_pars=None, scenarios=None, verbose=0.2):
 if __name__ == '__main__':
 
     T = sc.timer()
+    debug_run = False
     do_run = True
     do_save = False
     do_process = True
     location = 'kenya'  #'kenya'
+    coverage = 90
+    catchup_cov = coverage/10
 
     scenarios = dict()
     background_intvs = make_st() + make_routine_vx()
@@ -274,23 +277,41 @@ if __name__ == '__main__':
                         scen_name += 'TT'
                     if add_vx:
                         scen_name += 'V'
-                    catchup_intvs = make_catchup_vx(lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
+                    catchup_intvs = make_catchup_vx(catchup_cov=catchup_cov, lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
                     scenarios[scen_name] = background_intvs + catchup_intvs
     print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
+    if debug_run:
+        print(f'Debugging and investigating location: {location}')
+
+        calib_pars = sc.loadobj(f'results/{location}_pars.obj')
+
+        # Create analyzers for each age cohort
+        analyzers = []
+        for cohort_age in [[10, 15], [15, 20], [20, 25], [25, 30], [30, 35], [35, 40], [40, 45], [45, 50], [50, 55], [55, 60]]:
+            analyzers.append(cohort_cancers(cohort_age=cohort_age, start=2026))
+
+        sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=None, analyzers=analyzers, end=2100)
+        sim.run()
+
+        sc.saveobj(f'raw_results/sim_{location}.sim', sim)
+
+        print('Done')
+
+
     if do_run:
         print(f'Running scenarios for location: {location}')
 
         calib_pars = sc.loadobj(f'results/{location}_pars.obj')
         msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
 
-        if do_save: sc.saveobj(f'results/scens_{location}.msim', msim)
+        if do_save: sc.saveobj(f'raw_results/scens_{location}_{coverage}.msim', msim)
 
     if do_process:
         print('Post-processing results...')
         if not do_run:
-            msim = sc.loadobj(f'results/scens_{location}.msim')
+            msim = sc.loadobj(f'raw_results/scens_{location}_{coverage}.msim')
 
         metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
 
@@ -330,6 +351,6 @@ if __name__ == '__main__':
 
             msim_dict[scen_label] = mres
 
-        sc.saveobj(f'results/scens_{location}.obj', msim_dict)
+        sc.saveobj(f'raw_results/scens_{location}_{coverage}.obj', msim_dict)
 
     print('Done.')
