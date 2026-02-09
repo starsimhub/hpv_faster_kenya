@@ -6,12 +6,10 @@ Define an HPVsim simulation for Kenya, including calibration
 import numpy as np
 import sciris as sc
 import hpvsim as hpv
-import pandas as pd
-import matplotlib.pyplot as pl
-import seaborn as sns
 
 # Imports from this repository
 import utils as ut
+import plot_age_causal as pac
 
 # %% Settings and filepaths
 
@@ -120,7 +118,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
 
     # Optionally save
     if do_save:
-        sim.save(f'results/kenya.sim')
+        sim.save(f'raw_results/kenya.sim')
 
     return sim
 
@@ -171,7 +169,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     filename = f'kenya_calib{filestem}'
 
     if do_save:
-        sc.saveobj(f'results/{filename}.obj', calib)
+        sc.saveobj(f'raw_results/{filename}.obj', calib)
         calib_pars = calib.trial_pars_to_sim_pars(which_pars=0)
         sc.save(f'results/kenya_pars{filestem}.obj', calib_pars)
 
@@ -182,7 +180,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
 
 def plot_calib(which_pars=0, save_pars=True, filestem=''):
     filename = f'kenya_calib{filestem}'
-    calib = sc.load(f'results/{filename}.obj')
+    calib = sc.load(f'raw_results/{filename}.obj')
 
     sc.fonts(add=sc.thisdir(aspath=True) / 'Libertinus Sans')
     sc.options(font='Libertinus Sans')
@@ -210,36 +208,11 @@ def run_parsets(debug=False, verbose=.1, analyzers=None, save_results=True, **kw
     msim = hpv.MultiSim(simlist)
     msim.reduce()
     if save_results:
-        sc.saveobj(f'results/kenya_msim.obj', msim.results)
+        sc.saveobj(f'raw_results/kenya_msim.obj', msim.results)
 
     return msim
 
 
-def get_age_causal_df(sim=None):
-    """
-    Make age causal dataframe
-    """
-    dt_res = sim.get_analyzer('age_causal_infection')
-    dt_dfs = sc.autolist()
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_causal)[np.array(dt_res.age_causal)<50]
-    dt_df['Health event'] = 'Causal\ninfection'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cin)[np.array(dt_res.age_causal)<65]
-    dt_df['Health event'] = 'HSIL'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cancer)[np.array(dt_res.age_causal)<90]
-    dt_df['Health event'] = 'Cancer'
-    dt_dfs += dt_df
-
-    age_causal_df = pd.concat(dt_dfs)
-
-    return age_causal_df
 
 
 
@@ -248,12 +221,12 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        # 'run_sim',
+        'run_sim',
         # 'age_pyramids',
         # 'run_calib',
         # 'plot_calib'
         # 'run_parsets'
-        'plot_age_causal'
+        # 'plot_age_causal'
     ]
 
     T = sc.timer()  # Start a timer
@@ -262,8 +235,8 @@ if __name__ == '__main__':
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
         analyzers = [hpv.age_causal_infection(start_year=2020)]
         sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
-        df = get_age_causal_df(sim)
-        sc.saveobj(f'results/age_causal_infection.obj', df)
+        df = pac.get_age_causal_df(sim)
+        sc.saveobj(f'results/age_causal_infection_kenya.obj', df)
 
     if 'age_pyramids' in to_run:
         # calib_pars = sc.loadobj('results/kenya_pars.obj')
@@ -280,92 +253,15 @@ if __name__ == '__main__':
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')
         calib = ut.shrink_calib(calib, n_results=200)
-        sc.saveobj(f'results/kenya_calib_reduced.obj', calib)
+        sc.saveobj(f'raw_results/kenya_calib_reduced.obj', calib)
 
     if 'run_parsets' in to_run:
         msim = run_parsets()
 
     if 'plot_age_causal' in to_run:
-        ac_df = sc.loadobj(f'results/age_causal_infection.obj')
-        ac_colors = sc.gridcolors(3)
-
-        ut.set_font(20)
-        fig, ax = pl.subplots(1, 1, figsize=(6, 5))
-        sns.boxplot(
-            x="Health event", y="Age", data=ac_df, ax=ax,
-            showfliers=False, palette=ac_colors, hue='Health event', hue_order=['Causal\ninfection', 'HSIL', 'Cancer']
-        )
-        ax.set_title(f'Age distribution\nof key health events')
-        ax.set_xlabel('')
-        ax.set_ylim([0, 100])
-
-        fig.tight_layout()
-        fig_name = f'figures/age_causal_kenya.png'
-        sc.savefig(fig_name, dpi=100)
+        pac.plot_age_causal(location='kenya')
 
     if 'plot_age_causal_violin' in to_run:
-        ac_df = sc.loadobj(f'results/age_causal_infection.obj')
-
-        # Filter for just causal infection
-        causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
-
-        # Calculate percentiles for vaccination ages
-        vax_ages = [15, 20, 25, 30, 35, 40]
-        percentages = []
-        for age in vax_ages:
-            pct = (causal_df['Age'] <= age).sum() / len(causal_df) * 100
-            percentages.append(pct)
-            print(f'Age {age}: {pct:.1f}% of causal infections')
-
-        # Create the violin plot
-        ut.set_font(20)
-        fig, ax = pl.subplots(1, 1, figsize=(6, 8))
-
-        # Create violin plot
-        parts = ax.violinplot([causal_df['Age'].values], positions=[0], widths=0.6,
-                              showmeans=False, showmedians=True, vert=True)
-
-        # Customize violin plot colors
-        for pc in parts['bodies']:
-            pc.set_facecolor('#3498db')
-            pc.set_alpha(0.7)
-            pc.set_edgecolor('black')
-            pc.set_linewidth(1.5)
-
-        # Style the median line
-        parts['cmedians'].set_edgecolor('red')
-        parts['cmedians'].set_linewidth(2)
-
-        # Add horizontal lines for vaccination ages
-        colors = ['#27ae60', '#1abc9c', '#f39c12', '#e74c3c', '#9b59b6', '#34495e']
-        for i, (age, pct, color) in enumerate(zip(vax_ages, percentages, colors)):
-            # Draw horizontal line
-            ax.axhline(y=age, color=color, linestyle='--', linewidth=2, alpha=0.6, zorder=5)
-
-            # Add text label on the right side - positioned outside the violin
-            ax.text(0.45, age, f'{pct:.0f}%',
-                   fontsize=13, fontweight='bold', color=color,
-                   va='center', ha='left', zorder=15,
-                   bbox=dict(boxstyle='round,pad=0.4', facecolor='white',
-                            edgecolor=color, linewidth=2.5, alpha=1.0))
-
-        ax.set_ylabel('Age at causal infection (years)', fontsize=12, fontweight='bold')
-        ax.set_title('Distribution of age at causal infection\nwith vaccination coverage thresholds',
-                    fontsize=14, fontweight='bold')
-        ax.set_xlim(-0.5, 0.6)
-        ax.set_ylim([10, 55])
-        ax.set_xticks([])
-        ax.grid(alpha=0.3, linestyle='--', axis='y')
-
-        # Add text box explaining the percentages
-        textstr = 'Lines show % of causal\ninfections occurring by\neach age (vaccination target)'
-        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-        ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=10,
-               verticalalignment='bottom', horizontalalignment='right', bbox=props)
-
-        fig.tight_layout()
-        fig_name = 'figures/age_causal_violin_kenya.png'
-        sc.savefig(fig_name, dpi=300)
-        print(f'\nFigure saved to: {fig_name}')
+        pac.plot_age_causal_violin(location='kenya')
 
     T.toc('Done')  # Print out how long the run took

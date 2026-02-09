@@ -121,7 +121,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, datafile=None, seed=1,
 
     # Optionally save
     if do_save:
-        sim.save(f'results/nigeria.sim')
+        sim.save(f'raw_results/nigeria.sim')
 
     return sim
 
@@ -171,7 +171,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     calib.calibrate()
     filename = f'nigeria_calib{filestem}'
     if do_save:
-        sc.saveobj(f'results/{filename}.obj', calib)
+        sc.saveobj(f'raw_results/{filename}.obj', calib)
 
     print(f'Best pars are {calib.best_pars}')
 
@@ -203,12 +203,12 @@ def get_sb_from_sims(verbose=-1, calib_pars=None, debug=False):
         df['model_prop_m'] = a.prop_active_m[cs, :]
         dfs += df
     afs_df = pd.concat(dfs)
-    sc.saveobj(f'results/model_sb_AFS.obj', afs_df)
+    sc.saveobj(f'raw_results/model_sb_AFS.obj', afs_df)
 
     # Save output on proportion married
     a = sim.get_analyzer('prop_married')
     pm_df = a.df
-    sc.saveobj(f'results/model_sb_prop_married.obj', pm_df)
+    sc.saveobj(f'raw_results/model_sb_prop_married.obj', pm_df)
 
     # Save output on age differences between partners
     agediff_df = pd.DataFrame()
@@ -216,7 +216,7 @@ def get_sb_from_sims(verbose=-1, calib_pars=None, debug=False):
     ppl = snapshot.snapshots[0]
     age_diffs = ppl.contacts['m']['age_m'] - ppl.contacts['m']['age_f']
     agediff_df['age_diffs'] = age_diffs
-    sc.saveobj(f'results/model_age_diffs.obj', agediff_df)
+    sc.saveobj(f'raw_results/model_age_diffs.obj', agediff_df)
 
     # Save output on the number of casual relationships
     binspan = 5
@@ -250,14 +250,14 @@ def get_sb_from_sims(verbose=-1, calib_pars=None, debug=False):
     datadict = dict(bins=allbins, partners=partners, counts=counts, popsize=allpopsize, shares=shares)
     casual_df = pd.DataFrame.from_dict(datadict)
 
-    sc.saveobj(f'results/model_casual.obj', casual_df)
+    sc.saveobj(f'raw_results/model_casual.obj', casual_df)
 
     return sim, afs_df, pm_df, agediff_df, casual_df
 
 
 def plot_calib(which_pars=0, save_pars=True, filestem=''):
     filename = f'nigeria_calib{filestem}'
-    calib = sc.load(f'results/{filename}.obj')
+    calib = sc.load(f'raw_results/{filename}.obj')
 
     sc.fonts(add=sc.thisdir(aspath=True) / 'Libertinus Sans')
     sc.options(font='Libertinus Sans')
@@ -285,7 +285,7 @@ def run_parsets(debug=False, verbose=.1, analyzers=None, save_results=True, **kw
     msim = hpv.MultiSim(simlist)
     msim.reduce()
     if save_results:
-        sc.saveobj(f'results/nigeria_msim.obj', msim.results)
+        sc.saveobj(f'raw_results/nigeria_msim.obj', msim.results)
 
     return msim
 
@@ -361,7 +361,7 @@ if __name__ == '__main__':
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')
         calib = ut.shrink_calib(calib, n_results=200)
-        sc.saveobj(f'results/nigeria_calib_reduced.obj', calib)
+        sc.saveobj(f'raw_results/nigeria_calib_reduced.obj', calib)
 
     if 'run_parsets' in to_run:
         msim = run_parsets()

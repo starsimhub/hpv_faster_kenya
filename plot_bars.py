@@ -12,11 +12,11 @@ import matplotlib.pyplot as plt
 
 
  
-def make_table1(location, coverage=90, add_tt=False):
+def plot_stacked_bars(location, coverage=90, add_tt=False):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define scenarios and cohorts
     scenarios = ['Baseline', 'Catch-up 10-15', 'Catch-up 10-20', 'Catch-up 10-25',
@@ -249,11 +249,11 @@ def make_table1(location, coverage=90, add_tt=False):
     return
 
 
-def make_single_bar(location, coverage=90):
+def plot_single_bar(location, coverage=90):
     import pandas as pd
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define age groups and corresponding scenarios
     age_groups = {
@@ -827,12 +827,12 @@ def plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60, fi
 if __name__ == '__main__':
 
     location = 'kenya'
-    do_plot_base = False
+    do_plot_base = True
     do_plot_bars = True
     coverage = 90
 
     if do_plot_base:
-        sim = sc.loadobj(f'results/sim_{location}.sim')
+        sim = sc.loadobj(f'raw_results/sim_{location}.sim')
         plot_baseline(sim)
         plot_cohort_decomposition(sim, start_cohort_year=2025)
 
@@ -851,7 +851,7 @@ if __name__ == '__main__':
         analyzer.to_csv('results/cohort_status_2025.csv')
 
     if do_plot_bars:
-        make_table1(location, coverage=coverage, add_tt=False)
-        make_single_bar(location, coverage=coverage)
-        msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+        plot_stacked_bars(location, coverage=coverage, add_tt=False)
+        plot_single_bar(location, coverage=coverage)
+        msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 

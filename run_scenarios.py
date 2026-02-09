@@ -295,7 +295,7 @@ if __name__ == '__main__':
         sim = rs.make_sim(location=location, calib_pars=calib_pars, debug=debug, interventions=None, analyzers=analyzers, end=2100)
         sim.run()
 
-        sc.saveobj(f'results/sim_{location}.sim', sim)
+        sc.saveobj(f'raw_results/sim_{location}.sim', sim)
 
         print('Done')
 
@@ -306,12 +306,12 @@ if __name__ == '__main__':
         calib_pars = sc.loadobj(f'results/{location}_pars.obj')
         msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
 
-        if do_save: sc.saveobj(f'results/scens_{location}_{coverage}.msim', msim)
+        if do_save: sc.saveobj(f'raw_results/scens_{location}_{coverage}.msim', msim)
 
     if do_process:
         print('Post-processing results...')
         if not do_run:
-            msim = sc.loadobj(f'results/scens_{location}_{coverage}.msim')
+            msim = sc.loadobj(f'raw_results/scens_{location}_{coverage}.msim')
 
         metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
 
@@ -351,6 +351,6 @@ if __name__ == '__main__':
 
             msim_dict[scen_label] = mres
 
-        sc.saveobj(f'results/scens_{location}_{coverage}.obj', msim_dict)
+        sc.saveobj(f'raw_results/scens_{location}_{coverage}.obj', msim_dict)
 
     print('Done.')

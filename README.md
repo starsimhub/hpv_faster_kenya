@@ -22,7 +22,7 @@ This repository contains agent-based modeling analysis of HPV-Faster strategies 
 ## Repository Structure
 
 ```
-├── ANALYSIS_NARRATIVE.md      # 📊 Complete analysis report (export this!)
+├── ANALYSIS_NARRATIVE.md      # Analysis report
 ├── README.md                  # This file
 │
 ├── run_sims.py                # Kenya simulation and calibration
@@ -32,10 +32,13 @@ This repository contains agent-based modeling analysis of HPV-Faster strategies 
 │
 ├── plot_tt_comparisons.py     # Visualization: test-and-treat vs vaccination
 ├── plot_bars.py               # Visualization: bar charts
+├── plot_age_causal.py         # Visualization: age distribution plots
 │
 ├── data/                      # Kenya demographic and cancer data
-├── results/                   # Simulation outputs (.obj, .csv)
-└── z_archive/                 # Archived figures from analysis
+├── results/                   # Small outputs (CSVs, parameters - commit these)
+├── raw_results/               # Large simulation files (don't commit)
+├── figures/                   # Generated plots (don't commit)
+└── z_archive/                 # Archived figures from analysis (don't commit) 
 ```
 
 ## Running the Analysis
@@ -65,15 +68,32 @@ python run_scenarios.py
 ```python
 import plot_tt_comparisons as ptc
 ptc.plot_tt_comparison(location='kenya', coverage=90)
+
+import plot_age_causal as pac
+pac.plot_age_causal(location='kenya')
 ```
 
 ## Key Results Files
 
-- **ANALYSIS_NARRATIVE.md** - Complete report (📄 **Export this for sharing!**)
-- `results/scens_kenya_90.obj` - 90% coverage scenario results
-- `results/scens_kenya_70.obj` - 70% coverage scenario results
-- `results/catchup_vax_cohort_cancers_90.csv` - Cancer outcomes by cohort
-- `z_archive/*.png` - All generated figures
+### Committed to Repository (in `results/`)
+- **ANALYSIS_NARRATIVE.md** - Report 
+- `results/kenya_pars.obj` - Calibrated model parameters
+- `results/catchup_vax_cohort_cancers_90.csv` - Cancer outcomes by cohort (90% coverage)
+- `results/catchup_vax_cohort_cancers_70.csv` - Cancer outcomes by cohort (70% coverage)
+- `results/age_causal_infection_*.obj` - Age at causal infection data
+- `results/cohort_status_2025.csv` - Cohort status snapshot
+- `results/combined_impact_data_*.csv` - Combined impact analysis
+
+### Large Files (in `raw_results/`, not committed)
+- `raw_results/scens_kenya_90.obj` - 90% coverage scenario results (processed)
+- `raw_results/scens_kenya_70.obj` - 70% coverage scenario results (processed)
+- `raw_results/scens_kenya_*.msim` - Raw multi-simulation objects
+- `raw_results/*.sim` - Individual simulation objects
+- `raw_results/*_calib*.obj` - Calibration objects
+
+### Figures (not committed)
+- `figures/*.png` - Generated plots
+- `z_archive/*.png` - Archived figures from analysis runs
 
 ## Exporting the Analysis
 
@@ -106,15 +126,9 @@ pandoc ANALYSIS_NARRATIVE.md -o HPV_Faster_Kenya_Analysis.html \
 - Kenya DHS 2014 (sexual behavior parameters)
 - Calibrated HPVsim natural history parameters
 
-## Citation
-
-If you use this analysis, please cite:
-
-- **HPVsim**: Peebles K, et al. (2024). HPVsim: An agent-based model for assessing the impact of cervical cancer prevention strategies. *PLOS Computational Biology*.
-
 ## Contact
 
-For questions or collaboration: [Add contact info]
+For questions or collaboration: info@hpvsim.org
 
 **Last updated**: February 2026
 

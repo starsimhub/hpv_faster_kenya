@@ -71,7 +71,7 @@ def plot_tt_comparison(location, coverage=90):
     """
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define scenarios to compare
     scenarios = {
@@ -261,7 +261,7 @@ def plot_efficiency_frontier(location, coverage=90):
     """
 
     # Load data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
@@ -436,7 +436,7 @@ def plot_combined_impact(location, coverage=90):
     """
 
     # Load data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
@@ -711,7 +711,7 @@ def plot_combined_impact(location, coverage=90):
     print(f"\n6-panel combined impact plot saved to: {fig_name}")
 
     # Export data to CSV and Excel
-    csv_name = f'figures/combined_impact_data_{location}_{coverage}.csv'
+    csv_name = f'results/combined_impact_data_{location}_{coverage}.csv'
     excel_name = f'figures/combined_impact_data_{location}_{coverage}.xlsx'
 
     # Sort dataframe for better readability
@@ -741,7 +741,7 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
     import matplotlib.pyplot as plt
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'results/scens_{location}_{coverage}.obj')
+    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
