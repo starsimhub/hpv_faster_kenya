@@ -125,7 +125,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
 
 def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
 
-    sim = make_sim()
+    sim = make_sim(verbose=-1)
     datafiles = [
         'data/kenya_cancer_cases.csv',
         'data/kenya_cancer_types.csv',
