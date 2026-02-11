@@ -18,8 +18,8 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-n_trials    = [2500, 2][debug]  # How many trials to run for calibration
-n_workers   = [50, 1][debug]    # How many cores to use
+n_trials    = [4000, 2][debug]  # How many trials to run for calibration
+n_workers   = [80, 1][debug]    # How many cores to use
 storage = None
 
 # Save settings
@@ -147,7 +147,10 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     )
 
     calib_pars = dict(
-        beta=[0.2, 0.1, 0.34, 0.02],
+        beta=[0.1, 0.02, 0.34, 0.02],
+        own_imm_hr=[0.5, 0.25, 1, 0.05],
+        cell_imm_init=dict(par1=[0.5, 0.2, 0.8, 0.05]),
+        age_risk=dict(risk=[1, 1, 4, 0.1], age=[30, 30, 45, 1]),
         m_cross_layer=[0.3, 0.1, 0.7, 0.05],
         m_partners=dict(
             c=dict(par1=[0.2, 0.1, 0.6, 0.02])
@@ -229,6 +232,7 @@ if __name__ == '__main__':
         # 'plot_age_causal'
     ]
 
+    location = 'kenya'
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
