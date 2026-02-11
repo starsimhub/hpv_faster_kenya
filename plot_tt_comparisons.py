@@ -62,8 +62,8 @@ def plot_tt_comparison(location, coverage=90):
     """
     Create a 3-panel figure comparing test & treat vs vaccination interventions.
 
-    Panel A: Time series of cancers in the 10-60 cohort under different scenarios
-    Panel B: Time series of ASR cancer incidence
+    Panel A: Time series of ASR cancer incidence
+    Panel B: Time series of cancers in the 10-60 cohort under different scenarios
     Panel C: Bar chart of total cancers averted
 
     Demonstrates that test & treat alone averts some cancers, but without vaccination
@@ -130,8 +130,8 @@ def plot_tt_comparison(location, coverage=90):
     ut.set_font(fonts['base'])
     fig, axes = plt.subplots(1, 3, figsize=figsize)
 
-    # Panel A: Time series
-    ax_a = axes[0]
+    # Panel A: Time series (now in position 1)
+    ax_a = axes[1]
     colors = {
         'Baseline': '#95a5a6',
         'Test & treat only': '#e74c3c',
@@ -159,16 +159,16 @@ def plot_tt_comparison(location, coverage=90):
                      linewidth=linewidths[label], label=label, alpha=0.9)
 
     ax_a.set_ylabel('Annual incident cancers', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_a.set_title('A) Annual incident cancers in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_a.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
+    ax_a.set_title('B) Annual incident cancers in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_a.legend(fontsize=fonts['legend'], loc='upper right', frameon=False)
     ax_a.grid(alpha=0.3, linestyle='--', axis='y')
     ax_a.set_ylim(bottom=0)
     ax_a.tick_params(axis='both', labelsize=fonts['axis_label'])
     sc.SIticks(ax_a)
     ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
-    # Panel B: Time series of ASR cancer incidence
-    ax_b = axes[1]
+    # Panel B: Time series of ASR cancer incidence (now in position 0)
+    ax_b = axes[0]
 
     for label in ['Baseline', 'Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
         if label in scenario_data and scenario_data[label]['asr'] is not None:
@@ -178,8 +178,8 @@ def plot_tt_comparison(location, coverage=90):
                      linewidth=linewidths[label], label=label, alpha=0.9)
 
     ax_b.set_ylabel('ASR cancer incidence\n(per 100,000)', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_b.set_title('B) Age-standardized cancer incidence', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_b.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
+    ax_b.set_title('A) Age-standardized cancer incidence', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_b.legend(fontsize=fonts['legend'], loc='upper right', frameon=False)
     ax_b.grid(alpha=0.3, linestyle='--', axis='y')
     ax_b.set_ylim(bottom=0)
     ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
