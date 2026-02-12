@@ -130,7 +130,10 @@ def make_calib(n_trials=None, n_workers=None):
         'data/kenya_cancer_cases.csv',
         'data/kenya_cancer_types.csv',
         'data/kenya_asr_cancer_incidence.csv',
+        'data/kenya_precin_prevalence.csv'
     ]
+
+
 
     # Define the calibration parameters
     genotype_pars = dict(
@@ -252,9 +255,9 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        'run_sim',
+        # 'run_sim',
         # 'age_pyramids',
-        # 'run_calib',
+        'run_calib',
         # 'plot_calib'
         # 'run_parsets'
         # 'plot_age_causal'
