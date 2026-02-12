@@ -165,7 +165,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     calib = hpv.Calibration(sim, calib_pars=calib_pars, genotype_pars=genotype_pars,
                             name=f'kenya_calib',
                             datafiles=datafiles,
-                            total_trials=n_trials, # n_workers=n_workers,
+                            total_trials=n_trials, n_workers=n_workers,
                             storage=storage
                             )
     calib.calibrate()
