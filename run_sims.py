@@ -18,9 +18,9 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-load_partial = True
-n_trials    = [2000, 2][debug]  # How many trials to run for calibration
-n_workers   = [50, 1][debug]    # How many cores to use
+load_partial = False
+n_trials    = [1600, 2][debug]  # How many trials to run for calibration
+n_workers   = [40, 1][debug]    # How many cores to use
 storage = None
 
 # Save settings
@@ -264,7 +264,7 @@ if __name__ == '__main__':
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
-        calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
+        calib_pars = sc.loadobj('results/kenya_pars_v2.obj')  # Load parameters from a previous calibration
         analyzers = [hpv.age_causal_infection(start_year=2020)]
         sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
         df = pac.get_age_causal_df(sim)
