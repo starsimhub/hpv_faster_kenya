@@ -179,8 +179,8 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', load_par
     if load_partial:
         # Load a partially-run calibration study
         import optuna as op
-        print(calib.run_args.study_name)
-        study = op.load_study(storage=calib.run_args.storage, study_name=calib.run_args.study_name)
+        print(calib.run_args.name)
+        study = op.load_study(storage=calib.run_args.storage, study_name=calib.run_args.name)
         # calib.run_args.continue_db = True
         # calib.calibrate()
         output = study.optimize(calib.run_trial, n_trials=19)
