@@ -18,8 +18,8 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-n_trials    = [3000, 2][debug]  # How many trials to run for calibration
-n_workers   = [60, 1][debug]    # How many cores to use
+n_trials    = [2500, 2][debug]  # How many trials to run for calibration
+n_workers   = [50, 1][debug]    # How many cores to use
 storage = None
 
 # Save settings
