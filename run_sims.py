@@ -18,7 +18,7 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-n_trials    = [2500, 2][debug]  # How many trials to run for calibration
+n_trials    = [2000, 2][debug]  # How many trials to run for calibration
 n_workers   = [50, 1][debug]    # How many cores to use
 storage = None
 
@@ -165,7 +165,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     calib = hpv.Calibration(sim, calib_pars=calib_pars, genotype_pars=genotype_pars,
                             name=f'kenya_calib',
                             datafiles=datafiles,
-                            total_trials=n_trials, n_workers=n_workers,
+                            total_trials=n_trials, # n_workers=n_workers,
                             storage=storage
                             )
     calib.calibrate()
