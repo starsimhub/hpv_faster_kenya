@@ -253,7 +253,7 @@ if __name__ == '__main__':
     do_save = False
     do_process = True
     location = 'kenya'  #'kenya'
-    coverage = 90
+    coverage = 70
     catchup_cov = coverage/10
 
     scenarios = dict()
