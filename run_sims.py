@@ -79,7 +79,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
         c=np.array([
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
-            [0,  0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3,  0.3,  0.25, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
+            [0,  0, 0.2, 0.2, 0.5, 0.2, 0.2, 0.3,  0.3,  0.25, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
             [0,  0, 0.2, 0.3, 0.4, 0.4, 0.45, 0.4,  0.35,  0.35, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
 
@@ -185,17 +185,17 @@ def make_calib(n_trials=None, n_workers=None):
 
     calib_pars = dict(
         beta=[0.2, 0.02, 0.5, 0.02],
-        own_imm_hr=[0.7, 0.5, 1, 0.05],
+        imm_init=dict(par1=[0.5, 0.5, 0.8, 0.05])
         cell_imm_init=dict(par1=[0.5, 0.5, 0.8, 0.05]),
         age_risk=dict(risk=[1, 1, 4, 0.1], age=[30, 30, 45, 1]),
-        # m_cross_layer=[0.3, 0.1, 0.7, 0.05],
-        # m_partners=dict(
-        #     c=dict(par1=[0.2, 0.1, 0.6, 0.02])
-        # ),
-        # f_cross_layer=[0.1, 0.05, 0.5, 0.05],
-        # f_partners=dict(
-        #     c=dict(par1=[0.2, 0.1, 0.6, 0.02])
-        # ),
+        m_cross_layer=[0.3, 0.1, 0.7, 0.05],
+        m_partners=dict(
+            c=dict(par1=[0.2, 0.1, 0.6, 0.02])
+        ),
+        f_cross_layer=[0.1, 0.05, 0.5, 0.05],
+        f_partners=dict(
+            c=dict(par1=[0.2, 0.1, 0.6, 0.02])
+        ),
         sev_dist=dict(par1=[1, 0.5, 1.5, 0.01])
     )
 
