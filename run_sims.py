@@ -186,7 +186,7 @@ def make_calib(n_trials=None, n_workers=None):
     calib_pars = dict(
         beta=[0.2, 0.02, 0.8, 0.02],
         imm_init=dict(par1=[0.5, 0.5, 0.8, 0.05]),
-        cell_imm_init=dict(par1=[0.5, 0.0, 0.8, 0.05]),
+        cell_imm_init=dict(par1=[0.5, 0.05, 0.8, 0.05]),
         age_risk=dict(risk=[1, 1, 4, 0.1], age=[30, 30, 45, 1]),
         m_cross_layer=[0.3, 0.1, 0.7, 0.05],
         m_partners=dict(
