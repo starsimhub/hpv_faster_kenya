@@ -829,6 +829,7 @@ if __name__ == '__main__':
     location = 'kenya'
     do_plot_base = True
     do_plot_bars = True
+    do_plot_debug = False
     coverage = 90
 
     if do_plot_base:
@@ -839,6 +840,7 @@ if __name__ == '__main__':
         # Create the new simplified cohort plot
         plot_cohort_simplified(sim, start_cohort_year=2025, max_cohort_age=85)
 
+    if do_plot_debug:
         # Access results
         analyzer = sim.analyzers[0]
         print(analyzer.summary_df)

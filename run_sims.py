@@ -298,12 +298,14 @@ if __name__ == '__main__':
     ]
 
     location = 'kenya'
+    end=2020
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
         analyzers = [hpv.age_causal_infection(start_year=2020)]
-        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
+        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers, end=end)
+        sc.saveobj('raw_results/sim_kenya.sim', sim)
         df = pac.get_age_causal_df(sim)
         sc.saveobj(f'results/age_causal_infection_kenya.obj', df)
 
