@@ -255,47 +255,74 @@ def plot_single_bar(location, coverage=90):
     # Load catch-up vaccination scenario data
     msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
 
-    # Define age groups and corresponding scenarios
-    age_groups = {
-        'Up to 25': 'Catch-up 20-25: V',
-        '25-30': 'Catch-up 25-30: V',
-        '30-45': 'Catch-up 40-45: V',
-        '45+': 'Catch-up 55-60: V'
+    # Define cohorts (ages in 2025)
+    cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40', '40_45', '45_50', '50_55', '55_60']
+
+    # Helper function to sum cancers across 10-60 cohorts
+    def get_cohort_cancers(scenario_name):
+        total = 0
+        for cohort in cohorts:
+            key = f'cohort_cancers_{cohort}'
+            if key in msim_dict[scenario_name]:
+                total += msim_dict[scenario_name][key]
+        return total
+
+    # Define scenarios to compare
+    scenarios = {
+        'No interventions': 'No interventions',
+        'Baseline': 'Baseline',
+        'Catch-up 10-25': 'Catch-up 10-25: V',
+        'Catch-up 10-30': 'Catch-up 10-30: V',
+        'Catch-up 10-45': 'Catch-up 10-45: V',
+        'Catch-up 10-60': 'Catch-up 10-60: V'
     }
 
-    # Get baseline cancers
-    baseline_cancers = msim_dict['Baseline']['cancers'].values[sc.findinds(msim_dict['Baseline'].year, 2025)[0]:].sum()
+    # Get total cancers in 10-60 cohorts for each scenario
+    cohort_cancers = {}
+    for label, scenario_name in scenarios.items():
+        if scenario_name in msim_dict:
+            cohort_cancers[label] = get_cohort_cancers(scenario_name)
+        else:
+            # Skip missing scenarios
+            cohort_cancers[label] = None
 
-    # Calculate cancers for each scenario
-    cancers_by_scenario = {}
-    for label, scenario in age_groups.items():
-        cancers_by_scenario[label] = msim_dict[scenario]['cancers'].values[sc.findinds(msim_dict[scenario].year, 2025)[0]:].sum()
+    # Use Baseline as the reference
+    baseline_cancers = cohort_cancers['Baseline']
 
-    # Calculate incremental benefit for each age group
+    # Calculate incremental benefits (absolute numbers)
     incremental_benefits = {}
 
-    # Up to 25: benefit from baseline to age 25
-    incremental_benefits['Up to 25'] = baseline_cancers - cancers_by_scenario['Up to 25']
+    # (b) Catch-up 10-25: benefit from vaccinating 10-25 year olds
+    incremental_benefits['Up to 25'] = cohort_cancers['Baseline'] - cohort_cancers['Catch-up 10-25']
 
-    # 25-30: additional benefit from age 25 to age 30
-    incremental_benefits['25-30'] = cancers_by_scenario['Up to 25'] - cancers_by_scenario['25-30']
+    # (c) Catch-up 25-30: additional benefit from vaccinating 25-30 year olds
+    incremental_benefits['25-30'] = cohort_cancers['Catch-up 10-25'] - cohort_cancers['Catch-up 10-30']
 
-    # 30-45: additional benefit from age 30 to age 45
-    incremental_benefits['30-45'] = cancers_by_scenario['25-30'] - cancers_by_scenario['30-45']
+    # (d) Catch-up 30-45: additional benefit from vaccinating 30-45 year olds
+    incremental_benefits['30-45'] = cohort_cancers['Catch-up 10-30'] - cohort_cancers['Catch-up 10-45']
 
-    # 45+: additional benefit from age 45 to age 60
-    incremental_benefits['45+'] = cancers_by_scenario['30-45'] - cancers_by_scenario['45+']
+    # (e) Catch-up 45+: additional benefit from vaccinating 45-60 year olds
+    incremental_benefits['45+'] = cohort_cancers['Catch-up 10-45'] - cohort_cancers['Catch-up 10-60']
 
     # Calculate total benefit
-    total_benefit = sum(incremental_benefits.values())
+    total_catchup_benefit = sum(incremental_benefits.values())
 
-    # Calculate percentages
-    percentages = {label: (benefit / total_benefit) * 100 for label, benefit in incremental_benefits.items()}
+    # Calculate percentages RELATIVE TO BASELINE CANCERS
+    percentages = {label: (benefit / baseline_cancers) * 100 for label, benefit in incremental_benefits.items()}
 
-    print("\nIncremental benefits by age group:")
+    print("\n" + "="*80)
+    print(f"Cancers averted in 10-60 cohorts by catch-up vaccination ({coverage}% coverage)")
+    print(f"Percentages relative to Baseline scenario")
+    print("="*80)
+    print(f"\nCohort cancers by scenario:")
+    for label, cancers in cohort_cancers.items():
+        if cancers is not None:
+            print(f"  {label}: {cancers:,.1f}")
+    print(f"\nIncremental benefits (relative to Baseline = {baseline_cancers:,.1f} cancers):")
     for label, benefit in incremental_benefits.items():
-        print(f"{label}: {benefit:.1f} cancers averted ({percentages[label]:.1f}%)")
-    print(f"Total benefit: {total_benefit:.1f} cancers averted")
+        print(f"  {label}: {benefit:,.1f} cancers averted ({percentages[label]:.1f}% of baseline)")
+    print(f"\nTotal catch-up benefit: {total_catchup_benefit:,.1f} cancers averted ({sum(percentages.values()):.1f}% of baseline)")
+    print("="*80)
 
     ######################################################
     # Create simplified stacked bar chart (vertical)
@@ -303,22 +330,22 @@ def plot_single_bar(location, coverage=90):
     ut.set_font(20)
     fig, ax = pl.subplots(figsize=(6, 10))
 
-    # Define colors for age groups
-    age_colors = sc.vectocolor(4).tolist()
+    # Define colors for intervention groups
+    colors_list = sc.vectocolor(4).tolist()
 
     # Create single stacked bar
     bar_width = 0.5
     x_pos = 0
 
     bottom = 0
-    labels_list = list(percentages.keys())
-    values_list = list(percentages.values())
+    labels_list = ['Up to 25', '25-30', '30-45', '45+']
 
-    for idx, (label, pct) in enumerate(zip(labels_list, values_list)):
+    for idx, label in enumerate(labels_list):
+        pct = percentages[label]
         ax.bar(x_pos, pct, bottom=bottom, width=bar_width,
-               color=age_colors[idx], label=label)
+               color=colors_list[idx], label=label)
 
-        # Add text label showing just percentage
+        # Add text label showing percentage
         center = bottom + pct / 2
         ax.text(x_pos, center,
                 f'{pct:.1f}%',
@@ -327,14 +354,14 @@ def plot_single_bar(location, coverage=90):
 
         bottom += pct
 
-    ax.set_ylim(0, 109)
+    ax.set_ylim(0, bottom * 1.1)  # Set y-limit slightly above the total
     ax.set_xlim(-0.5, 1)
-    ax.set_ylabel('Percentage of total vaccination benefit (%)')
-    ax.set_title('Distribution of vaccination benefit\nby age group - Kenya\nCancers averted, 2025-2100')
+    ax.set_ylabel('% of baseline cancers averted')
+    ax.set_title(f'Catch-up vaccination benefit by age group\nKenya ({coverage}% coverage)\n% of baseline cancers in 10-60 cohorts averted, 2025-2100')
     ax.set_xticks([])
 
     # Add legend
-    ax.legend(title='Age group', loc='upper right', frameon=False, fontsize=12)
+    ax.legend(title='Age vaccinated', loc='upper right', frameon=False, fontsize=11)
 
     fig.tight_layout()
     fig_name = f'figures/catchup_vax_benefit_distribution_{coverage}.png'
@@ -827,7 +854,7 @@ def plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60, fi
 if __name__ == '__main__':
 
     location = 'kenya'
-    do_plot_base = True
+    do_plot_base = False
     do_plot_bars = True
     do_plot_debug = False
     coverage = 70
