@@ -271,8 +271,10 @@ def plot_single_bar(location, coverage=90):
     scenarios = {
         'No interventions': 'No interventions',
         'Baseline': 'Baseline',
-        'Catch-up 10-25': 'Catch-up 10-25: V',
+        'Catch-up 10-15': 'Catch-up 10-15: V',
         'Catch-up 10-30': 'Catch-up 10-30: V',
+        'Catch-up 10-35': 'Catch-up 10-35: V',
+        'Catch-up 10-40': 'Catch-up 10-40: V',
         'Catch-up 10-45': 'Catch-up 10-45: V',
         'Catch-up 10-60': 'Catch-up 10-60: V'
     }
@@ -292,16 +294,22 @@ def plot_single_bar(location, coverage=90):
     # Calculate incremental benefits (absolute numbers)
     incremental_benefits = {}
 
-    # (b) Catch-up 10-25: benefit from vaccinating 10-25 year olds
-    incremental_benefits['Up to 25'] = cohort_cancers['Baseline'] - cohort_cancers['Catch-up 10-25']
+    # Up to 15: benefit from vaccinating 10-15 year olds
+    incremental_benefits['Up to 15'] = cohort_cancers['Baseline'] - cohort_cancers['Catch-up 10-15']
 
-    # (c) Catch-up 25-30: additional benefit from vaccinating 25-30 year olds
-    incremental_benefits['25-30'] = cohort_cancers['Catch-up 10-25'] - cohort_cancers['Catch-up 10-30']
+    # 15-30: additional benefit from vaccinating 15-30 year olds
+    incremental_benefits['15-30'] = cohort_cancers['Catch-up 10-15'] - cohort_cancers['Catch-up 10-30']
 
-    # (d) Catch-up 30-45: additional benefit from vaccinating 30-45 year olds
-    incremental_benefits['30-45'] = cohort_cancers['Catch-up 10-30'] - cohort_cancers['Catch-up 10-45']
+    # 30-35: additional benefit from vaccinating 30-35 year olds
+    incremental_benefits['30-35'] = cohort_cancers['Catch-up 10-30'] - cohort_cancers['Catch-up 10-35']
 
-    # (e) Catch-up 45+: additional benefit from vaccinating 45-60 year olds
+    # 35-40: additional benefit from vaccinating 35-40 year olds
+    incremental_benefits['35-40'] = cohort_cancers['Catch-up 10-35'] - cohort_cancers['Catch-up 10-40']
+
+    # 40-45: additional benefit from vaccinating 40-45 year olds
+    incremental_benefits['40-45'] = cohort_cancers['Catch-up 10-40'] - cohort_cancers['Catch-up 10-45']
+
+    # 45+: additional benefit from vaccinating 45-60 year olds
     incremental_benefits['45+'] = cohort_cancers['Catch-up 10-45'] - cohort_cancers['Catch-up 10-60']
 
     # Calculate total benefit
@@ -328,17 +336,17 @@ def plot_single_bar(location, coverage=90):
     # Create simplified stacked bar chart (vertical)
     ######################################################
     ut.set_font(20)
-    fig, ax = pl.subplots(figsize=(6, 10))
+    fig, ax = pl.subplots(figsize=(8, 10))
 
     # Define colors for intervention groups
-    colors_list = sc.vectocolor(4).tolist()
+    colors_list = sc.vectocolor(6).tolist()
 
     # Create single stacked bar
     bar_width = 0.5
     x_pos = 0
 
     bottom = 0
-    labels_list = ['Up to 25', '25-30', '30-45', '45+']
+    labels_list = ['Up to 15', '15-30', '30-35', '35-40', '40-45', '45+']
 
     for idx, label in enumerate(labels_list):
         pct = percentages[label]
@@ -349,19 +357,19 @@ def plot_single_bar(location, coverage=90):
         center = bottom + pct / 2
         ax.text(x_pos, center,
                 f'{pct:.1f}%',
-                ha='center', va='center', fontsize=14, fontweight='bold',
-                color='white' if idx < 2 else 'black')
+                ha='center', va='center', fontsize=12, fontweight='bold',
+                color='white' if idx < 3 else 'black')
 
         bottom += pct
 
     ax.set_ylim(0, bottom * 1.1)  # Set y-limit slightly above the total
     ax.set_xlim(-0.5, 1)
-    ax.set_ylabel('% of baseline cancers averted')
-    ax.set_title(f'Catch-up vaccination benefit by age group\nKenya ({coverage}% coverage)\n% of baseline cancers in 10-60 cohorts averted, 2025-2100')
+    ax.set_ylabel('% of baseline cancers averted', fontsize=16)
+    ax.set_title(f'Catch-up vaccination benefit by age group - Kenya ({coverage}% coverage)\n% of baseline cancers in 10-60 cohorts averted, 2025-2100', fontsize=16)
     ax.set_xticks([])
 
     # Add legend
-    ax.legend(title='Age vaccinated', loc='upper right', frameon=False, fontsize=11)
+    ax.legend(title='Age vaccinated', loc='upper right', frameon=False, fontsize=12, ncol=1)
 
     fig.tight_layout()
     fig_name = f'figures/catchup_vax_benefit_distribution_{coverage}.png'
@@ -857,7 +865,7 @@ if __name__ == '__main__':
     do_plot_base = False
     do_plot_bars = True
     do_plot_debug = False
-    coverage = 70
+    coverage = 90
 
     if do_plot_base:
         sim = sc.loadobj(f'raw_results/sim_{location}.sim')
