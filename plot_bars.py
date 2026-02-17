@@ -830,7 +830,7 @@ if __name__ == '__main__':
     do_plot_base = True
     do_plot_bars = True
     do_plot_debug = False
-    coverage = 90
+    coverage = 70
 
     if do_plot_base:
         sim = sc.loadobj(f'raw_results/sim_{location}.sim')
