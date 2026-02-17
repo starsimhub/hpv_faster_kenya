@@ -19,7 +19,7 @@ do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
 load_partial = False
-n_trials    = [1600, 2][debug]  # How many trials to run for calibration
+n_trials    = [1200, 2][debug]  # How many trials to run for calibration
 n_workers   = [40, 1][debug]    # How many cores to use
 storage = None
 
