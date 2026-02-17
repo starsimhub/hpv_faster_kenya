@@ -80,7 +80,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
             [0,  0, 0.01, 0.05, 0.5, 0.5, 0.3, 0.35,  0.35,  0.25, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
-            [0,  0, 0.01, 0.05, 0.4, 0.4, 0.5, 0.4,  0.35,  0.35, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
+            [0,  0, 0.01, 0.05, 0.4, 0.5, 0.5, 0.5,  0.5,  0.35, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
 
         # # TOO YOUNG
@@ -113,7 +113,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
         #     [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
         # ])
     )
-    pars.layer_probs['m'][1] *= .8
+    pars.layer_probs['m'][1] *= 1
 
     pars.m_partners = dict(
         m=dict(dist='poisson1', par1=0.01),
