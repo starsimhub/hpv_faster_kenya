@@ -21,7 +21,7 @@ do_shrink = True  # Do not keep people when running sims (saves memory)
 load_partial = False
 n_trials    = [800, 2][debug]  # How many trials to run for calibration
 n_workers   = [40, 1][debug]    # How many cores to use
-storage = None
+storage="mysql://user:pass@localhost/hpvsim_calib"  #None
 
 # Save settings
 do_save = True
