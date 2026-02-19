@@ -20,9 +20,11 @@ def set_font(size=None, font='Libertinus Sans'):
 def shrink_calib(calib, n_results=100):
     cal = sc.objdict()
     plot_indices = calib.df.iloc[:n_results, 0].values
+    valid = plot_indices < len(calib.sim_results)
+    plot_indices = plot_indices[valid]
     cal.sim_results = [calib.sim_results[i] for i in plot_indices]
     cal.target_data = calib.target_data
-    cal.df = calib.df.iloc[0:n_results, ]
+    cal.df = calib.df.iloc[0:n_results, ][valid]
     return cal
 
 

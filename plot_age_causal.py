@@ -7,6 +7,7 @@ import sciris as sc
 import pandas as pd
 import matplotlib.pyplot as pl
 import seaborn as sns
+from scipy.stats import gaussian_kde
 import utils as ut
 
 
@@ -100,24 +101,45 @@ def plot_age_causal_bar(location='kenya', from_file=True, ac_df=None):
     causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
     ages = causal_df['Age'].values
 
-    # Bin into 5-year age groups
-    bins = np.arange(10, 55, 5)  # 10, 15, 20, ..., 50
-    labels = [f'{b}-{b+4}' for b in bins[:-1]]
+    # Bin into 1-year age groups from 10 to 80
+    bins = np.arange(10, 81)
     counts, _ = np.histogram(ages, bins=bins)
     pcts = counts / counts.sum() * 100
+    bin_centers = bins[:-1]
 
     # Create compact bar plot
     ut.set_font(14)
     fig, ax = pl.subplots(1, 1, figsize=(4.5, 3.2))
 
     bar_color = '#3498db'
-    ax.bar(range(len(labels)), pcts, color=bar_color, edgecolor='white', width=0.8)
+    ax.bar(bin_centers, pcts, color=bar_color, edgecolor='none', width=1.0, alpha=0.5)
 
-    ax.set_xticks(range(len(labels)))
-    ax.set_xticklabels(labels, fontsize=11)
-    ax.set_xlabel('Age group', fontsize=13)
+    # Overlay KDE smoothed line, scaled to match bar heights
+    kde = gaussian_kde(ages, bw_method=0.15)
+    x_smooth = np.linspace(10, 80, 500)
+    kde_vals = kde(x_smooth)
+    kde_scaled = kde_vals / kde_vals.sum() * pcts.sum() * (500 / 70)  # scale to match % units
+    ax.plot(x_smooth, kde_scaled, color='#1a5276', linewidth=2)
+
+    # Mark median and 25th/75th percentiles
+    q25, median, q75 = np.percentile(ages, [25, 50, 75])
+    print(f'{location}: 25th={q25:.1f}, Median={median:.1f}, 75th={q75:.1f}')
+    ymax = max(pcts)
+    for val, label, yoff in [(q25, '25th', 1.18), (median, 'Median', 1.08), (q75, '75th', 1.18)]:
+        color = '#e74c3c' if label == 'Median' else '#555555'
+        lw = 2 if label == 'Median' else 1.5
+        ax.axvline(val, color=color, linestyle='--', linewidth=lw, zorder=5)
+        ax.text(val, ymax * yoff, label, ha='center', fontsize=9, color=color, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none', alpha=1.0), zorder=10)
+
+    # Label every 10 years for readability
+    tick_positions = np.arange(10, 81, 10)
+    ax.set_xticks(tick_positions)
+    ax.set_xticklabels(tick_positions, fontsize=11)
+    ax.set_xlim(9.5, 80.5)
+    ax.set_xlabel('Age', fontsize=13)
     ax.set_ylabel('% of causal infections', fontsize=13)
-    ax.set_ylim(0, max(pcts) * 1.15)
+    ax.set_ylim(0, max(pcts) * 1.25)
     ax.yaxis.set_major_formatter(pl.FuncFormatter(lambda x, _: f'{x:.0f}%'))
     ax.tick_params(axis='y', labelsize=11)
     ax.spines['top'].set_visible(False)
