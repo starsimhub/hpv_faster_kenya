@@ -74,7 +74,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.15,   0.2,    0.3,  0.4,  0.4,  0.2, 0.07, 0.035, 0.007],
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.2,    0.2,    0.4,  0.4,  0.4,  0.2,  0.1,  0.05, 0.01 ],
             [0, 0,  0,  0.1,     0.6,   0.8,    0.8,    0.55,   0.6,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
-            [0, 0,  0,  0.1,     0.2,    0.5,    0.9,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
+            [0, 0,  0,  0.1,     0.2,    0.71,    0.9,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
         ]),
         c=np.array([
             # Share of people of each age in casual partnerships
@@ -172,14 +172,14 @@ def make_calib(n_trials=None, n_workers=None):
     # Define the calibration parameters
     genotype_pars = dict(
         hpv16=dict(
-            cancer_fn=dict(transform_prob=[2e-3, 1.8e-3, 2.2e-3, 2e-4]),
-            cin_fn=dict(k=[.3, .28, .32, 0.01]),
-            dur_cin=dict(par1=[5, 4.5, 5.5, 0.05], par2=[20, 19, 21, 0.5]),
+            cancer_fn=dict(transform_prob=[2e-3, 1.5e-3, 2.5e-3, 2e-4]),
+            cin_fn=dict(k=[.3, .26, .34, 0.01]),
+            dur_cin=dict(par1=[5, 4.2, 5.8, 0.05], par2=[20, 18, 22, 0.5]),
         ),
         hpv18=dict(
-            cancer_fn=dict(transform_prob=[2e-3, 1.8e-3, 2.2e-3, 2e-4]),
-            cin_fn=dict(k=[.3, .28, .32, 0.01]),
-            dur_cin=dict(par1=[5, 4.5, 5.5, 0.05], par2=[20, 19, 21, 0.5]),
+            cancer_fn=dict(transform_prob=[2e-3, 1.5e-3, 2.5e-3, 2e-4]),
+            cin_fn=dict(k=[.3, .26, .34, 0.01]),
+            dur_cin=dict(par1=[5, 4.2, 5.8, 0.05], par2=[20, 18, 22, 0.5]),
         ),
         hi5=dict(
             cancer_fn=dict(transform_prob=[1.5e-3, 0.5e-3, 2.5e-3, 2e-4]),
