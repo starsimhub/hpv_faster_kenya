@@ -60,26 +60,26 @@ def scale_fonts(figure_height):
 
 def plot_tt_comparison(location, coverage=90):
     """
-    Create a 3-panel figure comparing test & treat vs vaccination interventions.
+    Create a 3-panel figure comparing intervention strategies using IARC comparison results.
+    Plots medians with uncertainty intervals (fill_between).
 
-    Panel A: Time series of ASR cancer incidence
-    Panel B: Time series of cancers in the 10-60 cohort under different scenarios
-    Panel C: Bar chart of total cancers averted
-
-    Demonstrates that test & treat alone averts some cancers, but without vaccination
-    women can get reinfected. Vaccination prevents reinfection.
+    Panel A: ASR cancer incidence time series
+    Panel B: Annual incident cancers
+    Panel C: Bar chart of total cancers averted (relative to routine vax baseline)
     """
 
-    # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
+    # Load IARC comparison results (with medians/intervals from multi-seed runs)
+    msim_dict = sc.loadobj(f'raw_results/iarc_comparison_{location}_{coverage}.obj')
 
-    # Define scenarios to compare
-    scenarios = {
-        'Baseline': 'Baseline',
-        'Test & treat only': 'Catch-up 10-60: TT',
-        'Vaccination only': 'Catch-up 10-60: V',
-        'Both T&T + Vax': 'Catch-up 10-60: TTV'
-    }
+    # Define scenarios to compare (label, scenario key, color)
+    scenarios = [
+        ('No interventions',          'No interventions',          '#3ac9b1'),
+        ('Routine vax only',          'Routine vax only',          '#fc8d62'),
+        ('Catch-up to 30',            'Catch-up to 30',            '#8da0cb'),
+        ('Catch-up to 40',            'Catch-up to 40',            '#e78ac3'),
+        ('Catch-up to 40 + S&T to 65','Catch-up to 40 + S&T to 65','#a6d854'),
+        ('S&T 10-65 only',            'S&T 10-65 only',           '#e7c700'),
+    ]
 
     # Define cohorts for 10-60 age range
     cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40',
@@ -89,165 +89,149 @@ def plot_tt_comparison(location, coverage=90):
     scenario_data = {}
     scenario_totals = {}
 
-    for label, scen_key in scenarios.items():
+    for label, scen_key, color in scenarios:
         if scen_key in msim_dict:
-            # Get time series data
-            years = msim_dict[scen_key]['year']
-            cancers = msim_dict[scen_key]['cancers'].values
+            mres = msim_dict[scen_key]
+            years = mres['year']
+            idx_start = sc.findinds(years, 2020)[0]
 
-            # Get ASR cancer incidence if available
-            if 'asr_cancer_incidence' in msim_dict[scen_key]:
-                asr = msim_dict[scen_key]['asr_cancer_incidence'].values
+            data = {'years': years[idx_start:], 'color': color}
+
+            # ASR cancer incidence (has .values, .low, .high from MultiSim.reduce)
+            asr = mres.get('asr_cancer_incidence', None)
+            if asr is not None:
+                data['asr'] = asr.values[idx_start:]
+                data['asr_low'] = asr.low[idx_start:]
+                data['asr_high'] = asr.high[idx_start:]
             else:
-                asr = None
+                data['asr'] = data['asr_low'] = data['asr_high'] = None
 
-            # Filter to 2025 onwards
-            idx_2025 = sc.findinds(years, 2025)[0]
-            years_subset = years[idx_2025:]
-            cancers_subset = cancers[idx_2025:]
-            asr_subset = asr[idx_2025:] if asr is not None else None
+            # Cancers
+            cancers = mres['cancers']
+            data['cancers'] = cancers.values[idx_start:]
+            data['cancers_low'] = cancers.low[idx_start:]
+            data['cancers_high'] = cancers.high[idx_start:]
 
-            scenario_data[label] = {
-                'years': years_subset,
-                'cancers': cancers_subset,
-                'asr': asr_subset
-            }
+            scenario_data[label] = data
 
-            # Calculate total cancers in 10-60 cohort
-            total_cohort_cancers = 0
-            for cohort in cohorts:
-                key = f'cohort_cancers_{cohort}'
-                if key in msim_dict[scen_key]:
-                    total_cohort_cancers += msim_dict[scen_key][key]
-
+            total_cohort_cancers = sum(
+                mres.get(f'cohort_cancers_{c}', 0) for c in cohorts
+            )
             scenario_totals[label] = total_cohort_cancers
-
             print(f'{label}: {total_cohort_cancers:,.0f} cancers in 10-60 cohort')
 
-    # Create the 3-panel figure
-    figsize = FIGSIZE_3PANEL
-    fonts = scale_fonts(figsize[1])
-    ut.set_font(fonts['base'])
-    fig, axes = plt.subplots(1, 3, figsize=figsize)
+    # Font sizes
+    fs_title = 20
+    fs_label = 16
+    fs_tick = 14
+    fs_bar = 14
 
-    # Panel A: Time series (now in position 1)
-    ax_a = axes[1]
-    colors = {
-        'Baseline': '#95a5a6',
-        'Test & treat only': '#e74c3c',
-        'Vaccination only': '#3498db',
-        'Both T&T + Vax': '#27ae60'
-    }
-    linestyles = {
-        'Baseline': '--',
-        'Test & treat only': '-',
-        'Vaccination only': '-',
-        'Both T&T + Vax': '-'
-    }
-    linewidths = {
-        'Baseline': 2.5,
-        'Test & treat only': 2,
-        'Vaccination only': 2,
-        'Both T&T + Vax': 3
-    }
+    # Helper functions
+    def plot_with_band(ax, data, key):
+        yrs = data['years']
+        ax.fill_between(yrs, data[f'{key}_low'], data[f'{key}_high'],
+                        color=data['color'], alpha=0.15)
+        ax.plot(yrs, data[key], color=data['color'], linewidth=2.5, alpha=0.9)
 
-    for label in ['Baseline', 'Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
-        if label in scenario_data:
-            data = scenario_data[label]
-            ax_a.plot(data['years'], data['cancers'],
-                     color=colors[label], linestyle=linestyles[label],
-                     linewidth=linewidths[label], label=label, alpha=0.9)
+    def style_ax(ax):
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.tick_params(axis='both', labelsize=fs_tick)
+        ax.grid(alpha=0.2, linestyle='-', axis='y')
+        ax.set_ylim(bottom=0)
 
-    ax_a.set_ylabel('Annual incident cancers', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_a.set_title('B) Annual incident cancers in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_a.legend(fontsize=fonts['legend'], loc='upper right', frameon=False)
-    ax_a.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_a.set_ylim(bottom=0)
-    ax_a.tick_params(axis='both', labelsize=fonts['axis_label'])
-    sc.SIticks(ax_a)
-    ax_a.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
+    # ===== Figure 1: 2-panel time series =====
+    ut.set_font(fs_tick)
+    fig1, axes1 = plt.subplots(1, 2, figsize=(16, 5.25))
 
-    # Panel B: Time series of ASR cancer incidence (now in position 0)
-    ax_b = axes[0]
-
-    for label in ['Baseline', 'Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
+    # --- Panel A: ASR cancer incidence ---
+    ax_a = axes1[0]
+    for label, scen_key, color in scenarios:
         if label in scenario_data and scenario_data[label]['asr'] is not None:
-            data = scenario_data[label]
-            ax_b.plot(data['years'], data['asr'],
-                     color=colors[label], linestyle=linestyles[label],
-                     linewidth=linewidths[label], label=label, alpha=0.9)
+            plot_with_band(ax_a, scenario_data[label], 'asr')
+    ax_a.set_ylabel('ASR cancer incidence\n(per 100,000)', fontsize=fs_label)
+    ax_a.set_title('A) ASR cancer incidence', fontsize=fs_title, fontweight='bold', loc='left')
+    style_ax(ax_a)
+    sc.SIticks(ax_a)
 
-    ax_b.set_ylabel('ASR cancer incidence\n(per 100,000)', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_b.set_title('A) Age-standardized cancer incidence', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_b.legend(fontsize=fonts['legend'], loc='upper right', frameon=False)
-    ax_b.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_b.set_ylim(bottom=0)
-    ax_b.tick_params(axis='both', labelsize=fonts['axis_label'])
+    # --- Panel B: Annual incident cancers ---
+    ax_b = axes1[1]
+    for label, scen_key, color in scenarios:
+        if label in scenario_data:
+            plot_with_band(ax_b, scenario_data[label], 'cancers')
+    ax_b.set_ylabel('Annual incident cancers', fontsize=fs_label)
+    ax_b.set_title('B) Annual incident cancers', fontsize=fs_title, fontweight='bold', loc='left')
+    style_ax(ax_b)
     sc.SIticks(ax_b)
-    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x:.1f}'))
+    ax_b.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
-    # Panel C: Bar chart of cancers averted
-    ax_c = axes[2]
+    fig1.tight_layout()
+    fig1_name = f'figures/tt_vs_vax_comparison_{location}_{coverage}.png'
+    sc.savefig(fig1_name, dpi=300)
+    print(f"Time series plot saved to: {fig1_name}")
 
-    # Calculate cancers averted relative to baseline
-    baseline_total = scenario_totals['Baseline']
-    labels = []
-    cancers_averted = []
+    # ===== Figure 2: Model comparison bar chart =====
+    baseline_total = scenario_totals['Routine vax only']
+    bar_scenarios = [s for s in scenarios if s[0] not in ('No interventions', 'Routine vax only', 'S&T 10-65 only')]
+
+    # IARC estimates (cancers averted, in thousands)
+    iarc_estimates = {
+        'Catch-up to 30': 160e3,
+        'Catch-up to 40': 167e3,
+        'Catch-up to 40 + S&T to 65': 334e3,
+    }
+
+    labels_bar = []
+    hpvsim_vals = []
+    iarc_vals = []
     bar_colors = []
+    for label, scen_key, color in bar_scenarios:
+        averted = baseline_total - scenario_totals[label]
+        labels_bar.append(label)
+        hpvsim_vals.append(averted)
+        iarc_vals.append(iarc_estimates[label])
+        bar_colors.append(color)
 
-    for label in ['Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
-        if label in scenario_totals:
-            averted = baseline_total - scenario_totals[label]
-            labels.append(label)
-            cancers_averted.append(averted)
-            bar_colors.append(colors[label])
+    midpoints = [(h + i) / 2 for h, i in zip(hpvsim_vals, iarc_vals)]
+    err_low = [mid - min(h, i) for mid, h, i in zip(midpoints, hpvsim_vals, iarc_vals)]
+    err_high = [max(h, i) - mid for mid, h, i in zip(midpoints, hpvsim_vals, iarc_vals)]
 
-    # Create bar chart
-    x_pos = np.arange(len(labels))
-    bars = ax_c.bar(x_pos, cancers_averted, color=bar_colors, alpha=0.8)
+    fig2, ax_c = plt.subplots(1, 1, figsize=(7, 7))
 
-    # Add value labels on bars
-    for bar, val in zip(bars, cancers_averted):
-        height = bar.get_height()
-        ax_c.text(bar.get_x() + bar.get_width() / 2., height,
-                 f'{sc.sigfig(val, 3, SI=True)}',
-                 ha='center', va='bottom', fontsize=fonts['bar_large'], fontweight='bold')
+    x_pos = np.arange(len(labels_bar))
+    ax_c.bar(x_pos, midpoints, color=bar_colors, alpha=0.85, width=0.6)
+    ax_c.errorbar(x_pos, midpoints, yerr=[err_low, err_high],
+                  fmt='none', ecolor='#333333', elinewidth=2.5, capsize=8, capthick=2.5, zorder=5)
 
-    # Format x-tick labels with line breaks
-    x_labels_formatted = [
-        'Test & treat\nonly',
-        'Vaccination\nonly',
-        'Both T&T\n+ Vax'
-    ]
+    # Label HPVsim and IARC values at the error bar ends
+    for i, (x, h, ia) in enumerate(zip(x_pos, hpvsim_vals, iarc_vals)):
+        lo, hi = min(h, ia), max(h, ia)
+        ax_c.text(x + 0.22, lo, f'HPVsim\n{sc.sigfig(h, 3, SI=True)}',
+                 fontsize=11, va='center', ha='left', color='#333333')
+        ax_c.text(x + 0.22, hi, f'IARC\n{sc.sigfig(ia, 3, SI=True)}',
+                 fontsize=11, va='center', ha='left', color='#333333')
+
+    x_labels_formatted = [l.replace(' + ', '\n+ ').replace(' to ', '\nto ') for l in labels_bar]
     ax_c.set_xticks(x_pos)
-    ax_c.set_xticklabels(x_labels_formatted, ha='center')
-    ax_c.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
-    ax_c.set_title('C) Total cancers averted in women\naged 10-60 in 2025', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
-    ax_c.grid(alpha=0.3, linestyle='--', axis='y')
-    ax_c.set_ylim(bottom=0)
-    ax_c.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_c.set_xticklabels(x_labels_formatted, ha='center', fontsize=fs_tick)
+    ax_c.set_ylabel('Cancers averted\n(vs routine vax only)', fontsize=fs_label)
+    ax_c.set_title('Cancers averted: model synthesis', fontsize=fs_title, fontweight='bold', loc='left')
+    style_ax(ax_c)
     sc.SIticks(ax_c)
     ax_c.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x):,}'))
 
-    plt.suptitle(f'Impact of test & treat vs vaccination on cervical cancer - {location.capitalize()}',
-                 fontsize=fonts['suptitle'], fontweight='bold')
-
-    fig.tight_layout(rect=[0, 0, 1, 0.96])
-    fig_name = f'figures/tt_vs_vax_comparison_{location}_{coverage}.png'
-    sc.savefig(fig_name, dpi=150)
-
-    print(f"\nComparison plot saved to: {fig_name}")
+    fig2.tight_layout()
+    fig2_name = f'figures/tt_vs_vax_bars_{location}_{coverage}.png'
+    sc.savefig(fig2_name, dpi=300)
+    print(f"Bar chart saved to: {fig2_name}")
 
     # Print summary
     print(f"\n=== Summary (cancers in 10-60 cohort, {location.capitalize()}) ===")
-    print(f"Baseline: {baseline_total:,.0f} cancers")
-    for label in ['Test & treat only', 'Vaccination only', 'Both T&T + Vax']:
-        if label in scenario_totals:
-            averted = baseline_total - scenario_totals[label]
-            pct = 100 * averted / baseline_total
-            print(f"{label}: {scenario_totals[label]:,.0f} cancers ({averted:,.0f} averted, {pct:.1f}%)")
+    print(f"Routine vax (baseline): {baseline_total:,.0f} cancers")
+    for label, h, ia in zip(labels_bar, hpvsim_vals, iarc_vals):
+        print(f"{label}: HPVsim={h:,.0f}, IARC={ia:,.0f}, midpoint={int((h+ia)/2):,}")
 
-    return fig, axes
+    return fig1, fig2
 
 
 def plot_efficiency_frontier(location, coverage=90):

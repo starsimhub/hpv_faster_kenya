@@ -249,6 +249,220 @@ def plot_stacked_bars(location, coverage=90, add_tt=False):
     return
 
 
+def plot_stacked_bars_pct(location):
+    """
+    Simplified stacked bar chart showing % reduction in cancers relative to baseline.
+    Side-by-side bars for 70% and 90% coverage. No baseline bar, no segment labels,
+    no arrows.
+    """
+
+    scenarios_base = ['Catch-up 10-15', 'Catch-up 10-20', 'Catch-up 10-25',
+                      'Catch-up 10-30', 'Catch-up 10-35', 'Catch-up 10-40',
+                      'Catch-up 10-45', 'Catch-up 10-50', 'Catch-up 10-55', 'Catch-up 10-60']
+    scenarios_keys = [s + ': V' for s in scenarios_base]
+    scen_labels = ['10-15', '10-20', '10-25', '10-30', '10-35', '10-40',
+                   '10-45', '10-50', '10-55', '10-60']
+    cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40',
+               '40_45', '45_50', '50_55', '55_60']
+    cohort_labels = ['10-15', '15-20', '20-25', '25-30', '30-35', '35-40',
+                     '40-45', '45-50', '50-55', '55-60']
+    cohort_colors = sc.vectocolor(len(cohort_labels)).tolist()
+
+    coverages = [70, 90]
+    width = 0.38
+
+    # Load data for both coverages
+    all_data = {}
+    for cov in coverages:
+        msim_dict = sc.loadobj(f'raw_results/scens_{location}_{cov}.obj')
+
+        # Get baseline totals per cohort
+        baseline_vals = {}
+        for cohort, clabel in zip(cohorts, cohort_labels):
+            key = f'cohort_cancers_{cohort}'
+            baseline_vals[clabel] = msim_dict['Baseline'].get(key, 0)
+
+        baseline_total = sum(baseline_vals.values())
+
+        # For each scenario, get % of baseline for each cohort
+        scen_data = []
+        for scen_key in scenarios_keys:
+            cohort_pcts = []
+            for cohort, clabel in zip(cohorts, cohort_labels):
+                key = f'cohort_cancers_{cohort}'
+                val = msim_dict[scen_key].get(key, 0) if scen_key in msim_dict else baseline_vals[clabel]
+                cohort_pcts.append(val / baseline_total * 100)
+            scen_data.append(cohort_pcts)
+
+        all_data[cov] = scen_data
+
+    # Plot
+    ut.set_font(16)
+    fig, ax = plt.subplots(figsize=(16, 7))
+
+    x = np.arange(len(scen_labels))
+
+    for ci, cov in enumerate(coverages):
+        offset = (ci - 0.5) * width
+        scen_data = all_data[cov]
+
+        for scen_idx in range(len(scen_labels)):
+            bottom = 0
+            for cohort_idx in range(len(cohort_labels)):
+                val = scen_data[scen_idx][cohort_idx]
+                bar_kwargs = dict(
+                    color=cohort_colors[cohort_idx], width=width, edgecolor='white', linewidth=0.5
+                )
+                if scen_idx == 0 and ci == 0:
+                    bar_kwargs['label'] = cohort_labels[cohort_idx]
+                ax.bar(x[scen_idx] + offset, val, bottom=bottom, **bar_kwargs)
+                bottom += val
+
+        # Add coverage label on first bar
+        total_first = sum(scen_data[0])
+        ax.text(x[0] + offset, total_first + 0.5, f'{cov}%',
+                ha='center', va='bottom', fontsize=13, fontweight='bold')
+
+    # Compute % reduction labels (using 100 - total)
+    for ci, cov in enumerate(coverages):
+        offset = (ci - 0.5) * width
+        scen_data = all_data[cov]
+        for scen_idx in range(len(scen_labels)):
+            total = sum(scen_data[scen_idx])
+            reduction = 100 - total
+            ax.text(x[scen_idx] + offset, total + 0.3, f'-{reduction:.0f}%',
+                    ha='center', va='bottom', fontsize=10, color='#333333')
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(scen_labels, fontsize=14)
+    ax.set_xlabel('Catch-up vaccination age range', fontsize=16)
+    ax.set_ylabel('% of baseline cancers', fontsize=16)
+    ax.set_ylim(0, 105)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.grid(alpha=0.2, linestyle='-', axis='y')
+    ax.legend(title='Birth cohort', loc='upper right', frameon=False, ncol=2, fontsize=12,
+              title_fontsize=13)
+
+    fig.tight_layout()
+    fig_name = f'figures/catchup_vax_cohorts_pct_{location}.png'
+    sc.savefig(fig_name, dpi=300)
+    print(f'Figure saved to: {fig_name}')
+
+    return fig
+
+
+def plot_stacked_bars_pct_2panel(location):
+    """
+    2-panel stacked bar chart (Panel A: 70%, Panel B: 90%).
+    Each panel has side-by-side bars for V (vaccination only) and TTV (vaccination + T&T).
+    Shows % of baseline cancers by birth cohort.
+    """
+
+    scenarios_base = ['Catch-up 10-15', 'Catch-up 10-20', 'Catch-up 10-25',
+                      'Catch-up 10-30', 'Catch-up 10-35', 'Catch-up 10-40',
+                      'Catch-up 10-45', 'Catch-up 10-50', 'Catch-up 10-55', 'Catch-up 10-60']
+    scen_labels = ['10-15', '10-20', '10-25', '10-30', '10-35', '10-40',
+                   '10-45', '10-50', '10-55', '10-60']
+    cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40',
+               '40_45', '45_50', '50_55', '55_60']
+    cohort_labels = ['10-15', '15-20', '20-25', '25-30', '30-35', '35-40',
+                     '40-45', '45-50', '50-55', '55-60']
+    cohort_colors = sc.vectocolor(len(cohort_labels)).tolist()
+
+    intv_types = [('V', 'Vax only'), ('TTV', 'Vax + T&T')]
+    coverages = [70, 90]
+    width = 0.38
+
+    # Load data for both coverages and both intervention types
+    all_data = {}
+    for cov in coverages:
+        msim_dict = sc.loadobj(f'raw_results/scens_{location}_{cov}.obj')
+
+        baseline_vals = {}
+        for cohort, clabel in zip(cohorts, cohort_labels):
+            baseline_vals[clabel] = msim_dict['Baseline'].get(f'cohort_cancers_{cohort}', 0)
+        baseline_total = sum(baseline_vals.values())
+
+        cov_data = {}
+        for suffix, _ in intv_types:
+            scen_keys = [s + f': {suffix}' for s in scenarios_base]
+            scen_data = []
+            for scen_key in scen_keys:
+                cohort_pcts = []
+                for cohort, clabel in zip(cohorts, cohort_labels):
+                    key = f'cohort_cancers_{cohort}'
+                    val = msim_dict[scen_key].get(key, 0) if scen_key in msim_dict else baseline_vals[clabel]
+                    cohort_pcts.append(val / baseline_total * 100)
+                scen_data.append(cohort_pcts)
+            cov_data[suffix] = scen_data
+        all_data[cov] = cov_data
+
+    # Plot
+    ut.set_font(18)
+    fig, axes = plt.subplots(1, 2, figsize=(20, 7), sharey=True)
+
+    for panel_idx, cov in enumerate(coverages):
+        ax = axes[panel_idx]
+        x = np.arange(len(scen_labels))
+
+        for ti, (suffix, _) in enumerate(intv_types):
+            offset = (ti - 0.5) * width
+            scen_data = all_data[cov][suffix]
+            is_ttv = suffix == 'TTV'
+
+            for scen_idx in range(len(scen_labels)):
+                bottom = 0
+                for cohort_idx in range(len(cohort_labels)):
+                    val = scen_data[scen_idx][cohort_idx]
+                    bar_kwargs = dict(
+                        color=cohort_colors[cohort_idx], width=width,
+                        edgecolor='#666666' if is_ttv else 'white',
+                        linewidth=0.8 if is_ttv else 0.5,
+                        hatch='///' if is_ttv else '',
+                    )
+                    if panel_idx == 0 and ti == 0 and scen_idx == 0:
+                        bar_kwargs['label'] = cohort_labels[cohort_idx]
+                    ax.bar(x[scen_idx] + offset, val, bottom=bottom, **bar_kwargs)
+                    bottom += val
+
+            # % reduction labels
+            for scen_idx in range(len(scen_labels)):
+                total = sum(scen_data[scen_idx])
+                reduction = 100 - total
+                ax.text(x[scen_idx] + offset, total + 0.3, f'-{reduction:.0f}%',
+                        ha='center', va='bottom', fontsize=11, color='#333333')
+
+        ax.set_xticks(x)
+        ax.set_xticklabels(scen_labels, fontsize=15)
+        ax.set_xlabel('Catch-up age range', fontsize=18)
+        ax.set_title(f'{chr(65 + panel_idx)}) {cov}% coverage: vax only vs vax + T&T',
+                     fontsize=20, fontweight='bold', loc='left')
+        ax.set_ylim(0, 108)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.tick_params(axis='both', labelsize=15)
+        ax.grid(alpha=0.2, linestyle='-', axis='y')
+
+    axes[0].set_ylabel('% of baseline cancers', fontsize=18)
+
+    # Add hatching indicator to legend
+    from matplotlib.patches import Patch
+    handles, labels = axes[0].get_legend_handles_labels()
+    handles.append(Patch(facecolor='#cccccc', edgecolor='#666666', hatch='///', label='+ T&T'))
+    labels.append('+ T&T')
+    axes[0].legend(handles, labels, title='Birth cohort', loc='upper right', frameon=False,
+                   ncol=2, fontsize=14, title_fontsize=15)
+
+    fig.tight_layout()
+    fig_name = f'figures/catchup_vax_cohorts_pct_2panel_{location}.png'
+    sc.savefig(fig_name, dpi=300)
+    print(f'Figure saved to: {fig_name}')
+
+    return fig
+
+
 def plot_single_bar(location, coverage=90):
     import pandas as pd
 
@@ -863,7 +1077,7 @@ if __name__ == '__main__':
 
     location = 'kenya'
     do_plot_base = True
-    do_plot_bars = False
+    do_plot_bars = True
     do_plot_debug = False
     coverage = 90
 
