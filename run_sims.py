@@ -19,8 +19,8 @@ do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
 keep_db = True
-n_trials    = [1500, 2][debug]  # How many trials to run for calibration
-n_workers   = [75, 1][debug]    # How many cores to use
+n_trials    = [2000, 2][debug]  # How many trials to run for calibration
+n_workers   = [80, 1][debug]    # How many cores to use
 storage = None  # "mysql://user:pass@localhost/hpvsim_calib"  
 
 # Save settings
@@ -79,8 +79,8 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
         c=np.array([
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
-            [0,  0, 0.05, 0.3, 0.6, 0.5, 0.4, 0.4,  0.4,  0.4, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
-            [0,  0, 0.01, 0.2, 0.4, 0.5, 0.5, 0.5,  0.6,  0.5, 0.4, 0.2, 0.02, 0.02, 0.02, 0.02]
+            [0,  0, 0.05, 0.2, 0.6, 0.5, 0.4, 0.35,  0.35,  0.3, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
+            [0,  0, 0.01, 0.2, 0.4, 0.5, 0.5, 0.5,  0.6,  0.5, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
 
         # # TOO YOUNG
