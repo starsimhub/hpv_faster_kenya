@@ -862,8 +862,8 @@ def plot_cohort_decomposition(sim, start_cohort_year=2025, max_cohort_age=60, fi
 if __name__ == '__main__':
 
     location = 'kenya'
-    do_plot_base = False
-    do_plot_bars = True
+    do_plot_base = True
+    do_plot_bars = False
     do_plot_debug = False
     coverage = 90
 

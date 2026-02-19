@@ -294,7 +294,7 @@ if __name__ == '__main__':
     ]
 
     location = 'kenya'
-    end=2020
+    end=2100
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
