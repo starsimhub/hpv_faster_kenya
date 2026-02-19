@@ -79,8 +79,8 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
         c=np.array([
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
-            [0,  0, 0.05, 0.2, 0.6, 0.5, 0.4, 0.35,  0.35,  0.3, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
-            [0,  0, 0.01, 0.2, 0.4, 0.5, 0.5, 0.5,  0.6,  0.5, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
+            [0,  0, 0.05, 0.3, 0.6, 0.5, 0.4, 0.4,  0.4,  0.4, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
+            [0,  0, 0.01, 0.2, 0.4, 0.5, 0.5, 0.5,  0.6,  0.5, 0.4, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
 
         # # TOO YOUNG
@@ -285,9 +285,9 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        'run_sim',
+        # 'run_sim',
         # 'age_pyramids',
-        # 'run_calib',
+        'run_calib',
         # 'plot_calib'
         # 'run_parsets'
         # 'plot_age_causal'
