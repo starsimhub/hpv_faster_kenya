@@ -81,6 +81,56 @@ def plot_age_causal(location='kenya', from_file=True, ac_df=None):
     return fig
 
 
+def plot_age_causal_bar(location='kenya', from_file=True, ac_df=None):
+    """
+    Create bar plot showing % of causal infections by age group
+
+    Args:
+        location: Country name (e.g., 'kenya')
+        from_file: If True, load data from file; if False, use provided ac_df
+        ac_df: Pre-loaded age causal DataFrame (used if from_file=False)
+
+    Returns:
+        fig: matplotlib figure object
+    """
+    if from_file:
+        ac_df = sc.loadobj(f'results/age_causal_infection_{location}.obj')
+
+    # Filter for just causal infection
+    causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
+    ages = causal_df['Age'].values
+
+    # Bin into 5-year age groups
+    bins = np.arange(10, 55, 5)  # 10, 15, 20, ..., 50
+    labels = [f'{b}-{b+4}' for b in bins[:-1]]
+    counts, _ = np.histogram(ages, bins=bins)
+    pcts = counts / counts.sum() * 100
+
+    # Create compact bar plot
+    ut.set_font(14)
+    fig, ax = pl.subplots(1, 1, figsize=(4.5, 3.2))
+
+    bar_color = '#3498db'
+    ax.bar(range(len(labels)), pcts, color=bar_color, edgecolor='white', width=0.8)
+
+    ax.set_xticks(range(len(labels)))
+    ax.set_xticklabels(labels, fontsize=11)
+    ax.set_xlabel('Age group', fontsize=13)
+    ax.set_ylabel('% of causal infections', fontsize=13)
+    ax.set_ylim(0, max(pcts) * 1.15)
+    ax.yaxis.set_major_formatter(pl.FuncFormatter(lambda x, _: f'{x:.0f}%'))
+    ax.tick_params(axis='y', labelsize=11)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    fig.tight_layout()
+    fig_name = f'figures/age_causal_bar_{location}.png'
+    sc.savefig(fig_name, dpi=300)
+    print(f'Figure saved to: {fig_name}')
+
+    return fig
+
+
 def plot_age_causal_violin(location='kenya', from_file=True, ac_df=None):
     """
     Create violin plot showing distribution of age at causal infection
@@ -168,3 +218,4 @@ if __name__ == '__main__':
     plot_age_causal(location='kenya')
     for location in ['kenya', 'nigeria']:
         plot_age_causal_violin(location=location)
+        plot_age_causal_bar(location=location)
