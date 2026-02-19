@@ -18,8 +18,9 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-n_trials    = [2500, 2][debug]  # How many trials to run for calibration
-n_workers   = [50, 1][debug]    # How many cores to use
+load_partial = False
+n_trials    = [1600, 2][debug]  # How many trials to run for calibration
+n_workers   = [40, 1][debug]    # How many cores to use
 storage = None
 
 # Save settings
@@ -55,26 +56,62 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
     #   Prop_active: 21.3	56.1	75.8	87.2	92.8
     # For fitting, see https://www.researchsquare.com/article/rs-3074559/v1
     pars.debut = dict(
-        f=dict(dist='lognormal', par1=18.28, par2=3.25),
-        m=dict(dist='lognormal', par1=17.71, par2=3.33),
+        f=dict(dist='lognormal', par1=16, par2=4),
+        m=dict(dist='lognormal', par1=18, par2=4),
+        # f=dict(dist='lognormal', par1=18.28, par2=3.25),
+        # m=dict(dist='lognormal', par1=17.71, par2=3.33),
     )
 
     # Participation in marital and casual relationships
     # Derived to fit 2014 DHS data
     # For fitting, see https://www.researchsquare.com/article/rs-3074559/v1
+    # TOO OLD
     pars.layer_probs = dict(
         m=np.array([
             # Share of people of each age who are married
-            [0, 5,  10,    15,   20,   25,   30,   35,   40,   45,   50,   55,   60,   65,   70,   75],
-            [0, 0, 0.05, 0.25, 0.70, 0.90, 0.95, 0.70, 0.75, 0.65, 0.55, 0.40, 0.40, 0.40, 0.40, 0.40],  # Females
-            [0, 0, 0.01, 0.01, 0.10, 0.50, 0.60, 0.70, 0.70, 0.70, 0.70, 0.80, 0.70, 0.60, 0.50, 0.60]]  # Males
-        ),
+            [0, 5, 10,    15,     20,     25,     30,     35,     40,     45,   50,   55,   60,   65,    70,   75],
+            # [0, 0,  0,  0.1596, 0.4466, 0.5845, 0.6139, 0.6202, 0.6139, 0.5726, 0.35, 0.21, 0.14, 0.07, 0.035, 0.007],
+            # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.15,   0.2,    0.3,  0.4,  0.4,  0.2, 0.07, 0.035, 0.007],
+            # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.2,    0.2,    0.4,  0.4,  0.4,  0.2,  0.1,  0.05, 0.01 ],
+            [0, 0,  0,  0.1,     0.5,    0.75,    0.7,    0.55,   0.45,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
+            [0, 0,  0,  0.1,     0.2,    0.5,    0.8,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
+        ]),
         c=np.array([
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
-            [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
-            [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
+            [0,  0, 0.01, 0.05, 0.3, 0.5, 0.25, 0.3,  0.3,  0.25, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
+            [0,  0, 0.01, 0.05, 0.4, 0.4, 0.5, 0.4,  0.35,  0.35, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
+
+        # # TOO YOUNG
+        # m=np.array([
+        #     # Share of people of each age who are married
+        #     [0, 5, 10,    15,     20,     25,     30,     35,     40,     45,   50,   55,   60,   65,    70,   75],
+        #     # [0, 0,  0,  0.1596, 0.4466, 0.5845, 0.6139, 0.6202, 0.6139, 0.5726, 0.35, 0.21, 0.14, 0.07, 0.035, 0.007],
+        #     # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.15,   0.2,    0.3,  0.4,  0.4,  0.2, 0.07, 0.035, 0.007],
+        #     # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.2,    0.2,    0.4,  0.4,  0.4,  0.2,  0.1,  0.05, 0.01 ],
+        #     [0, 0,  0,  0.1,     0.3,    0.5,    0.5,    0.5,   0.6,    0.7,  0.5,  0.4,  0.1, 0.07, 0.035, 0.007],
+        #     [0, 0,  0,  0.1,     0.2,    0.5,    0.5,    0.5,   0.6,    0.7,  0.5,  0.4,  0.1,  0.1,  0.05, 0.01 ],
+        # ]),
+        # c=np.array([
+        #     # Share of people of each age in casual partnerships
+        #     [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
+        #     [0,  0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4,  0.4,  0.4, 0.3, 0.2, 0.10, 0.02, 0.02, 0.02],
+        #     [0,  0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4,  0.4,  0.4, 0.5, 0.2, 0.02, 0.02, 0.02, 0.02]
+        # ])
+
+        # m=np.array([
+        #     # Share of people of each age who are married
+        #     [0, 5,  10,    15,   20,   25,   30,   35,   40,   45,   50,   55,   60,   65,   70,   75],
+        #     [0, 0, 0.05, 0.25, 0.70, 0.90, 0.95, 0.70, 0.75, 0.65, 0.55, 0.40, 0.40, 0.40, 0.40, 0.40],  # Females
+        #     [0, 0, 0.01, 0.01, 0.10, 0.50, 0.60, 0.70, 0.70, 0.70, 0.70, 0.80, 0.70, 0.60, 0.50, 0.60]]  # Males
+        # ),
+        # c=np.array([
+        #     # Share of people of each age in casual partnerships
+        #     [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
+        #     [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
+        #     [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
+        # ])
     )
     pars.layer_probs['m'][1] *= .7
 
@@ -123,13 +160,13 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
     return sim
 
 
-def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
-
-    sim = make_sim()
+def make_calib(n_trials=None, n_workers=None):
+    sim = make_sim(verbose=-1)
     datafiles = [
         'data/kenya_cancer_cases.csv',
         'data/kenya_cancer_types.csv',
         'data/kenya_asr_cancer_incidence.csv',
+        'data/kenya_precin_prevalence.csv'
     ]
 
     # Define the calibration parameters
@@ -147,7 +184,10 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
     )
 
     calib_pars = dict(
-        beta=[0.2, 0.1, 0.34, 0.02],
+        beta=[0.2, 0.02, 0.8, 0.02],
+        imm_init=dict(par1=[0.5, 0.5, 0.8, 0.05]),
+        cell_imm_init=dict(par1=[0.5, 0.1, 0.8, 0.05]),
+        age_risk=dict(risk=[1, 1, 4, 0.1], age=[30, 30, 45, 1]),
         m_cross_layer=[0.3, 0.1, 0.7, 0.05],
         m_partners=dict(
             c=dict(par1=[0.2, 0.1, 0.6, 0.02])
@@ -156,7 +196,7 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
         f_partners=dict(
             c=dict(par1=[0.2, 0.1, 0.6, 0.02])
         ),
-        sev_dist=dict(par1=[1, 0.5, 1.5, 0.01])
+        sev_dist=dict(par1=[1, 0.5, 2, 0.01])
     )
 
     calib = hpv.Calibration(sim, calib_pars=calib_pars, genotype_pars=genotype_pars,
@@ -165,15 +205,43 @@ def run_calib(n_trials=None, n_workers=None, do_save=True, filestem=''):
                             total_trials=n_trials, n_workers=n_workers,
                             storage=storage
                             )
-    calib.calibrate()
+    return sim, calib
+
+
+def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', load_partial=True):
+
+    # Run calibration
+    sim, calib = make_calib(n_trials=n_trials, n_workers=n_workers)
+
+    if load_partial:
+        # Load a partially-run calibration study
+        import optuna as op
+        print(calib.run_args.name)
+        study = op.load_study(storage=calib.run_args.storage, study_name=calib.run_args.name)
+        # calib.run_args.continue_db = True
+        # calib.calibrate()
+        output = study.optimize(calib.run_trial, n_trials=19)
+        calib.best_pars = sc.objdict(study.best_params)
+        calib.parse_study(study)
+        print('Best pars:', calib.best_pars)
+
+        # Tidy up
+        calib.calibrated = True
+        if not calib.run_args.keep_db:
+            calib.remove_db()
+
+    else:
+        calib.calibrate()
+
+    print(f'... finished calibration')
+    print(f'Best pars are {calib.best_pars}')
+
     filename = f'kenya_calib{filestem}'
 
     if do_save:
         sc.saveobj(f'raw_results/{filename}.obj', calib)
         calib_pars = calib.trial_pars_to_sim_pars(which_pars=0)
         sc.save(f'results/kenya_pars{filestem}.obj', calib_pars)
-
-    print(f'Best pars are {calib.best_pars}')
 
     return sim, calib
 
@@ -221,20 +289,23 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        'run_sim',
+        # 'run_sim',
         # 'age_pyramids',
-        # 'run_calib',
+        'run_calib',
         # 'plot_calib'
         # 'run_parsets'
         # 'plot_age_causal'
     ]
 
+    location = 'kenya'
+    end=2020
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
         calib_pars = sc.loadobj('results/kenya_pars.obj')  # Load parameters from a previous calibration
         analyzers = [hpv.age_causal_infection(start_year=2020)]
-        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
+        sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers, end=end)
+        sc.saveobj('raw_results/sim_kenya.sim', sim)
         df = pac.get_age_causal_df(sim)
         sc.saveobj(f'results/age_causal_infection_kenya.obj', df)
 
@@ -248,7 +319,7 @@ if __name__ == '__main__':
         sim = run_sim(end=2100, calib_pars=calib_pars, analyzers=[ap], do_save=True, do_shrink=True)
 
     if 'run_calib' in to_run:
-        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True)
+        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True, load_partial=load_partial)
 
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')

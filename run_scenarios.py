@@ -30,7 +30,7 @@ from analyzers import cohort_cancers, person_years, vx_potential
 
 # What to run
 debug = 0
-n_seeds = [10, 1][debug]  # How many seeds to run per cluster
+n_seeds = [2, 1][debug]  # How many seeds to run per cluster
 
 
 # %% Functions
@@ -250,36 +250,10 @@ if __name__ == '__main__':
     T = sc.timer()
     debug_run = False
     do_run = True
-    do_save = False
+    do_save = True
     do_process = True
     location = 'kenya'  #'kenya'
-    coverage = 90
-    catchup_cov = coverage/10
-
-    scenarios = dict()
-    background_intvs = make_st() + make_routine_vx()
-    scenarios['Baseline'] = background_intvs
-
-    # Add scenarios
-    lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
-    age_bands = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
-    for lower_age in lower_ages:
-        for age_band in age_bands:
-            if lower_age + age_band > 60:
-                continue
-            upper_age = lower_age + age_band
-            for add_vx in [True, False]:
-                for add_tt in [True, False]:
-                    if not add_vx and not add_tt:
-                        continue
-                    scen_name = f'Catch-up {lower_age}-{upper_age}: '
-                    if add_tt:
-                        scen_name += 'TT'
-                    if add_vx:
-                        scen_name += 'V'
-                    catchup_intvs = make_catchup_vx(catchup_cov=catchup_cov, lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
-                    scenarios[scen_name] = background_intvs + catchup_intvs
-    print(f'Defined {len(scenarios)} scenarios:' + ', '.join(scenarios.keys()))
+    coverage_levels = [70, 90]  # Coverage levels to iterate over
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
     if debug_run:
@@ -299,58 +273,96 @@ if __name__ == '__main__':
 
         print('Done')
 
+    # Iterate over coverage levels
+    for coverage in coverage_levels:
+        print(f'\n{"="*80}')
+        print(f'Processing coverage level: {coverage}%')
+        print(f'{"="*80}\n')
 
-    if do_run:
-        print(f'Running scenarios for location: {location}')
+        catchup_cov = coverage / 100  # Convert percentage to decimal
 
-        calib_pars = sc.loadobj(f'results/{location}_pars.obj')
-        msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
+        # Define scenarios for this coverage level
+        scenarios = dict()
+        scenarios['No interventions'] = []
+        background_intvs = make_st() + make_routine_vx()
+        scenarios['Baseline'] = background_intvs
 
-        if do_save: sc.saveobj(f'raw_results/scens_{location}_{coverage}.msim', msim)
+        # Add catch-up scenarios
+        lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+        age_bands = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+        for lower_age in lower_ages:
+            for age_band in age_bands:
+                if lower_age + age_band > 60:
+                    continue
+                upper_age = lower_age + age_band
+                for add_vx in [True, False]:
+                    for add_tt in [True, False]:
+                        if not add_vx and not add_tt:
+                            continue
+                        scen_name = f'Catch-up {lower_age}-{upper_age}: '
+                        if add_tt:
+                            scen_name += 'TT'
+                        if add_vx:
+                            scen_name += 'V'
+                        catchup_intvs = make_catchup_vx(catchup_cov=catchup_cov, lower_age=lower_age, upper_age=upper_age, add_tt=add_tt, add_vx=add_vx)
+                        scenarios[scen_name] = background_intvs + catchup_intvs
+        print(f'Defined {len(scenarios)} scenarios for {coverage}% coverage')
 
-    if do_process:
-        print('Post-processing results...')
-        if not do_run:
-            msim = sc.loadobj(f'raw_results/scens_{location}_{coverage}.msim')
+        if do_run:
+            print(f'Running scenarios for location: {location}, coverage: {coverage}%')
 
-        metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
+            calib_pars = sc.loadobj(f'results/{location}_pars.obj')
+            msim = run_sims(location=location, calib_pars=calib_pars, scenarios=scenarios, verbose=-1)
 
-        # Process results
-        scen_labels = list(scenarios.keys())
-        print(f'Processing {len(scen_labels)} scenarios: ' + ', '.join(scen_labels))
-        mlist = msim.split(chunks=len(scen_labels))
+            if do_save:
+                sc.saveobj(f'raw_results/scens_{location}_{coverage}.msim', msim)
+                print(f'Saved raw results to: raw_results/scens_{location}_{coverage}.msim')
 
-        msim_dict = sc.objdict()
-        for si, scen_label in enumerate(scen_labels):
+        if do_process:
+            print(f'Post-processing results for {coverage}% coverage...')
+            if not do_run:
+                msim = sc.loadobj(f'raw_results/scens_{location}_{coverage}.msim')
 
-            mres = sc.objdict()
+            metrics = ['year', 'asr_cancer_incidence', 'cancers', 'cancer_deaths']
 
-            # Deal with analyzers
-            analyzer_labels = [a.label for a in mlist[si].sims[0].analyzers]
-            for alabel in analyzer_labels:
-                base_analyzer = mlist[si].sims[0].get_analyzer(alabel)
-                alist = [sim.get_analyzer(alabel) for sim in mlist[si].sims]
-                reduced_analyzer = base_analyzer.reduce(alist)
-                mres[alabel] = reduced_analyzer.cum_cancers_best
-                mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
-                mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
-                mres[f'raw_{alabel}'] = reduced_analyzer.raw
+            # Process results
+            scen_labels = list(scenarios.keys())
+            print(f'Processing {len(scen_labels)} scenarios')
+            mlist = msim.split(chunks=len(scen_labels))
 
-            reduced_sim = mlist[si].reduce(output=True)
-            for metric in metrics:
-                mres[metric] = reduced_sim.results[metric]
+            msim_dict = sc.objdict()
+            for si, scen_label in enumerate(scen_labels):
 
-            # Pull out characteristics of sim to decide what resources we need
-            programs = {
-                "Catchup vx": "vaccinations",
-            }
-            for intv_name in set(programs.values()): mres[intv_name] = np.zeros_like(mres.year)
-            for intv_name, df_key in programs.items():
-                if reduced_sim.get_intervention(intv_name, die=False) is not None:
-                    mres[df_key] += reduced_sim.get_intervention(intv_name).n_products_used.values
+                mres = sc.objdict()
 
-            msim_dict[scen_label] = mres
+                # Deal with analyzers
+                analyzer_labels = [a.label for a in mlist[si].sims[0].analyzers]
+                for alabel in analyzer_labels:
+                    base_analyzer = mlist[si].sims[0].get_analyzer(alabel)
+                    alist = [sim.get_analyzer(alabel) for sim in mlist[si].sims]
+                    reduced_analyzer = base_analyzer.reduce(alist)
+                    mres[alabel] = reduced_analyzer.cum_cancers_best
+                    mres[f'{alabel}_low'] = reduced_analyzer.cum_cancers_low
+                    mres[f'{alabel}_high'] = reduced_analyzer.cum_cancers_high
+                    mres[f'raw_{alabel}'] = reduced_analyzer.raw
 
-        sc.saveobj(f'raw_results/scens_{location}_{coverage}.obj', msim_dict)
+                reduced_sim = mlist[si].reduce(output=True)
+                for metric in metrics:
+                    mres[metric] = reduced_sim.results[metric]
 
-    print('Done.')
+                # Pull out characteristics of sim to decide what resources we need
+                programs = {
+                    "Catchup vx": "vaccinations",
+                }
+                for intv_name in set(programs.values()): mres[intv_name] = np.zeros_like(mres.year)
+                for intv_name, df_key in programs.items():
+                    if reduced_sim.get_intervention(intv_name, die=False) is not None:
+                        mres[df_key] += reduced_sim.get_intervention(intv_name).n_products_used.values
+
+                msim_dict[scen_label] = mres
+
+            sc.saveobj(f'raw_results/scens_{location}_{coverage}.obj', msim_dict)
+            print(f'Saved processed results to: raw_results/scens_{location}_{coverage}.obj')
+
+    T.toc()
+    print('\nAll coverage levels complete!')

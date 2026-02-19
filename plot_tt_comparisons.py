@@ -885,7 +885,7 @@ def plot_heatmaps(location, coverage=90, add_tt=False):
 if __name__ == '__main__':
 
     location = 'kenya'
-    coverage = 90
+    coverage = 70
 
     # Create test & treat comparison plot
     plot_tt_comparison(location, coverage=coverage)
