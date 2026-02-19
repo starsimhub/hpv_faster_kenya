@@ -19,8 +19,8 @@ do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
 keep_db = True
-n_trials    = [800, 2][debug]  # How many trials to run for calibration
-n_workers   = [40, 1][debug]    # How many cores to use
+n_trials    = [2000, 2][debug]  # How many trials to run for calibration
+n_workers   = [50, 1][debug]    # How many cores to use
 storage = None  # "mysql://user:pass@localhost/hpvsim_calib"  
 
 # Save settings
@@ -56,7 +56,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
     #   Prop_active: 21.3	56.1	75.8	87.2	92.8
     # For fitting, see https://www.researchsquare.com/article/rs-3074559/v1
     pars.debut = dict(
-        f=dict(dist='lognormal', par1=16, par2=4),
+        f=dict(dist='lognormal', par1=17, par2=4),
         m=dict(dist='lognormal', par1=18, par2=4),
         # f=dict(dist='lognormal', par1=18.28, par2=3.25),
         # m=dict(dist='lognormal', par1=17.71, par2=3.33),
@@ -73,7 +73,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
             # [0, 0,  0,  0.1596, 0.4466, 0.5845, 0.6139, 0.6202, 0.6139, 0.5726, 0.35, 0.21, 0.14, 0.07, 0.035, 0.007],
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.15,   0.2,    0.3,  0.4,  0.4,  0.2, 0.07, 0.035, 0.007],
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.2,    0.2,    0.4,  0.4,  0.4,  0.2,  0.1,  0.05, 0.01 ],
-            [0, 0,  0,  0.1,     0.6,   0.8,    0.8,    0.55,   0.6,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
+            [0, 0,  0,  0.1,     0.7,   0.8,    0.8,    0.6,   0.65,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
             [0, 0,  0,  0.1,     0.2,    0.71,    0.9,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
         ]),
         c=np.array([
