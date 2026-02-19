@@ -253,7 +253,7 @@ if __name__ == '__main__':
     do_save = True
     do_process = True
     location = 'kenya'  #'kenya'
-    coverage_levels = [50]  #[70, 90]  # Coverage levels to iterate over
+    coverage_levels = [50, 70, 90]  # Coverage levels to iterate over
 
     # Run scenarios (usually on VMs, runs n_seeds in parallel over M scenarios)
     if debug_run:

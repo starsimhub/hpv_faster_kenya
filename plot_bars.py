@@ -372,10 +372,10 @@ def plot_stacked_bars_pct_2panel(location):
     cohort_colors = sc.vectocolor(len(cohort_labels)).tolist()
 
     intv_types = [('V', 'Vax only'), ('TTV', 'Vax + T&T')]
-    coverages = [70, 90]
+    coverages = [50, 70, 90]
     width = 0.38
 
-    # Load data for both coverages and both intervention types
+    # Load data for all coverages and both intervention types
     all_data = {}
     for cov in coverages:
         msim_dict = sc.loadobj(f'raw_results/scens_{location}_{cov}.obj')
@@ -399,9 +399,9 @@ def plot_stacked_bars_pct_2panel(location):
             cov_data[suffix] = scen_data
         all_data[cov] = cov_data
 
-    # Plot
-    ut.set_font(18)
-    fig, axes = plt.subplots(1, 2, figsize=(20, 7), sharey=True)
+    # Plot — sized for PowerPoint (13.33 x 7.5 inch slide)
+    ut.set_font(22)
+    fig, axes = plt.subplots(1, 3, figsize=(13.33, 7.5), sharey=True)
 
     for panel_idx, cov in enumerate(coverages):
         ax = axes[panel_idx]
@@ -432,20 +432,20 @@ def plot_stacked_bars_pct_2panel(location):
                 total = sum(scen_data[scen_idx])
                 reduction = 100 - total
                 ax.text(x[scen_idx] + offset, total + 0.3, f'-{reduction:.0f}%',
-                        ha='center', va='bottom', fontsize=11, color='#333333')
+                        ha='center', va='bottom', fontsize=9, color='#333333')
 
         ax.set_xticks(x)
-        ax.set_xticklabels(scen_labels, fontsize=15)
-        ax.set_xlabel('Catch-up age range', fontsize=18)
-        ax.set_title(f'{chr(65 + panel_idx)}) {cov}% coverage: vax only vs vax + T&T',
-                     fontsize=20, fontweight='bold', loc='left')
-        ax.set_ylim(0, 108)
+        ax.set_xticklabels(scen_labels, fontsize=11, rotation=45, ha='right')
+        ax.set_xlabel('Catch-up age range', fontsize=14)
+        ax.set_title(f'{chr(65 + panel_idx)}) {cov}% coverage',
+                     fontsize=16, fontweight='bold', loc='left')
+        ax.set_ylim(0, 112)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        ax.tick_params(axis='both', labelsize=15)
+        ax.tick_params(axis='both', labelsize=12)
         ax.grid(alpha=0.2, linestyle='-', axis='y')
 
-    axes[0].set_ylabel('% of baseline cancers', fontsize=18)
+    axes[0].set_ylabel('% of baseline cancers', fontsize=14)
 
     # Add hatching indicator to legend
     from matplotlib.patches import Patch
@@ -453,7 +453,7 @@ def plot_stacked_bars_pct_2panel(location):
     handles.append(Patch(facecolor='#cccccc', edgecolor='#666666', hatch='///', label='+ T&T'))
     labels.append('+ T&T')
     axes[0].legend(handles, labels, title='Birth cohort', loc='upper right', frameon=False,
-                   ncol=2, fontsize=14, title_fontsize=15)
+                   ncol=2, fontsize=10, title_fontsize=11)
 
     fig.tight_layout()
     fig_name = f'figures/catchup_vax_cohorts_pct_2panel_{location}.png'
