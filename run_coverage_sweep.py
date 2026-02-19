@@ -113,11 +113,11 @@ if __name__ == '__main__':
 
     T = sc.timer()
 
-    do_run = False       # Set False to skip simulations and load saved results
-    do_save = False
-    do_plot = True
+    do_run = True       # Set False to skip simulations and load saved results
+    do_save = True
+    do_plot = False
 
-    results_file = f'raw_results/coverage_sweep_{location}.obj'
+    results_file = f'raw_results/coverage_sweep_{location}_ttv.obj'
 
     # ------------------------------------------------------------------
     # 1. Run simulations (or load from disk)
@@ -140,7 +140,7 @@ if __name__ == '__main__':
                     catchup_cov=cov,
                     lower_age=lower_age,
                     upper_age=ua,
-                    add_tt=False,
+                    add_tt=True,
                     add_vx=True,
                 )
                 scen_name = f'Catch-up {lower_age}-{ua} {cov_pct}%'
