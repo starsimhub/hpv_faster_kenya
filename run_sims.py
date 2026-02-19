@@ -18,10 +18,10 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-load_partial = False
+keep_db = True
 n_trials    = [800, 2][debug]  # How many trials to run for calibration
 n_workers   = [40, 1][debug]    # How many cores to use
-storage="mysql://user:pass@localhost/hpvsim_calib"  #None
+storage = None  # "mysql://user:pass@localhost/hpvsim_calib"  
 
 # Save settings
 do_save = True
@@ -160,7 +160,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
     return sim
 
 
-def make_calib(n_trials=None, n_workers=None):
+def make_calib(n_trials=None, n_workers=None, keep_db=True):
     sim = make_sim(verbose=-1)
     datafiles = [
         'data/kenya_cancer_cases.csv',
@@ -213,35 +213,21 @@ def make_calib(n_trials=None, n_workers=None):
                             name=f'kenya_calib',
                             datafiles=datafiles,
                             total_trials=n_trials, n_workers=n_workers,
-                            storage=storage
+                            keep_db=keep_db, storage=storage
                             )
     return sim, calib
 
 
-def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', load_partial=True):
+def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', keep_db=True):
 
-    # Run calibration
-    sim, calib = make_calib(n_trials=n_trials, n_workers=n_workers)
+    # Run calibration with keep_db=True so it can resume if it crashes
+    sim, calib = make_calib(n_trials=n_trials, n_workers=n_workers, keep_db=keep_db)
+    calib.calibrate()
 
-    if load_partial:
-        # Load a partially-run calibration study
-        import optuna as op
-        print(calib.run_args.name)
-        study = op.load_study(storage=calib.run_args.storage, study_name=calib.run_args.name)
-        # calib.run_args.continue_db = True
-        # calib.calibrate()
-        output = study.optimize(calib.run_trial, n_trials=19)
-        calib.best_pars = sc.objdict(study.best_params)
-        calib.parse_study(study)
-        print('Best pars:', calib.best_pars)
-
-        # Tidy up
-        calib.calibrated = True
-        if not calib.run_args.keep_db:
-            calib.remove_db()
-
-    else:
-        calib.calibrate()
+    # Clean up the database after successful completion
+    if keep_db:
+        calib.remove_db()
+        print('Removed calibration database after successful completion')
 
     print(f'... finished calibration')
     print(f'Best pars are {calib.best_pars}')
@@ -329,7 +315,7 @@ if __name__ == '__main__':
         sim = run_sim(end=2100, calib_pars=calib_pars, analyzers=[ap], do_save=True, do_shrink=True)
 
     if 'run_calib' in to_run:
-        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True, load_partial=load_partial)
+        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True, keep_db=True)
 
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')
