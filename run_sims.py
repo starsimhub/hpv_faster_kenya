@@ -18,10 +18,10 @@ debug = 0  # Run with smaller population sizes and in serial
 do_shrink = True  # Do not keep people when running sims (saves memory)
 
 # Run settings
-load_partial = False
-n_trials    = [1600, 2][debug]  # How many trials to run for calibration
-n_workers   = [40, 1][debug]    # How many cores to use
-storage = None
+keep_db = True
+n_trials    = [1500, 2][debug]  # How many trials to run for calibration
+n_workers   = [75, 1][debug]    # How many cores to use
+storage = None  # "mysql://user:pass@localhost/hpvsim_calib"  
 
 # Save settings
 do_save = True
@@ -56,7 +56,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
     #   Prop_active: 21.3	56.1	75.8	87.2	92.8
     # For fitting, see https://www.researchsquare.com/article/rs-3074559/v1
     pars.debut = dict(
-        f=dict(dist='lognormal', par1=16, par2=4),
+        f=dict(dist='lognormal', par1=17, par2=4),
         m=dict(dist='lognormal', par1=18, par2=4),
         # f=dict(dist='lognormal', par1=18.28, par2=3.25),
         # m=dict(dist='lognormal', par1=17.71, par2=3.33),
@@ -73,14 +73,14 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
             # [0, 0,  0,  0.1596, 0.4466, 0.5845, 0.6139, 0.6202, 0.6139, 0.5726, 0.35, 0.21, 0.14, 0.07, 0.035, 0.007],
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.15,   0.2,    0.3,  0.4,  0.4,  0.2, 0.07, 0.035, 0.007],
             # [0, 0,  0,  0.1,     0.1,    0.15,    0.15,    0.2,    0.2,    0.4,  0.4,  0.4,  0.2,  0.1,  0.05, 0.01 ],
-            [0, 0,  0,  0.1,     0.5,    0.75,    0.7,    0.55,   0.45,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
-            [0, 0,  0,  0.1,     0.2,    0.5,    0.8,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
+            [0, 0,  0,  0.1,     0.7,   0.8,    0.8,    0.6,   0.65,    0.3,  0.2,  0.2,  0.1, 0.07, 0.035, 0.007],
+            [0, 0,  0,  0.1,     0.2,    0.71,    0.9,    0.6,   0.6,    0.45,  0.3,  0.3,  0.1,  0.1,  0.05, 0.01 ],
         ]),
         c=np.array([
             # Share of people of each age in casual partnerships
             [0, 5,  10,  15,  20,  25,  30,   35,   40,   45,  50,  55,   60,   65,   70,   75],
-            [0,  0, 0.01, 0.05, 0.3, 0.5, 0.25, 0.3,  0.3,  0.25, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
-            [0,  0, 0.01, 0.05, 0.4, 0.4, 0.5, 0.4,  0.35,  0.35, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
+            [0,  0, 0.05, 0.2, 0.6, 0.5, 0.4, 0.35,  0.35,  0.3, 0.2, 0.2, 0.10, 0.02, 0.02, 0.02],
+            [0,  0, 0.01, 0.2, 0.4, 0.5, 0.5, 0.5,  0.6,  0.5, 0.3, 0.2, 0.02, 0.02, 0.02, 0.02]
         ])
 
         # # TOO YOUNG
@@ -113,7 +113,7 @@ def make_sim(location='kenya', calib_pars=None, debug=0, interventions=None, ana
         #     [0,  0, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1, 0.01, 0.01, 0.01],
         # ])
     )
-    pars.layer_probs['m'][1] *= .7
+    pars.layer_probs['m'][1] *= 1
 
     pars.m_partners = dict(
         m=dict(dist='poisson1', par1=0.01),
@@ -160,7 +160,7 @@ def run_sim(calib_pars=None, analyzers=None, debug=debug, seed=1, verbose=.1, do
     return sim
 
 
-def make_calib(n_trials=None, n_workers=None):
+def make_calib(n_trials=None, n_workers=None, keep_db=True):
     sim = make_sim(verbose=-1)
     datafiles = [
         'data/kenya_cancer_cases.csv',
@@ -171,6 +171,16 @@ def make_calib(n_trials=None, n_workers=None):
 
     # Define the calibration parameters
     genotype_pars = dict(
+        hpv16=dict(
+            cancer_fn=dict(transform_prob=[2e-3, 1.5e-3, 2.5e-3, 2e-4]),
+            cin_fn=dict(k=[.3, .26, .34, 0.01]),
+            dur_cin=dict(par1=[5, 4.2, 5.8, 0.05], par2=[20, 18, 22, 0.5]),
+        ),
+        hpv18=dict(
+            cancer_fn=dict(transform_prob=[2e-3, 1.5e-3, 2.5e-3, 2e-4]),
+            cin_fn=dict(k=[.3, .26, .34, 0.01]),
+            dur_cin=dict(par1=[5, 4.2, 5.8, 0.05], par2=[20, 18, 22, 0.5]),
+        ),
         hi5=dict(
             cancer_fn=dict(transform_prob=[1.5e-3, 0.5e-3, 2.5e-3, 2e-4]),
             cin_fn=dict(k=[.15, .1, .25, 0.01]),
@@ -186,7 +196,7 @@ def make_calib(n_trials=None, n_workers=None):
     calib_pars = dict(
         beta=[0.2, 0.02, 0.8, 0.02],
         imm_init=dict(par1=[0.5, 0.5, 0.8, 0.05]),
-        cell_imm_init=dict(par1=[0.5, 0.1, 0.8, 0.05]),
+        cell_imm_init=dict(par1=[0.5, 0.05, 0.8, 0.05]),
         age_risk=dict(risk=[1, 1, 4, 0.1], age=[30, 30, 45, 1]),
         m_cross_layer=[0.3, 0.1, 0.7, 0.05],
         m_partners=dict(
@@ -203,35 +213,21 @@ def make_calib(n_trials=None, n_workers=None):
                             name=f'kenya_calib',
                             datafiles=datafiles,
                             total_trials=n_trials, n_workers=n_workers,
-                            storage=storage
+                            keep_db=keep_db, storage=storage
                             )
     return sim, calib
 
 
-def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', load_partial=True):
+def run_calib(n_trials=None, n_workers=None, do_save=True, filestem='', keep_db=True):
 
-    # Run calibration
-    sim, calib = make_calib(n_trials=n_trials, n_workers=n_workers)
+    # Run calibration with keep_db=True so it can resume if it crashes
+    sim, calib = make_calib(n_trials=n_trials, n_workers=n_workers, keep_db=keep_db)
+    calib.calibrate()
 
-    if load_partial:
-        # Load a partially-run calibration study
-        import optuna as op
-        print(calib.run_args.name)
-        study = op.load_study(storage=calib.run_args.storage, study_name=calib.run_args.name)
-        # calib.run_args.continue_db = True
-        # calib.calibrate()
-        output = study.optimize(calib.run_trial, n_trials=19)
-        calib.best_pars = sc.objdict(study.best_params)
-        calib.parse_study(study)
-        print('Best pars:', calib.best_pars)
-
-        # Tidy up
-        calib.calibrated = True
-        if not calib.run_args.keep_db:
-            calib.remove_db()
-
-    else:
-        calib.calibrate()
+    # Clean up the database after successful completion
+    if keep_db:
+        calib.remove_db()
+        print('Removed calibration database after successful completion')
 
     print(f'... finished calibration')
     print(f'Best pars are {calib.best_pars}')
@@ -289,16 +285,16 @@ if __name__ == '__main__':
 
     # List of what to run
     to_run = [
-        # 'run_sim',
+        'run_sim',
         # 'age_pyramids',
-        'run_calib',
+        # 'run_calib',
         # 'plot_calib'
         # 'run_parsets'
         # 'plot_age_causal'
     ]
 
     location = 'kenya'
-    end=2020
+    end=2100
     T = sc.timer()  # Start a timer
 
     if 'run_sim' in to_run:
@@ -319,7 +315,7 @@ if __name__ == '__main__':
         sim = run_sim(end=2100, calib_pars=calib_pars, analyzers=[ap], do_save=True, do_shrink=True)
 
     if 'run_calib' in to_run:
-        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True, load_partial=load_partial)
+        sim, calib = run_calib(n_trials=n_trials, n_workers=n_workers, filestem='', do_save=True, keep_db=True)
 
     if 'plot_calib' in to_run:
         calib = plot_calib(save_pars=True, filestem='')
