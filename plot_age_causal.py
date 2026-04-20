@@ -1,127 +1,81 @@
 """
-Plot age at causal infection distributions
+Plot age at causal infection distributions.
+
+Reads plot-ready histograms from `<resfolder>/age_causal_<location>.csv`
+(0.5-yr bins, produced by run_sims.py's extract step).
 """
+import argparse
+import os
 
 import numpy as np
-import sciris as sc
 import pandas as pd
 import matplotlib.pyplot as pl
 import seaborn as sns
+import sciris as sc
 from scipy.stats import gaussian_kde
+
 import utils as ut
 
 
-def get_age_causal_df(sim=None):
-    """
-    Make age causal dataframe from simulation analyzer results
-
-    Args:
-        sim: HPVsim simulation object with age_causal_infection analyzer
-
-    Returns:
-        age_causal_df: DataFrame with age and health event columns
-    """
-    dt_res = sim.get_analyzer('age_causal_infection')
-    dt_dfs = sc.autolist()
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_causal)[np.array(dt_res.age_causal)<50]
-    dt_df['Health event'] = 'Causal\ninfection'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cin)[np.array(dt_res.age_causal)<65]
-    dt_df['Health event'] = 'HSIL'
-    dt_dfs += dt_df
-
-    dt_df = pd.DataFrame()
-    dt_df['Age'] = np.array(dt_res.age_cancer)[np.array(dt_res.age_causal)<90]
-    dt_df['Health event'] = 'Cancer'
-    dt_dfs += dt_df
-
-    age_causal_df = pd.concat(dt_dfs)
-
-    return age_causal_df
+EVENT_ORDER = ['Causal\ninfection', 'HSIL', 'Cancer']
 
 
-def plot_age_causal(location='kenya', from_file=True, ac_df=None):
-    """
-    Create boxplot showing age distribution of key health events
-    (causal infection, HSIL, and cancer)
+def _load_and_expand(location, resfolder):
+    """Return {event: ages array} re-expanded from the histogram CSV."""
+    path = f'{resfolder}/age_causal_{location}.csv'
+    hist = ut.load_age_causal_hist(path)
+    return {event: ut.expand_age_hist(df) for event, df in hist.items()}
 
-    Args:
-        location: Country name (e.g., 'kenya')
-        from_file: If True, load data from file; if False, use provided ac_df
-        ac_df: Pre-loaded age causal DataFrame (used if from_file=False)
 
-    Returns:
-        fig: matplotlib figure object
-    """
-    if from_file:
-        ac_df = sc.loadobj(f'results/age_causal_infection_{location}.obj')
+def plot_age_causal(location='kenya', resfolder='results/v2.2.6_baseline',
+                    outpath=None):
+    ages_by_event = _load_and_expand(location, resfolder)
+    rows = []
+    for event in EVENT_ORDER:
+        for a in ages_by_event.get(event, []):
+            rows.append({'Health event': event, 'Age': float(a)})
+    ac_df = pd.DataFrame(rows)
 
     ac_colors = sc.gridcolors(3)
-
     ut.set_font(20)
     fig, ax = pl.subplots(1, 1, figsize=(6, 5))
-    sns.boxplot(
-        x="Health event", y="Age", data=ac_df, ax=ax,
-        showfliers=False, palette=ac_colors, hue='Health event',
-        hue_order=['Causal\ninfection', 'HSIL', 'Cancer']
-    )
-    ax.set_title(f'Age distribution\nof key health events')
+    sns.boxplot(x='Health event', y='Age', data=ac_df, ax=ax,
+                showfliers=False, palette=ac_colors, hue='Health event',
+                hue_order=EVENT_ORDER)
+    ax.set_title('Age distribution\nof key health events')
     ax.set_xlabel('')
     ax.set_ylim([0, 100])
-
     fig.tight_layout()
-    fig_name = f'figures/age_causal_{location}.png'
-    sc.savefig(fig_name, dpi=100)
-
-    print(f'Figure saved to: {fig_name}')
-
+    outpath = outpath or f'figures/age_causal_{location}.png'
+    os.makedirs(os.path.dirname(outpath), exist_ok=True)
+    sc.savefig(outpath, dpi=100)
+    print(f'Figure saved to: {outpath}')
     return fig
 
 
-def plot_age_causal_bar(location='kenya', from_file=True, ac_df=None):
-    """
-    Create bar plot showing % of causal infections by age group
+def plot_age_causal_bar(location='kenya', resfolder='results/v2.2.6_baseline',
+                        outpath=None):
+    ages_by_event = _load_and_expand(location, resfolder)
+    ages = ages_by_event.get('Causal\ninfection')
+    if ages is None or len(ages) == 0:
+        print('No causal infection data'); return None
 
-    Args:
-        location: Country name (e.g., 'kenya')
-        from_file: If True, load data from file; if False, use provided ac_df
-        ac_df: Pre-loaded age causal DataFrame (used if from_file=False)
-
-    Returns:
-        fig: matplotlib figure object
-    """
-    if from_file:
-        ac_df = sc.loadobj(f'results/age_causal_infection_{location}.obj')
-
-    # Filter for just causal infection
-    causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
-    ages = causal_df['Age'].values
-
-    # Bin into 1-year age groups from 10 to 80
     bins = np.arange(10, 81)
     counts, _ = np.histogram(ages, bins=bins)
     pcts = counts / counts.sum() * 100
     bin_centers = bins[:-1]
 
-    # Create compact bar plot
     ut.set_font(14)
     fig, ax = pl.subplots(1, 1, figsize=(4.5, 3.2))
-
     bar_color = '#3498db'
     ax.bar(bin_centers, pcts, color=bar_color, edgecolor='none', width=1.0, alpha=0.5)
 
-    # Overlay KDE smoothed line, scaled to match bar heights
     kde = gaussian_kde(ages, bw_method=0.15)
     x_smooth = np.linspace(10, 80, 500)
     kde_vals = kde(x_smooth)
-    kde_scaled = kde_vals / kde_vals.sum() * pcts.sum() * (500 / 70)  # scale to match % units
+    kde_scaled = kde_vals / kde_vals.sum() * pcts.sum() * (500 / 70)
     ax.plot(x_smooth, kde_scaled, color='#1a5276', linewidth=2)
 
-    # Mark median and 25th/75th percentiles
     q25, median, q75 = np.percentile(ages, [25, 50, 75])
     print(f'{location}: 25th={q25:.1f}, Median={median:.1f}, 75th={q75:.1f}')
     ymax = max(pcts)
@@ -132,112 +86,82 @@ def plot_age_causal_bar(location='kenya', from_file=True, ac_df=None):
         ax.text(val, ymax * yoff, label, ha='center', fontsize=9, color=color, fontweight='bold',
                 bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none', alpha=1.0), zorder=10)
 
-    # Label every 10 years for readability
-    tick_positions = np.arange(10, 81, 10)
-    ax.set_xticks(tick_positions)
-    ax.set_xticklabels(tick_positions, fontsize=11)
+    ax.set_xticks(np.arange(10, 81, 10))
     ax.set_xlim(9.5, 80.5)
     ax.set_xlabel('Age', fontsize=13)
     ax.set_ylabel('% of causal infections', fontsize=13)
-    ax.set_ylim(0, max(pcts) * 1.25)
+    ax.set_ylim(0, ymax * 1.25)
     ax.yaxis.set_major_formatter(pl.FuncFormatter(lambda x, _: f'{x:.0f}%'))
     ax.tick_params(axis='y', labelsize=11)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
     fig.tight_layout()
-    fig_name = f'figures/age_causal_bar_{location}.png'
-    sc.savefig(fig_name, dpi=300)
-    print(f'Figure saved to: {fig_name}')
-
+    outpath = outpath or f'figures/age_causal_bar_{location}.png'
+    os.makedirs(os.path.dirname(outpath), exist_ok=True)
+    sc.savefig(outpath, dpi=300)
+    print(f'Figure saved to: {outpath}')
     return fig
 
 
-def plot_age_causal_violin(location='kenya', from_file=True, ac_df=None):
-    """
-    Create violin plot showing distribution of age at causal infection
-    with vaccination coverage thresholds
+def plot_age_causal_violin(location='kenya', resfolder='results/v2.2.6_baseline',
+                           outpath=None):
+    ages_by_event = _load_and_expand(location, resfolder)
+    ages = ages_by_event.get('Causal\ninfection')
+    if ages is None or len(ages) == 0:
+        print('No causal infection data'); return None
 
-    Args:
-        location: Country name (e.g., 'kenya')
-        from_file: If True, load data from file; if False, use provided ac_df
-        ac_df: Pre-loaded age causal DataFrame (used if from_file=False)
-
-    Returns:
-        fig: matplotlib figure object
-    """
-    if from_file:
-        ac_df = sc.loadobj(f'results/age_causal_infection_{location}.obj')
-
-    # Filter for just causal infection
-    causal_df = ac_df[ac_df['Health event'] == 'Causal\ninfection'].copy()
-
-    # Calculate percentiles for vaccination ages
     vax_ages = [15, 20, 25, 30, 35, 40]
-    percentages = []
-    for age in vax_ages:
-        pct = (causal_df['Age'] <= age).sum() / len(causal_df) * 100
-        percentages.append(pct)
+    percentages = [(ages <= age).sum() / len(ages) * 100 for age in vax_ages]
+    for age, pct in zip(vax_ages, percentages):
         print(f'Age {age}: {pct:.1f}% of causal infections')
 
-    # Create the violin plot
     ut.set_font(20)
     fig, ax = pl.subplots(1, 1, figsize=(6, 8))
-
-    # Create violin plot
-    parts = ax.violinplot([causal_df['Age'].values], positions=[0], widths=0.6,
+    parts = ax.violinplot([ages], positions=[0], widths=0.6,
                           showmeans=False, showmedians=True, vert=True)
-
-    # Customize violin plot colors
     for pc in parts['bodies']:
-        pc.set_facecolor('#3498db')
-        pc.set_alpha(0.7)
-        pc.set_edgecolor('black')
-        pc.set_linewidth(1.5)
-
-    # Style the median line
+        pc.set_facecolor('#3498db'); pc.set_alpha(0.7)
+        pc.set_edgecolor('black'); pc.set_linewidth(1.5)
     parts['cmedians'].set_edgecolor('red')
     parts['cmedians'].set_linewidth(2)
 
-    # Add horizontal lines for vaccination ages
     colors = ['#27ae60', '#1abc9c', '#f39c12', '#e74c3c', '#9b59b6', '#34495e']
-    for i, (age, pct, color) in enumerate(zip(vax_ages, percentages, colors)):
-        # Draw horizontal line
+    for age, pct, color in zip(vax_ages, percentages, colors):
         ax.axhline(y=age, color=color, linestyle='--', linewidth=2, alpha=0.6, zorder=5)
-
-        # Add text label on the right side - positioned outside the violin
         ax.text(0.45, age, f'{pct:.0f}%',
-               fontsize=13, fontweight='bold', color=color,
-               va='center', ha='left', zorder=15,
-               bbox=dict(boxstyle='round,pad=0.4', facecolor='white',
-                        edgecolor=color, linewidth=2.5, alpha=1.0))
+                fontsize=13, fontweight='bold', color=color,
+                va='center', ha='left', zorder=15,
+                bbox=dict(boxstyle='round,pad=0.4', facecolor='white',
+                          edgecolor=color, linewidth=2.5, alpha=1.0))
 
     ax.set_ylabel('Age at causal infection (years)', fontsize=12, fontweight='bold')
     ax.set_title('Distribution of age at causal infection\nwith vaccination coverage thresholds',
-                fontsize=14, fontweight='bold')
+                 fontsize=14, fontweight='bold')
     ax.set_xlim(-0.5, 0.6)
     ax.set_ylim([10, 55])
     ax.set_xticks([])
     ax.grid(alpha=0.3, linestyle='--', axis='y')
-
-    # Add text box explaining the percentages
     textstr = 'Lines show % of causal\ninfections occurring by\neach age (vaccination target)'
     props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
     ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=10,
-           verticalalignment='bottom', horizontalalignment='right', bbox=props)
+            verticalalignment='bottom', horizontalalignment='right', bbox=props)
 
     fig.tight_layout()
-    fig_name = f'figures/age_causal_violin_{location}.png'
-    sc.savefig(fig_name, dpi=300)
-    print(f'\nFigure saved to: {fig_name}')
-
+    outpath = outpath or f'figures/age_causal_violin_{location}.png'
+    os.makedirs(os.path.dirname(outpath), exist_ok=True)
+    sc.savefig(outpath, dpi=300)
+    print(f'Figure saved to: {outpath}')
     return fig
 
 
-# %% Run as a script
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--location', nargs='+', default=['kenya', 'nigeria'])
+    parser.add_argument('--resfolder', default='results/v2.2.6_baseline')
+    args = parser.parse_args()
 
-    plot_age_causal(location='kenya')
-    for location in ['kenya', 'nigeria']:
-        plot_age_causal_violin(location=location)
-        plot_age_causal_bar(location=location)
+    for loc in args.location:
+        plot_age_causal(location=loc, resfolder=args.resfolder)
+        plot_age_causal_violin(location=loc, resfolder=args.resfolder)
+        plot_age_causal_bar(location=loc, resfolder=args.resfolder)

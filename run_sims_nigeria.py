@@ -337,9 +337,9 @@ if __name__ == '__main__':
         calib_pars = sc.loadobj('results/nigeria_pars.obj')  # Load parameters from a previous calibration
         analyzers = [hpv.age_causal_infection(start_year=2020)]
         sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers)
-        sim.plot()  # Plot the simulation
-        df = get_age_causal_df(sim)
-        sc.saveobj(f'results/age_causal_infection_nigeria.obj', df)
+        sim.plot()
+        df = ut.get_age_causal_df(sim)
+        ut.age_causal_df_to_csv(df, 'results/age_causal_nigeria.csv')
 
     if 'get_behavior' in to_run:
         calib_pars = sc.loadobj('results/nigeria_pars.obj')

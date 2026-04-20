@@ -302,8 +302,8 @@ if __name__ == '__main__':
         analyzers = [hpv.age_causal_infection(start_year=2020)]
         sim = run_sim(calib_pars=calib_pars, do_save=False, do_shrink=False, analyzers=analyzers, end=end)
         sc.saveobj('raw_results/sim_kenya.sim', sim)
-        df = pac.get_age_causal_df(sim)
-        sc.saveobj(f'results/age_causal_infection_kenya.obj', df)
+        df = ut.get_age_causal_df(sim)
+        ut.age_causal_df_to_csv(df, 'results/age_causal_kenya.csv')
 
     if 'age_pyramids' in to_run:
         # calib_pars = sc.loadobj('results/kenya_pars.obj')
@@ -326,9 +326,9 @@ if __name__ == '__main__':
         msim = run_parsets()
 
     if 'plot_age_causal' in to_run:
-        pac.plot_age_causal(location='kenya')
+        pac.plot_age_causal(location='kenya', resfolder='results')
 
     if 'plot_age_causal_violin' in to_run:
-        pac.plot_age_causal_violin(location='kenya')
+        pac.plot_age_causal_violin(location='kenya', resfolder='results')
 
     T.toc('Done')  # Print out how long the run took

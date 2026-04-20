@@ -159,6 +159,12 @@ if __name__ == '__main__':
 
             # Also save the raw msim
             sc.saveobj(results_file.replace('.obj', '.msim'), msim)
+
+            # Plot-ready cohort CSV alongside the summary CSV produced below
+            import utils as ut
+            stem = os.path.basename(results_file).replace('.obj', '')
+            ut.msim_dict_to_csvs(msim_dict, stem, resfolder='results',
+                                 location=location, ts_metrics=None)
     else:
         print(f'Loading previously saved results from {results_file}')
         msim_dict = sc.loadobj(results_file)

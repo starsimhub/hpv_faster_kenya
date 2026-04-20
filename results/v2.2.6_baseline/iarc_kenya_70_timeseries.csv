@@ -1,0 +1,973 @@
+location,coverage,scenario,year,metric,value,low,high
+kenya,70,No interventions,2020.0000,asr_cancer_incidence,28.6629,26.9860,29.8433
+kenya,70,No interventions,2021.0000,asr_cancer_incidence,29.1176,28.6085,31.0566
+kenya,70,No interventions,2022.0000,asr_cancer_incidence,28.3723,27.5049,29.3162
+kenya,70,No interventions,2023.0000,asr_cancer_incidence,28.9353,27.6212,30.9941
+kenya,70,No interventions,2024.0000,asr_cancer_incidence,28.3398,27.5815,30.2215
+kenya,70,No interventions,2025.0000,asr_cancer_incidence,28.5468,27.1733,29.0088
+kenya,70,No interventions,2026.0000,asr_cancer_incidence,28.8166,26.8197,30.1981
+kenya,70,No interventions,2027.0000,asr_cancer_incidence,28.8866,27.9913,29.4117
+kenya,70,No interventions,2028.0000,asr_cancer_incidence,28.2163,26.1128,29.8205
+kenya,70,No interventions,2029.0000,asr_cancer_incidence,27.1969,25.0017,28.2520
+kenya,70,No interventions,2030.0000,asr_cancer_incidence,27.8773,27.1911,30.0622
+kenya,70,No interventions,2031.0000,asr_cancer_incidence,27.9086,27.4471,28.9137
+kenya,70,No interventions,2032.0000,asr_cancer_incidence,27.8604,26.9830,28.8000
+kenya,70,No interventions,2033.0000,asr_cancer_incidence,28.2504,27.3102,29.4918
+kenya,70,No interventions,2034.0000,asr_cancer_incidence,28.2400,27.8458,29.2776
+kenya,70,No interventions,2035.0000,asr_cancer_incidence,28.1241,27.4753,29.8529
+kenya,70,No interventions,2036.0000,asr_cancer_incidence,27.9658,27.1779,29.8584
+kenya,70,No interventions,2037.0000,asr_cancer_incidence,26.8991,26.4483,28.4846
+kenya,70,No interventions,2038.0000,asr_cancer_incidence,26.8400,25.5636,29.0377
+kenya,70,No interventions,2039.0000,asr_cancer_incidence,28.5889,27.5923,29.5587
+kenya,70,No interventions,2040.0000,asr_cancer_incidence,27.2332,26.0594,28.6727
+kenya,70,No interventions,2041.0000,asr_cancer_incidence,27.0546,26.3400,29.2428
+kenya,70,No interventions,2042.0000,asr_cancer_incidence,28.0106,26.8216,29.5155
+kenya,70,No interventions,2043.0000,asr_cancer_incidence,26.7007,25.9529,28.5366
+kenya,70,No interventions,2044.0000,asr_cancer_incidence,27.9062,27.0033,28.9626
+kenya,70,No interventions,2045.0000,asr_cancer_incidence,27.6371,26.2137,29.2581
+kenya,70,No interventions,2046.0000,asr_cancer_incidence,27.2948,26.7719,28.2641
+kenya,70,No interventions,2047.0000,asr_cancer_incidence,26.4858,25.5461,28.2881
+kenya,70,No interventions,2048.0000,asr_cancer_incidence,27.4764,26.6712,28.5283
+kenya,70,No interventions,2049.0000,asr_cancer_incidence,27.7351,27.0531,28.5593
+kenya,70,No interventions,2050.0000,asr_cancer_incidence,26.7094,25.9181,28.1740
+kenya,70,No interventions,2051.0000,asr_cancer_incidence,27.3133,26.2776,28.5937
+kenya,70,No interventions,2052.0000,asr_cancer_incidence,27.8638,26.0295,28.9214
+kenya,70,No interventions,2053.0000,asr_cancer_incidence,27.5267,26.5908,28.3580
+kenya,70,No interventions,2054.0000,asr_cancer_incidence,27.6582,25.7563,28.0037
+kenya,70,No interventions,2055.0000,asr_cancer_incidence,27.3351,26.6299,28.1748
+kenya,70,No interventions,2056.0000,asr_cancer_incidence,26.8441,26.1850,27.1027
+kenya,70,No interventions,2057.0000,asr_cancer_incidence,27.3040,26.2681,28.0536
+kenya,70,No interventions,2058.0000,asr_cancer_incidence,26.7831,25.9646,27.4614
+kenya,70,No interventions,2059.0000,asr_cancer_incidence,27.0124,26.1273,27.8475
+kenya,70,No interventions,2060.0000,asr_cancer_incidence,27.1243,26.3473,27.5620
+kenya,70,No interventions,2061.0000,asr_cancer_incidence,26.6114,26.1393,26.6874
+kenya,70,No interventions,2062.0000,asr_cancer_incidence,27.1210,26.5525,27.8726
+kenya,70,No interventions,2063.0000,asr_cancer_incidence,27.0449,26.3621,27.2788
+kenya,70,No interventions,2064.0000,asr_cancer_incidence,26.4591,25.6064,26.8517
+kenya,70,No interventions,2065.0000,asr_cancer_incidence,26.2746,25.9017,26.8869
+kenya,70,No interventions,2066.0000,asr_cancer_incidence,26.3106,25.4621,26.9475
+kenya,70,No interventions,2067.0000,asr_cancer_incidence,26.2317,25.8647,27.0624
+kenya,70,No interventions,2068.0000,asr_cancer_incidence,26.0115,25.6174,26.3736
+kenya,70,No interventions,2069.0000,asr_cancer_incidence,26.5852,25.9600,27.1566
+kenya,70,No interventions,2070.0000,asr_cancer_incidence,26.2922,25.7795,26.5071
+kenya,70,No interventions,2071.0000,asr_cancer_incidence,25.5510,25.2147,26.6260
+kenya,70,No interventions,2072.0000,asr_cancer_incidence,26.0021,25.0034,26.6985
+kenya,70,No interventions,2073.0000,asr_cancer_incidence,25.8234,25.2705,26.3330
+kenya,70,No interventions,2074.0000,asr_cancer_incidence,25.5355,24.8472,26.3199
+kenya,70,No interventions,2075.0000,asr_cancer_incidence,25.8073,24.7569,26.2103
+kenya,70,No interventions,2076.0000,asr_cancer_incidence,25.5340,24.9387,26.0763
+kenya,70,No interventions,2077.0000,asr_cancer_incidence,24.8632,24.5054,26.1213
+kenya,70,No interventions,2078.0000,asr_cancer_incidence,25.1609,25.0162,25.4421
+kenya,70,No interventions,2079.0000,asr_cancer_incidence,25.3076,24.8149,26.2248
+kenya,70,No interventions,2080.0000,asr_cancer_incidence,24.9600,24.4536,26.4165
+kenya,70,No interventions,2081.0000,asr_cancer_incidence,25.0683,24.4445,25.8147
+kenya,70,No interventions,2082.0000,asr_cancer_incidence,24.8783,23.9936,26.0476
+kenya,70,No interventions,2083.0000,asr_cancer_incidence,24.9912,24.2360,25.2480
+kenya,70,No interventions,2084.0000,asr_cancer_incidence,24.8093,24.0259,26.1038
+kenya,70,No interventions,2085.0000,asr_cancer_incidence,25.1261,24.8986,25.5803
+kenya,70,No interventions,2086.0000,asr_cancer_incidence,24.7374,23.2980,25.3999
+kenya,70,No interventions,2087.0000,asr_cancer_incidence,24.9025,23.4508,25.4089
+kenya,70,No interventions,2088.0000,asr_cancer_incidence,24.9497,24.1005,25.4970
+kenya,70,No interventions,2089.0000,asr_cancer_incidence,24.6466,24.1470,25.8171
+kenya,70,No interventions,2090.0000,asr_cancer_incidence,23.8482,23.3634,25.0617
+kenya,70,No interventions,2091.0000,asr_cancer_incidence,24.4834,23.8164,24.6687
+kenya,70,No interventions,2092.0000,asr_cancer_incidence,24.5162,23.5173,24.9308
+kenya,70,No interventions,2093.0000,asr_cancer_incidence,23.5644,23.4388,24.2765
+kenya,70,No interventions,2094.0000,asr_cancer_incidence,24.4999,23.1675,24.9058
+kenya,70,No interventions,2095.0000,asr_cancer_incidence,24.4654,23.8223,25.1785
+kenya,70,No interventions,2096.0000,asr_cancer_incidence,24.0589,23.3251,24.6142
+kenya,70,No interventions,2097.0000,asr_cancer_incidence,24.2841,23.5277,24.7752
+kenya,70,No interventions,2098.0000,asr_cancer_incidence,24.4719,23.3007,25.0602
+kenya,70,No interventions,2099.0000,asr_cancer_incidence,24.0563,23.4282,24.9968
+kenya,70,No interventions,2100.0000,asr_cancer_incidence,23.8511,23.6116,24.9420
+kenya,70,No interventions,2020.0000,cancers,4759.1627,4608.0781,4914.0242
+kenya,70,No interventions,2021.0000,cancers,5087.7714,5008.4523,5321.9525
+kenya,70,No interventions,2022.0000,cancers,5046.2233,4849.8134,5363.5007
+kenya,70,No interventions,2023.0000,cancers,5340.8380,5000.8980,5775.2062
+kenya,70,No interventions,2024.0000,cancers,5352.1693,5246.4103,5865.8567
+kenya,70,No interventions,2025.0000,cancers,5586.3504,5352.1694,5763.8748
+kenya,70,No interventions,2026.0000,cancers,5930.0676,5510.8081,6164.2487
+kenya,70,No interventions,2027.0000,cancers,6069.8210,5843.1944,6217.1284
+kenya,70,No interventions,2028.0000,cancers,6130.2547,5654.3384,6432.4239
+kenya,70,No interventions,2029.0000,cancers,6100.0378,5533.4708,6360.6586
+kenya,70,No interventions,2030.0000,cancers,6455.0865,6292.6707,7017.8762
+kenya,70,No interventions,2031.0000,cancers,6677.9362,6507.9659,6980.1052
+kenya,70,No interventions,2032.0000,cancers,6844.1293,6568.4003,7066.9787
+kenya,70,No interventions,2033.0000,cancers,7161.4070,6953.6656,7399.3647
+kenya,70,No interventions,2034.0000,cancers,7369.1479,7157.6296,7667.5400
+kenya,70,No interventions,2035.0000,cancers,7497.5695,7357.8168,8022.5884
+kenya,70,No interventions,2036.0000,cancers,7739.3046,7399.3647,8249.2155
+kenya,70,No interventions,2037.0000,cancers,7622.2144,7584.4436,8203.8901
+kenya,70,No interventions,2038.0000,cancers,7947.0458,7524.0096,8524.9445
+kenya,70,No interventions,2039.0000,cancers,8653.3660,8264.3237,9031.0775
+kenya,70,No interventions,2040.0000,cancers,8460.7333,8101.9081,8951.7583
+kenya,70,No interventions,2041.0000,cancers,8649.5891,8426.7393,9212.3791
+kenya,70,No interventions,2042.0000,cancers,9227.4876,8808.2278,9726.0662
+kenya,70,No interventions,2043.0000,cancers,9068.8485,8793.1190,9552.3192
+kenya,70,No interventions,2044.0000,cancers,9714.7351,9340.8007,9967.8016
+kenya,70,No interventions,2045.0000,cancers,9771.3917,9337.0232,10315.2961
+kenya,70,No interventions,2046.0000,cancers,9990.4644,9737.3979,10232.1996
+kenya,70,No interventions,2047.0000,cancers,9828.0481,9552.3191,10549.4771
+kenya,70,No interventions,2048.0000,cancers,10432.3864,10156.6572,10889.4172
+kenya,70,No interventions,2049.0000,cancers,10810.0980,10643.9052,11150.0381
+kenya,70,No interventions,2050.0000,cancers,10723.2244,10356.8441,11218.0260
+kenya,70,No interventions,2051.0000,cancers,11165.1472,10723.2245,11591.9604
+kenya,70,No interventions,2052.0000,cancers,11588.1837,10889.4178,12003.6663
+kenya,70,No interventions,2053.0000,cancers,11614.6234,11312.4541,11969.6722
+kenya,70,No interventions,2054.0000,cancers,11984.7803,11161.3701,12082.9855
+kenya,70,No interventions,2055.0000,cancers,12135.8650,11773.2626,12381.3770
+kenya,70,No interventions,2056.0000,cancers,12094.3165,11780.8160,12150.9733
+kenya,70,No interventions,2057.0000,cancers,12487.1364,11992.3350,12925.2817
+kenya,70,No interventions,2058.0000,cancers,12479.5828,12086.7623,12751.5343
+kenya,70,No interventions,2059.0000,cancers,12819.5229,12317.1665,13193.4569
+kenya,70,No interventions,2060.0000,cancers,13065.0347,12702.4323,13280.3304
+kenya,70,No interventions,2061.0000,cancers,12970.6071,12793.0826,13049.9265
+kenya,70,No interventions,2062.0000,cancers,13510.7341,13250.1135,13850.6746
+kenya,70,No interventions,2063.0000,cancers,13661.8186,13333.2103,13778.9095
+kenya,70,No interventions,2064.0000,cancers,13601.3851,13163.2402,13797.7953
+kenya,70,No interventions,2065.0000,cancers,13658.0416,13431.4150,13956.4338
+kenya,70,No interventions,2066.0000,cancers,13933.7712,13420.0839,14183.0601
+kenya,70,No interventions,2067.0000,cancers,14047.0839,13850.6748,14485.2294
+kenya,70,No interventions,2068.0000,cancers,14092.4093,13839.3436,14315.2595
+kenya,70,No interventions,2069.0000,cancers,14632.5367,14247.2714,14855.3868
+kenya,70,No interventions,2070.0000,cancers,14572.1028,14300.1512,14655.1998
+kenya,70,No interventions,2071.0000,cancers,14402.1327,14171.7291,14942.2600
+kenya,70,No interventions,2072.0000,cancers,14772.2903,14273.7113,15082.0134
+kenya,70,No interventions,2073.0000,cancers,14844.0552,14560.7720,15134.8929
+kenya,70,No interventions,2074.0000,cancers,14760.9589,14455.0123,15285.9778
+kenya,70,No interventions,2075.0000,cancers,15191.5496,14564.5487,15433.2848
+kenya,70,No interventions,2076.0000,cancers,15119.7844,14817.6156,15403.0680
+kenya,70,No interventions,2077.0000,cancers,14798.7302,14723.1879,15705.2369
+kenya,70,No interventions,2078.0000,cancers,15199.1038,15127.3387,15342.6338
+kenya,70,No interventions,2079.0000,cancers,15403.0673,15244.4294,15799.6646
+kenya,70,No interventions,2080.0000,cancers,15274.6459,15112.2299,16226.4784
+kenya,70,No interventions,2081.0000,cancers,15535.2668,15183.9954,15935.6406
+kenya,70,No interventions,2082.0000,cancers,15501.2727,14949.8142,16271.8032
+kenya,70,No interventions,2083.0000,cancers,15618.3635,15293.5315,15852.5441
+kenya,70,No interventions,2084.0000,cancers,15697.6825,15191.5492,16471.9910
+kenya,70,No interventions,2085.0000,cancers,16056.5079,15882.7607,16286.9127
+kenya,70,No interventions,2086.0000,cancers,15954.5259,15078.2365,16271.8038
+kenya,70,No interventions,2087.0000,cancers,16037.6223,15289.7548,16324.6831
+kenya,70,No interventions,2088.0000,cancers,16143.3820,15686.3508,16573.9728
+kenya,70,No interventions,2089.0000,cancers,16166.0441,15882.7609,16793.0446
+kenya,70,No interventions,2090.0000,cancers,15739.2308,15335.0802,16453.1047
+kenya,70,No interventions,2091.0000,cancers,16105.6105,15777.0022,16328.4600
+kenya,70,No interventions,2092.0000,cancers,16173.5990,15731.6760,16487.0986
+kenya,70,No interventions,2093.0000,cancers,15799.6646,15637.2483,16302.0200
+kenya,70,No interventions,2094.0000,cancers,16354.9005,15659.9109,16683.5087
+kenya,70,No interventions,2095.0000,cancers,16645.7382,15939.4176,16955.4611
+kenya,70,No interventions,2096.0000,cancers,16411.5564,15746.7850,16657.0692
+kenya,70,No interventions,2097.0000,cancers,16388.8939,16139.6042,16725.0573
+kenya,70,No interventions,2098.0000,cancers,16751.4967,15980.9656,17159.4249
+kenya,70,No interventions,2099.0000,cancers,16437.9971,16101.8341,16981.9011
+kenya,70,No interventions,2100.0000,cancers,16218.9246,16139.6044,17189.6418
+kenya,70,Routine vax only,2020.0000,asr_cancer_incidence,28.3099,26.5918,29.6408
+kenya,70,Routine vax only,2021.0000,asr_cancer_incidence,28.5712,27.8268,30.2594
+kenya,70,Routine vax only,2022.0000,asr_cancer_incidence,27.2760,26.2544,28.8867
+kenya,70,Routine vax only,2023.0000,asr_cancer_incidence,27.1518,26.5305,28.9867
+kenya,70,Routine vax only,2024.0000,asr_cancer_incidence,26.6493,25.3625,28.3601
+kenya,70,Routine vax only,2025.0000,asr_cancer_incidence,26.4185,25.2492,26.8299
+kenya,70,Routine vax only,2026.0000,asr_cancer_incidence,26.3523,24.5782,27.2961
+kenya,70,Routine vax only,2027.0000,asr_cancer_incidence,26.5229,25.6313,27.3847
+kenya,70,Routine vax only,2028.0000,asr_cancer_incidence,25.9480,23.7470,27.1455
+kenya,70,Routine vax only,2029.0000,asr_cancer_incidence,24.5028,22.6593,24.9223
+kenya,70,Routine vax only,2030.0000,asr_cancer_incidence,25.3289,24.1561,25.9444
+kenya,70,Routine vax only,2031.0000,asr_cancer_incidence,24.5162,23.9786,25.3941
+kenya,70,Routine vax only,2032.0000,asr_cancer_incidence,25.0828,24.5918,26.1168
+kenya,70,Routine vax only,2033.0000,asr_cancer_incidence,24.3709,23.6800,25.7461
+kenya,70,Routine vax only,2034.0000,asr_cancer_incidence,24.2474,22.9401,24.9785
+kenya,70,Routine vax only,2035.0000,asr_cancer_incidence,24.1019,23.1670,25.4158
+kenya,70,Routine vax only,2036.0000,asr_cancer_incidence,24.2492,23.3021,25.5177
+kenya,70,Routine vax only,2037.0000,asr_cancer_incidence,23.5583,22.9279,23.9459
+kenya,70,Routine vax only,2038.0000,asr_cancer_incidence,22.6689,21.8633,23.4788
+kenya,70,Routine vax only,2039.0000,asr_cancer_incidence,23.3602,22.5201,24.0862
+kenya,70,Routine vax only,2040.0000,asr_cancer_incidence,22.2767,21.6954,23.5227
+kenya,70,Routine vax only,2041.0000,asr_cancer_incidence,22.1534,21.7338,23.0260
+kenya,70,Routine vax only,2042.0000,asr_cancer_incidence,21.9945,21.0678,22.5622
+kenya,70,Routine vax only,2043.0000,asr_cancer_incidence,21.1716,20.5229,22.6238
+kenya,70,Routine vax only,2044.0000,asr_cancer_incidence,20.6103,20.2333,21.4249
+kenya,70,Routine vax only,2045.0000,asr_cancer_incidence,20.6158,19.7054,21.2124
+kenya,70,Routine vax only,2046.0000,asr_cancer_incidence,20.4238,19.9509,20.9365
+kenya,70,Routine vax only,2047.0000,asr_cancer_incidence,19.7500,19.1317,20.5204
+kenya,70,Routine vax only,2048.0000,asr_cancer_incidence,19.5606,18.8741,19.8698
+kenya,70,Routine vax only,2049.0000,asr_cancer_incidence,19.1442,18.0905,19.3503
+kenya,70,Routine vax only,2050.0000,asr_cancer_incidence,17.9976,17.7133,18.6680
+kenya,70,Routine vax only,2051.0000,asr_cancer_incidence,17.8234,17.1311,17.9795
+kenya,70,Routine vax only,2052.0000,asr_cancer_incidence,17.0593,16.5826,17.3948
+kenya,70,Routine vax only,2053.0000,asr_cancer_incidence,16.3575,15.7496,16.6925
+kenya,70,Routine vax only,2054.0000,asr_cancer_incidence,15.6016,14.9842,16.8333
+kenya,70,Routine vax only,2055.0000,asr_cancer_incidence,14.7292,13.8593,15.3236
+kenya,70,Routine vax only,2056.0000,asr_cancer_incidence,14.6556,14.1193,15.0558
+kenya,70,Routine vax only,2057.0000,asr_cancer_incidence,14.2235,13.0040,15.0412
+kenya,70,Routine vax only,2058.0000,asr_cancer_incidence,13.1620,12.6265,13.5075
+kenya,70,Routine vax only,2059.0000,asr_cancer_incidence,12.5920,12.3112,13.2630
+kenya,70,Routine vax only,2060.0000,asr_cancer_incidence,11.9425,11.7308,12.2577
+kenya,70,Routine vax only,2061.0000,asr_cancer_incidence,11.3949,10.6691,11.5861
+kenya,70,Routine vax only,2062.0000,asr_cancer_incidence,11.0458,10.4227,11.7092
+kenya,70,Routine vax only,2063.0000,asr_cancer_incidence,10.6941,10.5801,10.8471
+kenya,70,Routine vax only,2064.0000,asr_cancer_incidence,9.6526,9.3230,9.9927
+kenya,70,Routine vax only,2065.0000,asr_cancer_incidence,9.3303,8.9074,9.7362
+kenya,70,Routine vax only,2066.0000,asr_cancer_incidence,9.0852,8.6263,9.2306
+kenya,70,Routine vax only,2067.0000,asr_cancer_incidence,8.3711,7.9717,8.8093
+kenya,70,Routine vax only,2068.0000,asr_cancer_incidence,7.9827,7.4633,8.1917
+kenya,70,Routine vax only,2069.0000,asr_cancer_incidence,7.3800,7.1380,7.6337
+kenya,70,Routine vax only,2070.0000,asr_cancer_incidence,7.0585,6.6594,7.5146
+kenya,70,Routine vax only,2071.0000,asr_cancer_incidence,6.7083,6.3721,7.1925
+kenya,70,Routine vax only,2072.0000,asr_cancer_incidence,6.4313,6.1631,6.4843
+kenya,70,Routine vax only,2073.0000,asr_cancer_incidence,5.8274,5.4823,6.3129
+kenya,70,Routine vax only,2074.0000,asr_cancer_incidence,5.5213,5.2899,5.7289
+kenya,70,Routine vax only,2075.0000,asr_cancer_incidence,5.2136,5.1204,5.3515
+kenya,70,Routine vax only,2076.0000,asr_cancer_incidence,4.9261,4.6770,5.2568
+kenya,70,Routine vax only,2077.0000,asr_cancer_incidence,4.5400,4.2929,4.8128
+kenya,70,Routine vax only,2078.0000,asr_cancer_incidence,4.3591,4.1141,4.4521
+kenya,70,Routine vax only,2079.0000,asr_cancer_incidence,4.3566,3.8196,4.6167
+kenya,70,Routine vax only,2080.0000,asr_cancer_incidence,3.9556,3.7948,4.1583
+kenya,70,Routine vax only,2081.0000,asr_cancer_incidence,3.7725,3.5212,4.0279
+kenya,70,Routine vax only,2082.0000,asr_cancer_incidence,3.6237,3.2508,3.8230
+kenya,70,Routine vax only,2083.0000,asr_cancer_incidence,3.3130,3.1169,3.6679
+kenya,70,Routine vax only,2084.0000,asr_cancer_incidence,3.3164,3.0882,3.4917
+kenya,70,Routine vax only,2085.0000,asr_cancer_incidence,2.9934,2.8624,3.1761
+kenya,70,Routine vax only,2086.0000,asr_cancer_incidence,3.1138,2.9660,3.2562
+kenya,70,Routine vax only,2087.0000,asr_cancer_incidence,3.1184,2.7184,3.2280
+kenya,70,Routine vax only,2088.0000,asr_cancer_incidence,2.9345,2.7878,3.0585
+kenya,70,Routine vax only,2089.0000,asr_cancer_incidence,2.8402,2.6267,2.9076
+kenya,70,Routine vax only,2090.0000,asr_cancer_incidence,2.7067,2.4640,3.0514
+kenya,70,Routine vax only,2091.0000,asr_cancer_incidence,2.6330,2.5557,2.8060
+kenya,70,Routine vax only,2092.0000,asr_cancer_incidence,2.6801,2.5692,2.8332
+kenya,70,Routine vax only,2093.0000,asr_cancer_incidence,2.5420,2.4018,2.7999
+kenya,70,Routine vax only,2094.0000,asr_cancer_incidence,2.4986,2.4040,2.9754
+kenya,70,Routine vax only,2095.0000,asr_cancer_incidence,2.5657,2.5191,2.9219
+kenya,70,Routine vax only,2096.0000,asr_cancer_incidence,2.4824,2.2136,2.5835
+kenya,70,Routine vax only,2097.0000,asr_cancer_incidence,2.5354,2.2707,2.7218
+kenya,70,Routine vax only,2098.0000,asr_cancer_incidence,2.3540,2.2203,2.6693
+kenya,70,Routine vax only,2099.0000,asr_cancer_incidence,2.5740,2.3338,2.7238
+kenya,70,Routine vax only,2100.0000,asr_cancer_incidence,2.4201,2.2878,2.6048
+kenya,70,Routine vax only,2020.0000,cancers,4698.7289,4532.5359,4883.8073
+kenya,70,Routine vax only,2021.0000,cancers,4974.4582,4838.4821,5178.4223
+kenya,70,Routine vax only,2022.0000,cancers,4812.0425,4608.0784,5201.0848
+kenya,70,Routine vax only,2023.0000,cancers,5027.3378,4785.6025,5295.5127
+kenya,70,Routine vax only,2024.0000,cancers,5004.6750,4800.7108,5454.1515
+kenya,70,Routine vax only,2025.0000,cancers,5125.5425,4895.1388,5287.9586
+kenya,70,Routine vax only,2026.0000,cancers,5352.1696,4955.5724,5522.1395
+kenya,70,Routine vax only,2027.0000,cancers,5533.4709,5306.8441,5744.9893
+kenya,70,Routine vax only,2028.0000,cancers,5518.3622,5102.8800,5828.0856
+kenya,70,Routine vax only,2029.0000,cancers,5435.2657,5008.4523,5631.6759
+kenya,70,Routine vax only,2030.0000,cancers,5801.6461,5578.7961,5971.6160
+kenya,70,Routine vax only,2031.0000,cancers,5831.8630,5639.2300,5979.1702
+kenya,70,Routine vax only,2032.0000,cancers,6164.2486,5998.0558,6383.3214
+kenya,70,Routine vax only,2033.0000,cancers,6156.6943,6020.7188,6496.6348
+kenya,70,Routine vax only,2034.0000,cancers,6266.2310,6013.1642,6507.9659
+kenya,70,Routine vax only,2035.0000,cancers,6477.7493,6232.2369,6795.0268
+kenya,70,Routine vax only,2036.0000,cancers,6643.9422,6353.1048,7002.7679
+kenya,70,Routine vax only,2037.0000,cancers,6655.2733,6507.9662,6821.4661
+kenya,70,Routine vax only,2038.0000,cancers,6727.0387,6436.2008,6847.9062
+kenya,70,Routine vax only,2039.0000,cancers,6998.9911,6779.9183,7278.4973
+kenya,70,Routine vax only,2040.0000,cancers,6912.1172,6715.7075,7289.8287
+kenya,70,Routine vax only,2041.0000,cancers,6961.2199,6851.6832,7304.9372
+kenya,70,Routine vax only,2042.0000,cancers,7119.8585,6866.7921,7301.1595
+kenya,70,Routine vax only,2043.0000,cancers,7123.6356,6863.0148,7433.3588
+kenya,70,Routine vax only,2044.0000,cancers,7059.4247,6923.4489,7263.3889
+kenya,70,Routine vax only,2045.0000,cancers,7202.9551,6885.6776,7395.5875
+kenya,70,Routine vax only,2046.0000,cancers,7214.2863,7082.0872,7422.0275
+kenya,70,Routine vax only,2047.0000,cancers,7157.6298,6859.2375,7395.5876
+kenya,70,Routine vax only,2048.0000,cancers,7233.1716,7010.3223,7414.4734
+kenya,70,Routine vax only,2049.0000,cancers,7259.6118,6825.2440,7312.4910
+kenya,70,Routine vax only,2050.0000,cancers,6991.4369,6836.5750,7206.7318
+kenya,70,Routine vax only,2051.0000,cancers,7021.6534,6791.2497,7180.2925
+kenya,70,Routine vax only,2052.0000,cancers,6897.0089,6696.8217,6983.8826
+kenya,70,Routine vax only,2053.0000,cancers,6730.8159,6496.6347,6908.3398
+kenya,70,Routine vax only,2054.0000,cancers,6560.8457,6334.2189,7025.4309
+kenya,70,Routine vax only,2055.0000,cancers,6360.6590,5967.8389,6659.0506
+kenya,70,Routine vax only,2056.0000,cancers,6447.5326,6251.1224,6613.7250
+kenya,70,Routine vax only,2057.0000,cancers,6443.7550,5918.7365,6810.1347
+kenya,70,Routine vax only,2058.0000,cancers,6100.0375,5884.7425,6273.7849
+kenya,70,Routine vax only,2059.0000,cancers,6013.1644,5880.9652,6334.2191
+kenya,70,Routine vax only,2060.0000,cancers,5816.7545,5722.3265,5982.9473
+kenya,70,Routine vax only,2061.0000,cancers,5726.1036,5333.2839,5790.3146
+kenya,70,Routine vax only,2062.0000,cancers,5677.0012,5363.5006,6005.6100
+kenya,70,Routine vax only,2063.0000,cancers,5635.4529,5533.4708,5714.7724
+kenya,70,Routine vax only,2064.0000,cancers,5227.5245,5034.8919,5382.3864
+kenya,70,Routine vax only,2065.0000,cancers,5170.8681,4929.1329,5416.3806
+kenya,70,Routine vax only,2066.0000,cancers,5151.9826,4921.5789,5197.3079
+kenya,70,Routine vax only,2067.0000,cancers,4876.2531,4634.5182,5114.2114
+kenya,70,Routine vax only,2068.0000,cancers,4766.7172,4449.4396,4838.4822
+kenya,70,Routine vax only,2069.0000,cancers,4521.2048,4351.2346,4638.2953
+kenya,70,Routine vax only,2070.0000,cancers,4411.6686,4162.3791,4653.4037
+kenya,70,Routine vax only,2071.0000,cancers,4324.7950,4075.5056,4619.4097
+kenya,70,Routine vax only,2072.0000,cancers,4185.0418,4041.5115,4268.1384
+kenya,70,Routine vax only,2073.0000,cancers,3905.5353,3686.4629,4196.3731
+kenya,70,Routine vax only,2074.0000,cancers,3788.4449,3626.0290,3920.6438
+kenya,70,Routine vax only,2075.0000,cancers,3671.3544,3599.5892,3777.1135
+kenya,70,Routine vax only,2076.0000,cancers,3546.7096,3395.6250,3750.6737
+kenya,70,Routine vax only,2077.0000,cancers,3437.1733,3195.4381,3561.8180
+kenya,70,Routine vax only,2078.0000,cancers,3289.8658,3127.4500,3406.9564
+kenya,70,Routine vax only,2079.0000,cancers,3327.6370,2972.5883,3524.0469
+kenya,70,Routine vax only,2080.0000,cancers,3161.4440,2995.2511,3259.6490
+kenya,70,Routine vax only,2081.0000,cancers,2991.4739,2761.0700,3199.2152
+kenya,70,Routine vax only,2082.0000,cancers,2915.9317,2659.0879,3089.6788
+kenya,70,Routine vax only,2083.0000,cancers,2723.2988,2579.7685,2999.0281
+kenya,70,Routine vax only,2084.0000,cancers,2730.8531,2557.1058,2897.0460
+kenya,70,Routine vax only,2085.0000,cancers,2545.7745,2409.7984,2674.1963
+kenya,70,Routine vax only,2086.0000,cancers,2606.2083,2474.0093,2742.1843
+kenya,70,Routine vax only,2087.0000,cancers,2602.4312,2300.2621,2719.5217
+kenya,70,Routine vax only,2088.0000,cancers,2470.2322,2368.2502,2606.2082
+kenya,70,Routine vax only,2089.0000,cancers,2349.3645,2258.7138,2443.7924
+kenya,70,Routine vax only,2090.0000,cancers,2288.9307,2134.0691,2496.6719
+kenya,70,Routine vax only,2091.0000,cancers,2262.4909,2137.8462,2360.6958
+kenya,70,Routine vax only,2092.0000,cancers,2247.3824,2160.5088,2349.3645
+kenya,70,Routine vax only,2093.0000,cancers,2164.2859,2035.8641,2364.4730
+kenya,70,Routine vax only,2094.0000,cancers,2141.6233,2050.9725,2477.7860
+kenya,70,Routine vax only,2095.0000,cancers,2171.8400,2066.0810,2428.6835
+kenya,70,Routine vax only,2096.0000,cancers,2096.2978,1914.9964,2168.0630
+kenya,70,Routine vax only,2097.0000,cancers,2115.1835,1865.8940,2266.2677
+kenya,70,Routine vax only,2098.0000,cancers,2024.5327,1888.5567,2202.0569
+kenya,70,Routine vax only,2099.0000,cancers,2149.1774,2032.0869,2228.4967
+kenya,70,Routine vax only,2100.0000,cancers,2069.8580,1952.7676,2288.9305
+kenya,70,Catch-up to 30,2020.0000,asr_cancer_incidence,28.3099,26.5918,29.6408
+kenya,70,Catch-up to 30,2021.0000,asr_cancer_incidence,28.5712,27.8268,30.2594
+kenya,70,Catch-up to 30,2022.0000,asr_cancer_incidence,27.2760,26.2544,28.8867
+kenya,70,Catch-up to 30,2023.0000,asr_cancer_incidence,27.1518,26.5305,28.9867
+kenya,70,Catch-up to 30,2024.0000,asr_cancer_incidence,26.6493,25.3625,28.3601
+kenya,70,Catch-up to 30,2025.0000,asr_cancer_incidence,26.4185,25.2492,26.8299
+kenya,70,Catch-up to 30,2026.0000,asr_cancer_incidence,26.4040,24.5453,27.4611
+kenya,70,Catch-up to 30,2027.0000,asr_cancer_incidence,26.5840,25.2423,27.1628
+kenya,70,Catch-up to 30,2028.0000,asr_cancer_incidence,26.3451,23.6397,27.5510
+kenya,70,Catch-up to 30,2029.0000,asr_cancer_incidence,24.2372,22.7769,24.8340
+kenya,70,Catch-up to 30,2030.0000,asr_cancer_incidence,25.0174,23.9231,25.7959
+kenya,70,Catch-up to 30,2031.0000,asr_cancer_incidence,24.0586,23.4394,24.7962
+kenya,70,Catch-up to 30,2032.0000,asr_cancer_incidence,23.6732,22.8097,25.0735
+kenya,70,Catch-up to 30,2033.0000,asr_cancer_incidence,23.3182,22.8680,24.7880
+kenya,70,Catch-up to 30,2034.0000,asr_cancer_incidence,23.0378,22.6794,23.5293
+kenya,70,Catch-up to 30,2035.0000,asr_cancer_incidence,22.8004,20.7509,23.9102
+kenya,70,Catch-up to 30,2036.0000,asr_cancer_incidence,22.5564,21.3233,23.6874
+kenya,70,Catch-up to 30,2037.0000,asr_cancer_incidence,20.7973,20.4626,22.2168
+kenya,70,Catch-up to 30,2038.0000,asr_cancer_incidence,20.7604,19.4240,21.0540
+kenya,70,Catch-up to 30,2039.0000,asr_cancer_incidence,19.9911,19.0702,20.7354
+kenya,70,Catch-up to 30,2040.0000,asr_cancer_incidence,18.6085,17.5634,19.9228
+kenya,70,Catch-up to 30,2041.0000,asr_cancer_incidence,18.7097,17.6995,19.3126
+kenya,70,Catch-up to 30,2042.0000,asr_cancer_incidence,17.7658,16.3674,18.3097
+kenya,70,Catch-up to 30,2043.0000,asr_cancer_incidence,16.8408,16.1851,18.4991
+kenya,70,Catch-up to 30,2044.0000,asr_cancer_incidence,15.5762,15.2094,16.6501
+kenya,70,Catch-up to 30,2045.0000,asr_cancer_incidence,15.0126,14.3389,15.6117
+kenya,70,Catch-up to 30,2046.0000,asr_cancer_incidence,14.2752,13.5974,15.0758
+kenya,70,Catch-up to 30,2047.0000,asr_cancer_incidence,14.1555,13.4972,14.6804
+kenya,70,Catch-up to 30,2048.0000,asr_cancer_incidence,13.0927,12.6408,13.4916
+kenya,70,Catch-up to 30,2049.0000,asr_cancer_incidence,12.3620,11.8701,12.6178
+kenya,70,Catch-up to 30,2050.0000,asr_cancer_incidence,11.4380,10.8285,11.9885
+kenya,70,Catch-up to 30,2051.0000,asr_cancer_incidence,11.3514,10.8343,11.9393
+kenya,70,Catch-up to 30,2052.0000,asr_cancer_incidence,11.1235,10.5010,11.8032
+kenya,70,Catch-up to 30,2053.0000,asr_cancer_incidence,10.3362,10.0560,10.7203
+kenya,70,Catch-up to 30,2054.0000,asr_cancer_incidence,9.5172,9.3108,9.7123
+kenya,70,Catch-up to 30,2055.0000,asr_cancer_incidence,8.9830,8.4841,9.5661
+kenya,70,Catch-up to 30,2056.0000,asr_cancer_incidence,8.5574,8.1048,9.0429
+kenya,70,Catch-up to 30,2057.0000,asr_cancer_incidence,7.9538,7.3821,8.1409
+kenya,70,Catch-up to 30,2058.0000,asr_cancer_incidence,7.0408,6.5214,7.6424
+kenya,70,Catch-up to 30,2059.0000,asr_cancer_incidence,7.2112,6.9670,7.5019
+kenya,70,Catch-up to 30,2060.0000,asr_cancer_incidence,6.4889,6.3170,6.8128
+kenya,70,Catch-up to 30,2061.0000,asr_cancer_incidence,6.1230,5.7408,6.2705
+kenya,70,Catch-up to 30,2062.0000,asr_cancer_incidence,5.8162,5.5440,6.0069
+kenya,70,Catch-up to 30,2063.0000,asr_cancer_incidence,5.4266,5.0570,5.6277
+kenya,70,Catch-up to 30,2064.0000,asr_cancer_incidence,4.9796,4.7586,5.2177
+kenya,70,Catch-up to 30,2065.0000,asr_cancer_incidence,4.6520,4.4055,4.8579
+kenya,70,Catch-up to 30,2066.0000,asr_cancer_incidence,4.3593,4.1946,4.5509
+kenya,70,Catch-up to 30,2067.0000,asr_cancer_incidence,4.2203,4.0942,4.4499
+kenya,70,Catch-up to 30,2068.0000,asr_cancer_incidence,4.1004,3.7354,4.3946
+kenya,70,Catch-up to 30,2069.0000,asr_cancer_incidence,3.8873,3.8298,4.2336
+kenya,70,Catch-up to 30,2070.0000,asr_cancer_incidence,3.6451,3.3636,3.8687
+kenya,70,Catch-up to 30,2071.0000,asr_cancer_incidence,3.6173,3.3255,3.7139
+kenya,70,Catch-up to 30,2072.0000,asr_cancer_incidence,3.5290,3.1343,3.6551
+kenya,70,Catch-up to 30,2073.0000,asr_cancer_incidence,3.2647,3.0413,3.4343
+kenya,70,Catch-up to 30,2074.0000,asr_cancer_incidence,3.1509,2.8480,3.4249
+kenya,70,Catch-up to 30,2075.0000,asr_cancer_incidence,2.8585,2.7166,3.2307
+kenya,70,Catch-up to 30,2076.0000,asr_cancer_incidence,2.8890,2.6033,3.1410
+kenya,70,Catch-up to 30,2077.0000,asr_cancer_incidence,2.8049,2.4944,3.1171
+kenya,70,Catch-up to 30,2078.0000,asr_cancer_incidence,2.8425,2.5110,2.8924
+kenya,70,Catch-up to 30,2079.0000,asr_cancer_incidence,2.7450,2.4602,2.9462
+kenya,70,Catch-up to 30,2080.0000,asr_cancer_incidence,2.6966,2.5312,2.7658
+kenya,70,Catch-up to 30,2081.0000,asr_cancer_incidence,2.7354,2.6432,2.9485
+kenya,70,Catch-up to 30,2082.0000,asr_cancer_incidence,2.6388,2.4549,2.7143
+kenya,70,Catch-up to 30,2083.0000,asr_cancer_incidence,2.7319,2.4448,2.9462
+kenya,70,Catch-up to 30,2084.0000,asr_cancer_incidence,2.5999,2.4111,2.7223
+kenya,70,Catch-up to 30,2085.0000,asr_cancer_incidence,2.6015,2.5270,2.7321
+kenya,70,Catch-up to 30,2086.0000,asr_cancer_incidence,2.4058,2.1356,2.5782
+kenya,70,Catch-up to 30,2087.0000,asr_cancer_incidence,2.5140,2.2822,2.7359
+kenya,70,Catch-up to 30,2088.0000,asr_cancer_incidence,2.5072,2.3766,2.5559
+kenya,70,Catch-up to 30,2089.0000,asr_cancer_incidence,2.5284,2.3709,2.7385
+kenya,70,Catch-up to 30,2090.0000,asr_cancer_incidence,2.5756,2.4318,2.7532
+kenya,70,Catch-up to 30,2091.0000,asr_cancer_incidence,2.5083,2.4563,2.7955
+kenya,70,Catch-up to 30,2092.0000,asr_cancer_incidence,2.4787,2.2333,2.7938
+kenya,70,Catch-up to 30,2093.0000,asr_cancer_incidence,2.5092,2.2410,2.6390
+kenya,70,Catch-up to 30,2094.0000,asr_cancer_incidence,2.5915,2.4823,2.7420
+kenya,70,Catch-up to 30,2095.0000,asr_cancer_incidence,2.5037,2.3480,2.5712
+kenya,70,Catch-up to 30,2096.0000,asr_cancer_incidence,2.4384,2.3330,2.6426
+kenya,70,Catch-up to 30,2097.0000,asr_cancer_incidence,2.5443,2.3563,2.6576
+kenya,70,Catch-up to 30,2098.0000,asr_cancer_incidence,2.4962,2.4443,2.7233
+kenya,70,Catch-up to 30,2099.0000,asr_cancer_incidence,2.4812,2.3398,2.6322
+kenya,70,Catch-up to 30,2100.0000,asr_cancer_incidence,2.4390,2.3746,2.6246
+kenya,70,Catch-up to 30,2020.0000,cancers,4698.7289,4532.5359,4883.8073
+kenya,70,Catch-up to 30,2021.0000,cancers,4974.4582,4838.4821,5178.4223
+kenya,70,Catch-up to 30,2022.0000,cancers,4812.0425,4608.0784,5201.0848
+kenya,70,Catch-up to 30,2023.0000,cancers,5027.3378,4785.6025,5295.5127
+kenya,70,Catch-up to 30,2024.0000,cancers,5004.6750,4800.7108,5454.1515
+kenya,70,Catch-up to 30,2025.0000,cancers,5125.5425,4895.1388,5287.9586
+kenya,70,Catch-up to 30,2026.0000,cancers,5363.5009,4944.2411,5552.3565
+kenya,70,Catch-up to 30,2027.0000,cancers,5525.9167,5284.1813,5695.8869
+kenya,70,Catch-up to 30,2028.0000,cancers,5612.7902,5102.8800,5903.6281
+kenya,70,Catch-up to 30,2029.0000,cancers,5371.0549,5031.1147,5575.0191
+kenya,70,Catch-up to 30,2030.0000,cancers,5710.9951,5499.4767,5899.8508
+kenya,70,Catch-up to 30,2031.0000,cancers,5616.5674,5480.5916,5880.9652
+kenya,70,Catch-up to 30,2032.0000,cancers,5733.6578,5552.3563,6118.9235
+kenya,70,Catch-up to 30,2033.0000,cancers,5824.3084,5733.6581,6171.8028
+kenya,70,Catch-up to 30,2034.0000,cancers,5914.9593,5775.2061,5998.0556
+kenya,70,Catch-up to 30,2035.0000,cancers,5964.0617,5450.3742,6228.4597
+kenya,70,Catch-up to 30,2036.0000,cancers,5998.0560,5714.7725,6311.5562
+kenya,70,Catch-up to 30,2037.0000,cancers,5763.8748,5620.3444,6073.5978
+kenya,70,Catch-up to 30,2038.0000,cancers,5873.4111,5495.6998,5990.5015
+kenya,70,Catch-up to 30,2039.0000,cancers,5744.9893,5537.2481,6016.9411
+kenya,70,Catch-up to 30,2040.0000,cancers,5514.5851,5159.5366,5888.5197
+kenya,70,Catch-up to 30,2041.0000,cancers,5631.6758,5333.2839,5809.2000
+kenya,70,Catch-up to 30,2042.0000,cancers,5442.8201,5083.9943,5661.8927
+kenya,70,Catch-up to 30,2043.0000,cancers,5329.5069,5125.5430,5756.3207
+kenya,70,Catch-up to 30,2044.0000,cancers,5046.2233,4917.8015,5340.8380
+kenya,70,Catch-up to 30,2045.0000,cancers,4993.3437,4770.4941,5182.1992
+kenya,70,Catch-up to 30,2046.0000,cancers,4834.7051,4645.8495,5099.1030
+kenya,70,Catch-up to 30,2047.0000,cancers,4929.1327,4744.0543,5121.7655
+kenya,70,Catch-up to 30,2048.0000,cancers,4676.0663,4521.2046,4800.7109
+kenya,70,Catch-up to 30,2049.0000,cancers,4532.5360,4305.9091,4642.0724
+kenya,70,Catch-up to 30,2050.0000,cancers,4313.4636,4079.2825,4460.7708
+kenya,70,Catch-up to 30,2051.0000,cancers,4381.4516,4147.2706,4577.8615
+kenya,70,Catch-up to 30,2052.0000,cancers,4373.8974,4196.3732,4679.8436
+kenya,70,Catch-up to 30,2053.0000,cancers,4169.9332,4079.2827,4332.3492
+kenya,70,Catch-up to 30,2054.0000,cancers,3958.4150,3882.8727,4064.1741
+kenya,70,Catch-up to 30,2055.0000,cancers,3863.9871,3614.6977,4071.7284
+kenya,70,Catch-up to 30,2056.0000,cancers,3739.3424,3569.3724,3943.3066
+kenya,70,Catch-up to 30,2057.0000,cancers,3584.4807,3346.5226,3686.4628
+kenya,70,Catch-up to 30,2058.0000,cancers,3304.9744,3059.4620,3573.1494
+kenya,70,Catch-up to 30,2059.0000,cancers,3478.7216,3327.6371,3618.4748
+kenya,70,Catch-up to 30,2060.0000,cancers,3210.5465,3131.2272,3372.9624
+kenya,70,Catch-up to 30,2061.0000,cancers,3123.6729,2942.3716,3218.1008
+kenya,70,Catch-up to 30,2062.0000,cancers,3067.0162,2953.7028,3187.8839
+kenya,70,Catch-up to 30,2063.0000,cancers,2983.9197,2761.0701,3063.2391
+kenya,70,Catch-up to 30,2064.0000,cancers,2802.6183,2670.4193,2915.9317
+kenya,70,Catch-up to 30,2065.0000,cancers,2685.5278,2557.1060,2802.6183
+kenya,70,Catch-up to 30,2066.0000,cancers,2564.6602,2492.8950,2704.4134
+kenya,70,Catch-up to 30,2067.0000,cancers,2523.1119,2470.2323,2723.2989
+kenya,70,Catch-up to 30,2068.0000,cancers,2557.1058,2319.1478,2730.8531
+kenya,70,Catch-up to 30,2069.0000,cancers,2504.2263,2474.0094,2674.1964
+kenya,70,Catch-up to 30,2070.0000,cancers,2349.3646,2198.2800,2541.9974
+kenya,70,Catch-up to 30,2071.0000,cancers,2398.4671,2183.1717,2474.0094
+kenya,70,Catch-up to 30,2072.0000,cancers,2356.9189,2103.8523,2443.7924
+kenya,70,Catch-up to 30,2073.0000,cancers,2239.8283,2103.8522,2368.2502
+kenya,70,Catch-up to 30,2074.0000,cancers,2186.9487,2005.6472,2360.6960
+kenya,70,Catch-up to 30,2075.0000,cancers,2013.2015,1930.1050,2266.2681
+kenya,70,Catch-up to 30,2076.0000,cancers,2032.0870,1847.0085,2198.2801
+kenya,70,Catch-up to 30,2077.0000,cancers,1998.0930,1828.1229,2198.2800
+kenya,70,Catch-up to 30,2078.0000,cancers,2077.4124,1828.1229,2096.2980
+kenya,70,Catch-up to 30,2079.0000,cancers,2024.5328,1835.6772,2175.6173
+kenya,70,Catch-up to 30,2080.0000,cancers,1975.4303,1854.5627,2058.5269
+kenya,70,Catch-up to 30,2081.0000,cancers,2020.7557,1971.6532,2220.9426
+kenya,70,Catch-up to 30,2082.0000,cancers,1941.4363,1869.6711,2009.4243
+kenya,70,Catch-up to 30,2083.0000,cancers,2062.3038,1839.4542,2202.0570
+kenya,70,Catch-up to 30,2084.0000,cancers,1964.0989,1847.0084,2043.4183
+kenya,70,Catch-up to 30,2085.0000,cancers,1986.7616,1937.6591,2066.0810
+kenya,70,Catch-up to 30,2086.0000,cancers,1847.0084,1677.0383,1979.2074
+kenya,70,Catch-up to 30,2087.0000,cancers,1933.8820,1771.4662,2077.4123
+kenya,70,Catch-up to 30,2088.0000,cancers,1918.7736,1820.5687,1994.3158
+kenya,70,Catch-up to 30,2089.0000,cancers,2024.5327,1858.3398,2092.5206
+kenya,70,Catch-up to 30,2090.0000,cancers,2020.7555,1922.5506,2137.8459
+kenya,70,Catch-up to 30,2091.0000,cancers,1979.2073,1941.4362,2149.1774
+kenya,70,Catch-up to 30,2092.0000,cancers,1930.1049,1775.2433,2171.8400
+kenya,70,Catch-up to 30,2093.0000,cancers,1964.0988,1760.1348,2069.8579
+kenya,70,Catch-up to 30,2094.0000,cancers,2050.9724,1986.7615,2171.8399
+kenya,70,Catch-up to 30,2095.0000,cancers,1982.9844,1877.2253,2035.8639
+kenya,70,Catch-up to 30,2096.0000,cancers,1922.5506,1854.5626,2103.8520
+kenya,70,Catch-up to 30,2097.0000,cancers,2069.8580,1956.5446,2126.5145
+kenya,70,Catch-up to 30,2098.0000,cancers,2115.1832,2032.0867,2198.2796
+kenya,70,Catch-up to 30,2099.0000,cancers,2047.1952,1873.4482,2100.0748
+kenya,70,Catch-up to 30,2100.0000,cancers,2013.2013,1982.9844,2126.5147
+kenya,70,Catch-up to 40,2020.0000,asr_cancer_incidence,28.3099,26.5918,29.6408
+kenya,70,Catch-up to 40,2021.0000,asr_cancer_incidence,28.5712,27.8268,30.2594
+kenya,70,Catch-up to 40,2022.0000,asr_cancer_incidence,27.2760,26.2544,28.8867
+kenya,70,Catch-up to 40,2023.0000,asr_cancer_incidence,27.1518,26.5305,28.9867
+kenya,70,Catch-up to 40,2024.0000,asr_cancer_incidence,26.6493,25.3625,28.3601
+kenya,70,Catch-up to 40,2025.0000,asr_cancer_incidence,26.4185,25.2492,26.8299
+kenya,70,Catch-up to 40,2026.0000,asr_cancer_incidence,26.4364,24.5820,27.3275
+kenya,70,Catch-up to 40,2027.0000,asr_cancer_incidence,26.4821,25.5939,27.3620
+kenya,70,Catch-up to 40,2028.0000,asr_cancer_incidence,26.2726,23.6993,27.0348
+kenya,70,Catch-up to 40,2029.0000,asr_cancer_incidence,23.8361,22.3552,24.6554
+kenya,70,Catch-up to 40,2030.0000,asr_cancer_incidence,25.3870,23.7271,25.9347
+kenya,70,Catch-up to 40,2031.0000,asr_cancer_incidence,23.8340,23.2144,24.6042
+kenya,70,Catch-up to 40,2032.0000,asr_cancer_incidence,23.6265,22.9390,24.8055
+kenya,70,Catch-up to 40,2033.0000,asr_cancer_incidence,23.1731,22.1700,24.1903
+kenya,70,Catch-up to 40,2034.0000,asr_cancer_incidence,23.0175,22.1016,23.9652
+kenya,70,Catch-up to 40,2035.0000,asr_cancer_incidence,22.1983,20.9222,23.0983
+kenya,70,Catch-up to 40,2036.0000,asr_cancer_incidence,21.5395,20.7626,22.0451
+kenya,70,Catch-up to 40,2037.0000,asr_cancer_incidence,19.6241,19.1669,20.5369
+kenya,70,Catch-up to 40,2038.0000,asr_cancer_incidence,18.9866,18.5766,19.7737
+kenya,70,Catch-up to 40,2039.0000,asr_cancer_incidence,18.8175,17.9522,20.1111
+kenya,70,Catch-up to 40,2040.0000,asr_cancer_incidence,16.9025,16.3538,17.7866
+kenya,70,Catch-up to 40,2041.0000,asr_cancer_incidence,16.6270,15.7187,17.5454
+kenya,70,Catch-up to 40,2042.0000,asr_cancer_incidence,16.0774,15.3163,16.5035
+kenya,70,Catch-up to 40,2043.0000,asr_cancer_incidence,14.5395,14.0207,15.6518
+kenya,70,Catch-up to 40,2044.0000,asr_cancer_incidence,14.3659,13.0384,14.6460
+kenya,70,Catch-up to 40,2045.0000,asr_cancer_incidence,12.9844,12.3089,13.5839
+kenya,70,Catch-up to 40,2046.0000,asr_cancer_incidence,12.9030,12.6221,13.5041
+kenya,70,Catch-up to 40,2047.0000,asr_cancer_incidence,11.6595,11.2174,12.4473
+kenya,70,Catch-up to 40,2048.0000,asr_cancer_incidence,11.5188,11.2966,11.7105
+kenya,70,Catch-up to 40,2049.0000,asr_cancer_incidence,10.2671,9.8997,10.4771
+kenya,70,Catch-up to 40,2050.0000,asr_cancer_incidence,9.5009,8.9486,9.7470
+kenya,70,Catch-up to 40,2051.0000,asr_cancer_incidence,9.3733,8.6089,9.5389
+kenya,70,Catch-up to 40,2052.0000,asr_cancer_incidence,8.6794,8.3783,8.9617
+kenya,70,Catch-up to 40,2053.0000,asr_cancer_incidence,8.1242,7.2760,8.3899
+kenya,70,Catch-up to 40,2054.0000,asr_cancer_incidence,7.7463,7.3124,8.0801
+kenya,70,Catch-up to 40,2055.0000,asr_cancer_incidence,7.1069,6.6206,7.5002
+kenya,70,Catch-up to 40,2056.0000,asr_cancer_incidence,6.5999,6.3757,6.7984
+kenya,70,Catch-up to 40,2057.0000,asr_cancer_incidence,5.9771,5.6544,6.5489
+kenya,70,Catch-up to 40,2058.0000,asr_cancer_incidence,5.8061,5.1099,6.3831
+kenya,70,Catch-up to 40,2059.0000,asr_cancer_incidence,5.6131,5.2969,5.9316
+kenya,70,Catch-up to 40,2060.0000,asr_cancer_incidence,5.0715,4.8968,5.6848
+kenya,70,Catch-up to 40,2061.0000,asr_cancer_incidence,4.5981,4.4256,4.9796
+kenya,70,Catch-up to 40,2062.0000,asr_cancer_incidence,4.5510,4.3250,4.9331
+kenya,70,Catch-up to 40,2063.0000,asr_cancer_incidence,4.2042,4.0186,4.8421
+kenya,70,Catch-up to 40,2064.0000,asr_cancer_incidence,4.3568,4.1404,4.6566
+kenya,70,Catch-up to 40,2065.0000,asr_cancer_incidence,4.1083,3.9957,4.3147
+kenya,70,Catch-up to 40,2066.0000,asr_cancer_incidence,3.8729,3.7148,4.1134
+kenya,70,Catch-up to 40,2067.0000,asr_cancer_incidence,3.5859,3.4790,3.8117
+kenya,70,Catch-up to 40,2068.0000,asr_cancer_incidence,3.3763,3.0996,3.6858
+kenya,70,Catch-up to 40,2069.0000,asr_cancer_incidence,3.2575,3.1008,3.6178
+kenya,70,Catch-up to 40,2070.0000,asr_cancer_incidence,3.2029,3.0227,3.6049
+kenya,70,Catch-up to 40,2071.0000,asr_cancer_incidence,3.2888,3.1722,3.5102
+kenya,70,Catch-up to 40,2072.0000,asr_cancer_incidence,3.2381,2.9220,3.6453
+kenya,70,Catch-up to 40,2073.0000,asr_cancer_incidence,3.0405,2.9055,3.1836
+kenya,70,Catch-up to 40,2074.0000,asr_cancer_incidence,2.8738,2.6886,3.2456
+kenya,70,Catch-up to 40,2075.0000,asr_cancer_incidence,2.9576,2.6957,3.1434
+kenya,70,Catch-up to 40,2076.0000,asr_cancer_incidence,2.8519,2.7804,3.0770
+kenya,70,Catch-up to 40,2077.0000,asr_cancer_incidence,2.5808,2.4864,2.9656
+kenya,70,Catch-up to 40,2078.0000,asr_cancer_incidence,2.7368,2.5956,3.1896
+kenya,70,Catch-up to 40,2079.0000,asr_cancer_incidence,2.8242,2.4903,3.0201
+kenya,70,Catch-up to 40,2080.0000,asr_cancer_incidence,2.6600,2.4753,3.1108
+kenya,70,Catch-up to 40,2081.0000,asr_cancer_incidence,2.7960,2.4722,3.0515
+kenya,70,Catch-up to 40,2082.0000,asr_cancer_incidence,2.6529,2.6182,2.8907
+kenya,70,Catch-up to 40,2083.0000,asr_cancer_incidence,2.5895,2.4444,2.7832
+kenya,70,Catch-up to 40,2084.0000,asr_cancer_incidence,2.6099,2.5246,2.9768
+kenya,70,Catch-up to 40,2085.0000,asr_cancer_incidence,2.6560,2.4272,2.8268
+kenya,70,Catch-up to 40,2086.0000,asr_cancer_incidence,2.6848,2.4907,2.8313
+kenya,70,Catch-up to 40,2087.0000,asr_cancer_incidence,2.6349,2.5175,2.7770
+kenya,70,Catch-up to 40,2088.0000,asr_cancer_incidence,2.6199,2.4455,2.7402
+kenya,70,Catch-up to 40,2089.0000,asr_cancer_incidence,2.5775,2.3045,2.8055
+kenya,70,Catch-up to 40,2090.0000,asr_cancer_incidence,2.6965,2.3423,2.8038
+kenya,70,Catch-up to 40,2091.0000,asr_cancer_incidence,2.5601,2.3552,2.8085
+kenya,70,Catch-up to 40,2092.0000,asr_cancer_incidence,2.5865,2.2970,2.7481
+kenya,70,Catch-up to 40,2093.0000,asr_cancer_incidence,2.5719,2.3658,2.8358
+kenya,70,Catch-up to 40,2094.0000,asr_cancer_incidence,2.4619,2.3038,2.6060
+kenya,70,Catch-up to 40,2095.0000,asr_cancer_incidence,2.5992,2.4700,2.6734
+kenya,70,Catch-up to 40,2096.0000,asr_cancer_incidence,2.5387,2.3119,2.7908
+kenya,70,Catch-up to 40,2097.0000,asr_cancer_incidence,2.4684,2.3932,2.6183
+kenya,70,Catch-up to 40,2098.0000,asr_cancer_incidence,2.5795,2.3458,2.7668
+kenya,70,Catch-up to 40,2099.0000,asr_cancer_incidence,2.5993,2.4700,2.6902
+kenya,70,Catch-up to 40,2100.0000,asr_cancer_incidence,2.4774,2.3393,2.5705
+kenya,70,Catch-up to 40,2020.0000,cancers,4698.7289,4532.5359,4883.8073
+kenya,70,Catch-up to 40,2021.0000,cancers,4974.4582,4838.4821,5178.4223
+kenya,70,Catch-up to 40,2022.0000,cancers,4812.0425,4608.0784,5201.0848
+kenya,70,Catch-up to 40,2023.0000,cancers,5027.3378,4785.6025,5295.5127
+kenya,70,Catch-up to 40,2024.0000,cancers,5004.6750,4800.7108,5454.1515
+kenya,70,Catch-up to 40,2025.0000,cancers,5125.5425,4895.1388,5287.9586
+kenya,70,Catch-up to 40,2026.0000,cancers,5363.5010,4955.5724,5541.0251
+kenya,70,Catch-up to 40,2027.0000,cancers,5491.9227,5325.7298,5726.1036
+kenya,70,Catch-up to 40,2028.0000,cancers,5575.0191,5102.8800,5869.6341
+kenya,70,Catch-up to 40,2029.0000,cancers,5272.8500,4989.5665,5548.5792
+kenya,70,Catch-up to 40,2030.0000,cancers,5794.0916,5450.3743,5952.7305
+kenya,70,Catch-up to 40,2031.0000,cancers,5609.0132,5476.8143,5771.4291
+kenya,70,Catch-up to 40,2032.0000,cancers,5707.2183,5582.5734,6043.3812
+kenya,70,Catch-up to 40,2033.0000,cancers,5801.6460,5559.9108,6050.9357
+kenya,70,Catch-up to 40,2034.0000,cancers,5896.0739,5654.3384,6088.7065
+kenya,70,Catch-up to 40,2035.0000,cancers,5839.4169,5518.3626,5960.2846
+kenya,70,Catch-up to 40,2036.0000,cancers,5714.7724,5548.5793,5892.2968
+kenya,70,Catch-up to 40,2037.0000,cancers,5397.4948,5238.8560,5665.6698
+kenya,70,Catch-up to 40,2038.0000,cancers,5355.9466,5246.4103,5639.2299
+kenya,70,Catch-up to 40,2039.0000,cancers,5495.6996,5170.8679,5831.8630
+kenya,70,Catch-up to 40,2040.0000,cancers,5012.2291,4838.4820,5238.8561
+kenya,70,Catch-up to 40,2041.0000,cancers,5031.1147,4698.7289,5272.8502
+kenya,70,Catch-up to 40,2042.0000,cancers,4985.7895,4751.6083,5163.3137
+kenya,70,Catch-up to 40,2043.0000,cancers,4600.5240,4479.6562,4932.9101
+kenya,70,Catch-up to 40,2044.0000,cancers,4683.6205,4283.2466,4774.2711
+kenya,70,Catch-up to 40,2045.0000,cancers,4305.9092,4083.0597,4506.0964
+kenya,70,Catch-up to 40,2046.0000,cancers,4396.5599,4283.2467,4600.5241
+kenya,70,Catch-up to 40,2047.0000,cancers,4109.4995,3947.0837,4351.2347
+kenya,70,Catch-up to 40,2048.0000,cancers,4124.6078,4056.6199,4196.3730
+kenya,70,Catch-up to 40,2049.0000,cancers,3784.6678,3660.0231,3901.7584
+kenya,70,Catch-up to 40,2050.0000,cancers,3637.3603,3388.0708,3709.1256
+kenya,70,Catch-up to 40,2051.0000,cancers,3675.1314,3391.8481,3750.6739
+kenya,70,Catch-up to 40,2052.0000,cancers,3535.3783,3384.2938,3637.3604
+kenya,70,Catch-up to 40,2053.0000,cancers,3357.8541,3059.4619,3463.6132
+kenya,70,Catch-up to 40,2054.0000,cancers,3304.9743,3135.0042,3456.0589
+kenya,70,Catch-up to 40,2055.0000,cancers,3116.1187,2931.0402,3323.8599
+kenya,70,Catch-up to 40,2056.0000,cancers,2995.2510,2889.4920,3101.0102
+kenya,70,Catch-up to 40,2057.0000,cancers,2802.6183,2651.5338,3067.0163
+kenya,70,Catch-up to 40,2058.0000,cancers,2802.6183,2515.5577,3089.6789
+kenya,70,Catch-up to 40,2059.0000,cancers,2783.7327,2625.0940,2938.5943
+kenya,70,Catch-up to 40,2060.0000,cancers,2587.3229,2489.1179,2897.0461
+kenya,70,Catch-up to 40,2061.0000,cancers,2409.7985,2330.4792,2621.3168
+kenya,70,Catch-up to 40,2062.0000,cancers,2443.7925,2341.8105,2640.2024
+kenya,70,Catch-up to 40,2063.0000,cancers,2315.3707,2190.7260,2681.7506
+kenya,70,Catch-up to 40,2064.0000,cancers,2447.5696,2319.1478,2602.4312
+kenya,70,Catch-up to 40,2065.0000,cancers,2364.4731,2311.5935,2477.7865
+kenya,70,Catch-up to 40,2066.0000,cancers,2285.1537,2179.3946,2402.2443
+kenya,70,Catch-up to 40,2067.0000,cancers,2183.1716,2084.9667,2307.8164
+kenya,70,Catch-up to 40,2068.0000,cancers,2058.5269,1884.7797,2258.7139
+kenya,70,Catch-up to 40,2069.0000,cancers,2039.6413,1914.9966,2266.2681
+kenya,70,Catch-up to 40,2070.0000,cancers,2039.6413,1926.3279,2285.1536
+kenya,70,Catch-up to 40,2071.0000,cancers,2122.7378,2032.0871,2266.2680
+kenya,70,Catch-up to 40,2072.0000,cancers,2118.9606,1911.2194,2383.3586
+kenya,70,Catch-up to 40,2073.0000,cancers,2024.5328,1922.5508,2141.6234
+kenya,70,Catch-up to 40,2074.0000,cancers,1971.6532,1820.5687,2198.2800
+kenya,70,Catch-up to 40,2075.0000,cancers,2013.2015,1873.4483,2137.8461
+kenya,70,Catch-up to 40,2076.0000,cancers,1994.3159,1914.9965,2111.4064
+kenya,70,Catch-up to 40,2077.0000,cancers,1816.7915,1756.3578,2047.1954
+kenya,70,Catch-up to 40,2078.0000,cancers,1948.9905,1862.1169,2224.7197
+kenya,70,Catch-up to 40,2079.0000,cancers,2013.2014,1790.3518,2160.5088
+kenya,70,Catch-up to 40,2080.0000,cancers,1930.1050,1790.3518,2254.9365
+kenya,70,Catch-up to 40,2081.0000,cancers,2009.4243,1873.4482,2239.8281
+kenya,70,Catch-up to 40,2082.0000,cancers,1986.7616,1907.4423,2137.8460
+kenya,70,Catch-up to 40,2083.0000,cancers,1922.5507,1847.0085,2081.1895
+kenya,70,Catch-up to 40,2084.0000,cancers,1945.2133,1892.3337,2213.3883
+kenya,70,Catch-up to 40,2085.0000,cancers,1967.8760,1835.6770,2122.7376
+kenya,70,Catch-up to 40,2086.0000,cancers,2028.3098,1850.7856,2130.2918
+kenya,70,Catch-up to 40,2087.0000,cancers,2009.4242,1926.3277,2164.2858
+kenya,70,Catch-up to 40,2088.0000,cancers,2024.5327,1854.5626,2118.9605
+kenya,70,Catch-up to 40,2089.0000,cancers,1998.0929,1779.0204,2156.7315
+kenya,70,Catch-up to 40,2090.0000,cancers,2107.6290,1816.7915,2186.9484
+kenya,70,Catch-up to 40,2091.0000,cancers,1979.2073,1896.1108,2217.1653
+kenya,70,Catch-up to 40,2092.0000,cancers,2035.8640,1801.6831,2168.0628
+kenya,70,Catch-up to 40,2093.0000,cancers,2016.9785,1903.6651,2220.9426
+kenya,70,Catch-up to 40,2094.0000,cancers,2009.4242,1850.7855,2073.6351
+kenya,70,Catch-up to 40,2095.0000,cancers,2077.4121,1982.9844,2156.7314
+kenya,70,Catch-up to 40,2096.0000,cancers,2043.4182,1896.1108,2254.9364
+kenya,70,Catch-up to 40,2097.0000,cancers,2005.6471,1918.7735,2186.9482
+kenya,70,Catch-up to 40,2098.0000,cancers,2149.1773,1933.8820,2270.0447
+kenya,70,Catch-up to 40,2099.0000,cancers,2092.5206,2047.1953,2217.1652
+kenya,70,Catch-up to 40,2100.0000,cancers,2024.5326,1941.4362,2081.1892
+kenya,70,Catch-up to 40 + S&T to 65,2020.0000,asr_cancer_incidence,28.3099,26.5918,29.6408
+kenya,70,Catch-up to 40 + S&T to 65,2021.0000,asr_cancer_incidence,28.5712,27.8268,30.2594
+kenya,70,Catch-up to 40 + S&T to 65,2022.0000,asr_cancer_incidence,27.2760,26.2544,28.8867
+kenya,70,Catch-up to 40 + S&T to 65,2023.0000,asr_cancer_incidence,27.1518,26.5305,28.9867
+kenya,70,Catch-up to 40 + S&T to 65,2024.0000,asr_cancer_incidence,26.6493,25.3625,28.3601
+kenya,70,Catch-up to 40 + S&T to 65,2025.0000,asr_cancer_incidence,26.4185,25.2492,26.8299
+kenya,70,Catch-up to 40 + S&T to 65,2026.0000,asr_cancer_incidence,13.3858,12.1453,14.0628
+kenya,70,Catch-up to 40 + S&T to 65,2027.0000,asr_cancer_incidence,13.3102,12.3909,13.6508
+kenya,70,Catch-up to 40 + S&T to 65,2028.0000,asr_cancer_incidence,12.7974,12.2230,14.0637
+kenya,70,Catch-up to 40 + S&T to 65,2029.0000,asr_cancer_incidence,12.7472,11.5470,13.6365
+kenya,70,Catch-up to 40 + S&T to 65,2030.0000,asr_cancer_incidence,13.1859,12.8878,13.7020
+kenya,70,Catch-up to 40 + S&T to 65,2031.0000,asr_cancer_incidence,13.0345,12.5837,13.5174
+kenya,70,Catch-up to 40 + S&T to 65,2032.0000,asr_cancer_incidence,13.8858,12.4681,14.8419
+kenya,70,Catch-up to 40 + S&T to 65,2033.0000,asr_cancer_incidence,13.5526,12.8669,14.8253
+kenya,70,Catch-up to 40 + S&T to 65,2034.0000,asr_cancer_incidence,13.6139,13.1495,14.1849
+kenya,70,Catch-up to 40 + S&T to 65,2035.0000,asr_cancer_incidence,13.4229,12.6597,14.3026
+kenya,70,Catch-up to 40 + S&T to 65,2036.0000,asr_cancer_incidence,13.6837,13.4836,14.8264
+kenya,70,Catch-up to 40 + S&T to 65,2037.0000,asr_cancer_incidence,13.5399,13.0927,13.7275
+kenya,70,Catch-up to 40 + S&T to 65,2038.0000,asr_cancer_incidence,13.5215,12.5014,13.8832
+kenya,70,Catch-up to 40 + S&T to 65,2039.0000,asr_cancer_incidence,12.7498,12.2712,13.8504
+kenya,70,Catch-up to 40 + S&T to 65,2040.0000,asr_cancer_incidence,12.6058,12.1015,13.3853
+kenya,70,Catch-up to 40 + S&T to 65,2041.0000,asr_cancer_incidence,12.6362,11.9624,13.3660
+kenya,70,Catch-up to 40 + S&T to 65,2042.0000,asr_cancer_incidence,12.0235,11.4729,12.6448
+kenya,70,Catch-up to 40 + S&T to 65,2043.0000,asr_cancer_incidence,11.5777,10.9142,11.8619
+kenya,70,Catch-up to 40 + S&T to 65,2044.0000,asr_cancer_incidence,11.0260,10.5327,11.5549
+kenya,70,Catch-up to 40 + S&T to 65,2045.0000,asr_cancer_incidence,10.3313,10.1812,10.8241
+kenya,70,Catch-up to 40 + S&T to 65,2046.0000,asr_cancer_incidence,10.2492,9.4832,10.7680
+kenya,70,Catch-up to 40 + S&T to 65,2047.0000,asr_cancer_incidence,9.9592,9.0436,10.3385
+kenya,70,Catch-up to 40 + S&T to 65,2048.0000,asr_cancer_incidence,9.4790,8.6294,9.7030
+kenya,70,Catch-up to 40 + S&T to 65,2049.0000,asr_cancer_incidence,8.7783,8.3684,9.0309
+kenya,70,Catch-up to 40 + S&T to 65,2050.0000,asr_cancer_incidence,8.0214,7.8313,8.5418
+kenya,70,Catch-up to 40 + S&T to 65,2051.0000,asr_cancer_incidence,7.9017,7.7143,8.3065
+kenya,70,Catch-up to 40 + S&T to 65,2052.0000,asr_cancer_incidence,7.6609,7.2388,8.1027
+kenya,70,Catch-up to 40 + S&T to 65,2053.0000,asr_cancer_incidence,6.8376,6.6196,7.1763
+kenya,70,Catch-up to 40 + S&T to 65,2054.0000,asr_cancer_incidence,6.6459,6.0436,7.1380
+kenya,70,Catch-up to 40 + S&T to 65,2055.0000,asr_cancer_incidence,6.0338,5.8935,6.5848
+kenya,70,Catch-up to 40 + S&T to 65,2056.0000,asr_cancer_incidence,6.0889,5.5375,6.5381
+kenya,70,Catch-up to 40 + S&T to 65,2057.0000,asr_cancer_incidence,5.6854,5.4478,5.9697
+kenya,70,Catch-up to 40 + S&T to 65,2058.0000,asr_cancer_incidence,5.4531,4.8922,5.6320
+kenya,70,Catch-up to 40 + S&T to 65,2059.0000,asr_cancer_incidence,4.8381,4.5155,5.1730
+kenya,70,Catch-up to 40 + S&T to 65,2060.0000,asr_cancer_incidence,4.8995,4.6622,5.1767
+kenya,70,Catch-up to 40 + S&T to 65,2061.0000,asr_cancer_incidence,4.3943,4.0837,4.6553
+kenya,70,Catch-up to 40 + S&T to 65,2062.0000,asr_cancer_incidence,4.3096,3.9409,4.4760
+kenya,70,Catch-up to 40 + S&T to 65,2063.0000,asr_cancer_incidence,4.2645,4.0248,4.5371
+kenya,70,Catch-up to 40 + S&T to 65,2064.0000,asr_cancer_incidence,3.7496,3.6389,3.9755
+kenya,70,Catch-up to 40 + S&T to 65,2065.0000,asr_cancer_incidence,3.6424,3.5646,3.7255
+kenya,70,Catch-up to 40 + S&T to 65,2066.0000,asr_cancer_incidence,3.6674,3.4107,3.9851
+kenya,70,Catch-up to 40 + S&T to 65,2067.0000,asr_cancer_incidence,3.6182,3.4265,3.8355
+kenya,70,Catch-up to 40 + S&T to 65,2068.0000,asr_cancer_incidence,3.4969,3.3362,3.5927
+kenya,70,Catch-up to 40 + S&T to 65,2069.0000,asr_cancer_incidence,3.2572,3.1842,3.5041
+kenya,70,Catch-up to 40 + S&T to 65,2070.0000,asr_cancer_incidence,3.0509,2.9010,3.2477
+kenya,70,Catch-up to 40 + S&T to 65,2071.0000,asr_cancer_incidence,2.9706,2.8992,3.3226
+kenya,70,Catch-up to 40 + S&T to 65,2072.0000,asr_cancer_incidence,2.9163,2.5787,3.2104
+kenya,70,Catch-up to 40 + S&T to 65,2073.0000,asr_cancer_incidence,2.9670,2.8842,3.2437
+kenya,70,Catch-up to 40 + S&T to 65,2074.0000,asr_cancer_incidence,2.8328,2.5089,3.0464
+kenya,70,Catch-up to 40 + S&T to 65,2075.0000,asr_cancer_incidence,3.0708,2.7121,3.2008
+kenya,70,Catch-up to 40 + S&T to 65,2076.0000,asr_cancer_incidence,2.6128,2.5141,2.8220
+kenya,70,Catch-up to 40 + S&T to 65,2077.0000,asr_cancer_incidence,2.7801,2.5384,3.0092
+kenya,70,Catch-up to 40 + S&T to 65,2078.0000,asr_cancer_incidence,2.8565,2.6615,2.9412
+kenya,70,Catch-up to 40 + S&T to 65,2079.0000,asr_cancer_incidence,2.5709,2.5340,2.7126
+kenya,70,Catch-up to 40 + S&T to 65,2080.0000,asr_cancer_incidence,2.8726,2.5645,2.9346
+kenya,70,Catch-up to 40 + S&T to 65,2081.0000,asr_cancer_incidence,2.6810,2.5763,2.8982
+kenya,70,Catch-up to 40 + S&T to 65,2082.0000,asr_cancer_incidence,2.7326,2.5527,2.8417
+kenya,70,Catch-up to 40 + S&T to 65,2083.0000,asr_cancer_incidence,2.5093,2.2944,2.7554
+kenya,70,Catch-up to 40 + S&T to 65,2084.0000,asr_cancer_incidence,2.6795,2.4617,2.7701
+kenya,70,Catch-up to 40 + S&T to 65,2085.0000,asr_cancer_incidence,2.7077,2.5055,2.7616
+kenya,70,Catch-up to 40 + S&T to 65,2086.0000,asr_cancer_incidence,2.5316,2.4134,2.5848
+kenya,70,Catch-up to 40 + S&T to 65,2087.0000,asr_cancer_incidence,2.5787,2.4920,2.7118
+kenya,70,Catch-up to 40 + S&T to 65,2088.0000,asr_cancer_incidence,2.5740,2.4132,2.6677
+kenya,70,Catch-up to 40 + S&T to 65,2089.0000,asr_cancer_incidence,2.6607,2.3686,2.6997
+kenya,70,Catch-up to 40 + S&T to 65,2090.0000,asr_cancer_incidence,2.5993,2.2968,2.7219
+kenya,70,Catch-up to 40 + S&T to 65,2091.0000,asr_cancer_incidence,2.5625,2.3329,2.6747
+kenya,70,Catch-up to 40 + S&T to 65,2092.0000,asr_cancer_incidence,2.5564,2.3787,2.7741
+kenya,70,Catch-up to 40 + S&T to 65,2093.0000,asr_cancer_incidence,2.6595,2.4315,2.8046
+kenya,70,Catch-up to 40 + S&T to 65,2094.0000,asr_cancer_incidence,2.4675,2.2856,2.5652
+kenya,70,Catch-up to 40 + S&T to 65,2095.0000,asr_cancer_incidence,2.6144,2.4904,2.7373
+kenya,70,Catch-up to 40 + S&T to 65,2096.0000,asr_cancer_incidence,2.5534,2.2644,2.6896
+kenya,70,Catch-up to 40 + S&T to 65,2097.0000,asr_cancer_incidence,2.6381,2.4130,2.8359
+kenya,70,Catch-up to 40 + S&T to 65,2098.0000,asr_cancer_incidence,2.5510,2.5085,2.6307
+kenya,70,Catch-up to 40 + S&T to 65,2099.0000,asr_cancer_incidence,2.6059,2.4989,2.8190
+kenya,70,Catch-up to 40 + S&T to 65,2100.0000,asr_cancer_incidence,2.3826,2.2544,2.5167
+kenya,70,Catch-up to 40 + S&T to 65,2020.0000,cancers,4698.7289,4532.5359,4883.8073
+kenya,70,Catch-up to 40 + S&T to 65,2021.0000,cancers,4974.4582,4838.4821,5178.4223
+kenya,70,Catch-up to 40 + S&T to 65,2022.0000,cancers,4812.0425,4608.0784,5201.0848
+kenya,70,Catch-up to 40 + S&T to 65,2023.0000,cancers,5027.3378,4785.6025,5295.5127
+kenya,70,Catch-up to 40 + S&T to 65,2024.0000,cancers,5004.6750,4800.7108,5454.1515
+kenya,70,Catch-up to 40 + S&T to 65,2025.0000,cancers,5125.5425,4895.1388,5287.9586
+kenya,70,Catch-up to 40 + S&T to 65,2026.0000,cancers,2572.2143,2390.9129,2734.6303
+kenya,70,Catch-up to 40 + S&T to 65,2027.0000,cancers,2670.4193,2515.5577,2764.8472
+kenya,70,Catch-up to 40 + S&T to 65,2028.0000,cancers,2704.4134,2609.9855,2999.0282
+kenya,70,Catch-up to 40 + S&T to 65,2029.0000,cancers,2817.7267,2523.1119,2983.9197
+kenya,70,Catch-up to 40 + S&T to 65,2030.0000,cancers,3067.0163,2938.5943,3135.0042
+kenya,70,Catch-up to 40 + S&T to 65,2031.0000,cancers,3025.4680,2980.1426,3199.2152
+kenya,70,Catch-up to 40 + S&T to 65,2032.0000,cancers,3403.1793,3104.7873,3739.3424
+kenya,70,Catch-up to 40 + S&T to 65,2033.0000,cancers,3452.2818,3335.1912,3795.9991
+kenya,70,Catch-up to 40 + S&T to 65,2034.0000,cancers,3595.8121,3437.1734,3743.1195
+kenya,70,Catch-up to 40 + S&T to 65,2035.0000,cancers,3686.4627,3452.2819,3814.8845
+kenya,70,Catch-up to 40 + S&T to 65,2036.0000,cancers,3784.6678,3694.0171,4049.0655
+kenya,70,Catch-up to 40 + S&T to 65,2037.0000,cancers,3818.6617,3765.7821,3879.0956
+kenya,70,Catch-up to 40 + S&T to 65,2038.0000,cancers,3973.5234,3644.9144,4101.9452
+kenya,70,Catch-up to 40 + S&T to 65,2039.0000,cancers,3773.3363,3667.5772,4094.3909
+kenya,70,Catch-up to 40 + S&T to 65,2040.0000,cancers,3856.4328,3686.4627,4033.9572
+kenya,70,Catch-up to 40 + S&T to 65,2041.0000,cancers,3871.5413,3678.9087,4151.0477
+kenya,70,Catch-up to 40 + S&T to 65,2042.0000,cancers,3795.9991,3633.5833,3954.6379
+kenya,70,Catch-up to 40 + S&T to 65,2043.0000,cancers,3720.4567,3527.8240,3811.1076
+kenya,70,Catch-up to 40 + S&T to 65,2044.0000,cancers,3652.4688,3486.2758,3803.5533
+kenya,70,Catch-up to 40 + S&T to 65,2045.0000,cancers,3471.1674,3410.7334,3671.3543
+kenya,70,Catch-up to 40 + S&T to 65,2046.0000,cancers,3490.0529,3278.5346,3720.4568
+kenya,70,Catch-up to 40 + S&T to 65,2047.0000,cancers,3535.3783,3195.4380,3592.0350
+kenya,70,Catch-up to 40 + S&T to 65,2048.0000,cancers,3365.4082,3146.3356,3524.0470
+kenya,70,Catch-up to 40 + S&T to 65,2049.0000,cancers,3244.5405,3123.6729,3338.9684
+kenya,70,Catch-up to 40 + S&T to 65,2050.0000,cancers,3119.8958,2957.4800,3274.7575
+kenya,70,Catch-up to 40 + S&T to 65,2051.0000,cancers,3112.3417,3010.3595,3274.7575
+kenya,70,Catch-up to 40 + S&T to 65,2052.0000,cancers,3093.4560,2961.2570,3244.5406
+kenya,70,Catch-up to 40 + S&T to 65,2053.0000,cancers,2851.7208,2734.6302,2961.2571
+kenya,70,Catch-up to 40 + S&T to 65,2054.0000,cancers,2859.2750,2609.9855,3051.9078
+kenya,70,Catch-up to 40 + S&T to 65,2055.0000,cancers,2662.8651,2587.3228,2866.8293
+kenya,70,Catch-up to 40 + S&T to 65,2056.0000,cancers,2768.6243,2523.1120,2942.3716
+kenya,70,Catch-up to 40 + S&T to 65,2057.0000,cancers,2659.0880,2545.7746,2787.5099
+kenya,70,Catch-up to 40 + S&T to 65,2058.0000,cancers,2613.7626,2368.2502,2715.7447
+kenya,70,Catch-up to 40 + S&T to 65,2059.0000,cancers,2409.7986,2247.3827,2568.4372
+kenya,70,Catch-up to 40 + S&T to 65,2060.0000,cancers,2508.0034,2387.1358,2625.0940
+kenya,70,Catch-up to 40 + S&T to 65,2061.0000,cancers,2296.4851,2145.4006,2440.0154
+kenya,70,Catch-up to 40 + S&T to 65,2062.0000,cancers,2315.3706,2118.9607,2375.8044
+kenya,70,Catch-up to 40 + S&T to 65,2063.0000,cancers,2338.0333,2209.6115,2504.2264
+kenya,70,Catch-up to 40 + S&T to 65,2064.0000,cancers,2111.4065,2050.9727,2217.1657
+kenya,70,Catch-up to 40 + S&T to 65,2065.0000,cancers,2092.5210,2047.1956,2141.6234
+kenya,70,Catch-up to 40 + S&T to 65,2066.0000,cancers,2137.8463,1990.5389,2311.5935
+kenya,70,Catch-up to 40 + S&T to 65,2067.0000,cancers,2149.1776,2050.9727,2307.8164
+kenya,70,Catch-up to 40 + S&T to 65,2068.0000,cancers,2134.0691,2035.8642,2183.1716
+kenya,70,Catch-up to 40 + S&T to 65,2069.0000,cancers,2001.8702,1967.8762,2171.8403
+kenya,70,Catch-up to 40 + S&T to 65,2070.0000,cancers,1933.8821,1820.5687,2062.3040
+kenya,70,Catch-up to 40 + S&T to 65,2071.0000,cancers,1903.6653,1865.8941,2122.7378
+kenya,70,Catch-up to 40 + S&T to 65,2072.0000,cancers,1903.6652,1692.1469,2081.1895
+kenya,70,Catch-up to 40 + S&T to 65,2073.0000,cancers,1926.3279,1899.8881,2134.0691
+kenya,70,Catch-up to 40 + S&T to 65,2074.0000,cancers,1911.2194,1699.7010,2032.0871
+kenya,70,Catch-up to 40 + S&T to 65,2075.0000,cancers,2062.3039,1828.1229,2149.1776
+kenya,70,Catch-up to 40 + S&T to 65,2076.0000,cancers,1794.1289,1733.6951,1956.5448
+kenya,70,Catch-up to 40 + S&T to 65,2077.0000,cancers,1930.1049,1779.0204,2111.4064
+kenya,70,Catch-up to 40 + S&T to 65,2078.0000,cancers,2020.7557,1888.5567,2100.0750
+kenya,70,Catch-up to 40 + S&T to 65,2079.0000,cancers,1847.0084,1813.0144,1941.4363
+kenya,70,Catch-up to 40 + S&T to 65,2080.0000,cancers,2081.1895,1918.7735,2122.7377
+kenya,70,Catch-up to 40 + S&T to 65,2081.0000,cancers,1945.2133,1850.7856,2122.7377
+kenya,70,Catch-up to 40 + S&T to 65,2082.0000,cancers,1982.9845,1888.5567,2092.5207
+kenya,70,Catch-up to 40 + S&T to 65,2083.0000,cancers,1884.7796,1680.8154,2047.1954
+kenya,70,Catch-up to 40 + S&T to 65,2084.0000,cancers,1948.9905,1831.9000,2058.5267
+kenya,70,Catch-up to 40 + S&T to 65,2085.0000,cancers,1998.0929,1899.8880,2100.0749
+kenya,70,Catch-up to 40 + S&T to 65,2086.0000,cancers,1937.6591,1839.4542,1967.8761
+kenya,70,Catch-up to 40 + S&T to 65,2087.0000,cancers,1956.5447,1888.5567,2043.4182
+kenya,70,Catch-up to 40 + S&T to 65,2088.0000,cancers,2005.6471,1899.8880,2035.8639
+kenya,70,Catch-up to 40 + S&T to 65,2089.0000,cancers,2047.1954,1809.2374,2058.5267
+kenya,70,Catch-up to 40 + S&T to 65,2090.0000,cancers,2005.6472,1786.5746,2103.8520
+kenya,70,Catch-up to 40 + S&T to 65,2091.0000,cancers,1982.9844,1873.4482,2054.7494
+kenya,70,Catch-up to 40 + S&T to 65,2092.0000,cancers,2005.6471,1858.3397,2224.7196
+kenya,70,Catch-up to 40 + S&T to 65,2093.0000,cancers,2137.8459,1922.5507,2224.7195
+kenya,70,Catch-up to 40 + S&T to 65,2094.0000,cancers,1979.2073,1809.2372,2020.7555
+kenya,70,Catch-up to 40 + S&T to 65,2095.0000,cancers,2107.6291,2009.4242,2205.8340
+kenya,70,Catch-up to 40 + S&T to 65,2096.0000,cancers,2039.6410,1865.8939,2168.0628
+kenya,70,Catch-up to 40 + S&T to 65,2097.0000,cancers,2160.5086,1982.9844,2292.7074
+kenya,70,Catch-up to 40 + S&T to 65,2098.0000,cancers,2069.8579,1998.0928,2145.4001
+kenya,70,Catch-up to 40 + S&T to 65,2099.0000,cancers,2152.9543,1994.3157,2273.8219
+kenya,70,Catch-up to 40 + S&T to 65,2100.0000,cancers,1979.2073,1896.1108,2077.4120
+kenya,70,S&T 10-65 only,2020.0000,asr_cancer_incidence,28.3099,26.5918,29.6408
+kenya,70,S&T 10-65 only,2021.0000,asr_cancer_incidence,28.5712,27.8268,30.2594
+kenya,70,S&T 10-65 only,2022.0000,asr_cancer_incidence,27.2760,26.2544,28.8867
+kenya,70,S&T 10-65 only,2023.0000,asr_cancer_incidence,27.1518,26.5305,28.9867
+kenya,70,S&T 10-65 only,2024.0000,asr_cancer_incidence,26.6493,25.3625,28.3601
+kenya,70,S&T 10-65 only,2025.0000,asr_cancer_incidence,26.4185,25.2492,26.8299
+kenya,70,S&T 10-65 only,2026.0000,asr_cancer_incidence,13.8281,12.2908,14.8864
+kenya,70,S&T 10-65 only,2027.0000,asr_cancer_incidence,13.3214,12.4121,13.6352
+kenya,70,S&T 10-65 only,2028.0000,asr_cancer_incidence,12.5450,12.0385,13.6236
+kenya,70,S&T 10-65 only,2029.0000,asr_cancer_incidence,12.7550,11.8859,13.5507
+kenya,70,S&T 10-65 only,2030.0000,asr_cancer_incidence,13.1193,12.5888,14.7982
+kenya,70,S&T 10-65 only,2031.0000,asr_cancer_incidence,13.8004,12.8051,14.3400
+kenya,70,S&T 10-65 only,2032.0000,asr_cancer_incidence,14.4603,13.6632,14.8767
+kenya,70,S&T 10-65 only,2033.0000,asr_cancer_incidence,14.6743,13.9244,15.8754
+kenya,70,S&T 10-65 only,2034.0000,asr_cancer_incidence,15.3354,14.5954,16.0566
+kenya,70,S&T 10-65 only,2035.0000,asr_cancer_incidence,16.1560,15.0614,16.7304
+kenya,70,S&T 10-65 only,2036.0000,asr_cancer_incidence,16.4131,15.9045,17.3894
+kenya,70,S&T 10-65 only,2037.0000,asr_cancer_incidence,17.2008,16.4018,17.9393
+kenya,70,S&T 10-65 only,2038.0000,asr_cancer_incidence,16.8674,15.9366,17.9301
+kenya,70,S&T 10-65 only,2039.0000,asr_cancer_incidence,17.6343,17.0635,18.2679
+kenya,70,S&T 10-65 only,2040.0000,asr_cancer_incidence,17.3451,16.6190,17.8702
+kenya,70,S&T 10-65 only,2041.0000,asr_cancer_incidence,18.2205,17.4622,18.5672
+kenya,70,S&T 10-65 only,2042.0000,asr_cancer_incidence,18.2739,17.4632,18.5736
+kenya,70,S&T 10-65 only,2043.0000,asr_cancer_incidence,17.9876,17.2606,19.0276
+kenya,70,S&T 10-65 only,2044.0000,asr_cancer_incidence,17.6103,17.2016,18.8653
+kenya,70,S&T 10-65 only,2045.0000,asr_cancer_incidence,17.8326,17.3169,18.3721
+kenya,70,S&T 10-65 only,2046.0000,asr_cancer_incidence,17.9282,16.6478,18.7362
+kenya,70,S&T 10-65 only,2047.0000,asr_cancer_incidence,18.3526,17.4369,19.1174
+kenya,70,S&T 10-65 only,2048.0000,asr_cancer_incidence,17.3492,16.9495,17.7840
+kenya,70,S&T 10-65 only,2049.0000,asr_cancer_incidence,16.9827,16.2600,18.0553
+kenya,70,S&T 10-65 only,2050.0000,asr_cancer_incidence,16.7174,16.3464,16.9196
+kenya,70,S&T 10-65 only,2051.0000,asr_cancer_incidence,16.7813,15.1566,16.9273
+kenya,70,S&T 10-65 only,2052.0000,asr_cancer_incidence,15.9415,14.9562,16.5616
+kenya,70,S&T 10-65 only,2053.0000,asr_cancer_incidence,15.4966,14.7730,15.8832
+kenya,70,S&T 10-65 only,2054.0000,asr_cancer_incidence,15.0061,14.2195,15.7265
+kenya,70,S&T 10-65 only,2055.0000,asr_cancer_incidence,14.8552,13.5410,15.2866
+kenya,70,S&T 10-65 only,2056.0000,asr_cancer_incidence,13.7221,13.2537,14.2195
+kenya,70,S&T 10-65 only,2057.0000,asr_cancer_incidence,13.1934,12.7156,13.5465
+kenya,70,S&T 10-65 only,2058.0000,asr_cancer_incidence,12.9257,12.3063,13.0599
+kenya,70,S&T 10-65 only,2059.0000,asr_cancer_incidence,12.4225,11.9700,13.9195
+kenya,70,S&T 10-65 only,2060.0000,asr_cancer_incidence,12.0286,11.7992,12.4664
+kenya,70,S&T 10-65 only,2061.0000,asr_cancer_incidence,10.9284,10.6131,12.0090
+kenya,70,S&T 10-65 only,2062.0000,asr_cancer_incidence,10.7377,10.6055,11.2150
+kenya,70,S&T 10-65 only,2063.0000,asr_cancer_incidence,10.2356,9.9362,10.6826
+kenya,70,S&T 10-65 only,2064.0000,asr_cancer_incidence,9.5514,9.3462,10.1427
+kenya,70,S&T 10-65 only,2065.0000,asr_cancer_incidence,8.9498,8.5119,9.4899
+kenya,70,S&T 10-65 only,2066.0000,asr_cancer_incidence,9.0765,8.4082,9.1264
+kenya,70,S&T 10-65 only,2067.0000,asr_cancer_incidence,8.0208,7.7925,8.8330
+kenya,70,S&T 10-65 only,2068.0000,asr_cancer_incidence,7.8477,7.5309,8.3646
+kenya,70,S&T 10-65 only,2069.0000,asr_cancer_incidence,7.3652,7.0187,7.6143
+kenya,70,S&T 10-65 only,2070.0000,asr_cancer_incidence,7.0802,6.9896,7.5619
+kenya,70,S&T 10-65 only,2071.0000,asr_cancer_incidence,6.6656,6.5807,6.7315
+kenya,70,S&T 10-65 only,2072.0000,asr_cancer_incidence,6.4010,6.1773,6.5085
+kenya,70,S&T 10-65 only,2073.0000,asr_cancer_incidence,5.6180,5.5107,5.8365
+kenya,70,S&T 10-65 only,2074.0000,asr_cancer_incidence,5.5629,5.3479,6.0442
+kenya,70,S&T 10-65 only,2075.0000,asr_cancer_incidence,5.2581,5.0259,5.4634
+kenya,70,S&T 10-65 only,2076.0000,asr_cancer_incidence,4.8872,4.6827,5.1729
+kenya,70,S&T 10-65 only,2077.0000,asr_cancer_incidence,4.6489,4.2846,4.9261
+kenya,70,S&T 10-65 only,2078.0000,asr_cancer_incidence,4.2077,4.0666,4.4736
+kenya,70,S&T 10-65 only,2079.0000,asr_cancer_incidence,4.2796,4.0237,4.4560
+kenya,70,S&T 10-65 only,2080.0000,asr_cancer_incidence,4.0313,3.7088,4.2036
+kenya,70,S&T 10-65 only,2081.0000,asr_cancer_incidence,3.6250,3.4935,3.8689
+kenya,70,S&T 10-65 only,2082.0000,asr_cancer_incidence,3.6095,3.3247,3.7773
+kenya,70,S&T 10-65 only,2083.0000,asr_cancer_incidence,3.2646,3.1989,3.4612
+kenya,70,S&T 10-65 only,2084.0000,asr_cancer_incidence,3.1115,3.0439,3.2061
+kenya,70,S&T 10-65 only,2085.0000,asr_cancer_incidence,3.1264,2.9779,3.3183
+kenya,70,S&T 10-65 only,2086.0000,asr_cancer_incidence,3.0709,2.9523,3.2556
+kenya,70,S&T 10-65 only,2087.0000,asr_cancer_incidence,2.8747,2.5756,3.0467
+kenya,70,S&T 10-65 only,2088.0000,asr_cancer_incidence,2.9263,2.7992,3.1036
+kenya,70,S&T 10-65 only,2089.0000,asr_cancer_incidence,2.8327,2.5902,2.9650
+kenya,70,S&T 10-65 only,2090.0000,asr_cancer_incidence,2.7118,2.5320,2.9104
+kenya,70,S&T 10-65 only,2091.0000,asr_cancer_incidence,2.6710,2.4693,2.9358
+kenya,70,S&T 10-65 only,2092.0000,asr_cancer_incidence,2.6654,2.3928,2.9055
+kenya,70,S&T 10-65 only,2093.0000,asr_cancer_incidence,2.6661,2.4410,2.8047
+kenya,70,S&T 10-65 only,2094.0000,asr_cancer_incidence,2.5813,2.5110,2.7511
+kenya,70,S&T 10-65 only,2095.0000,asr_cancer_incidence,2.5218,2.3535,2.6325
+kenya,70,S&T 10-65 only,2096.0000,asr_cancer_incidence,2.4249,2.2794,2.6099
+kenya,70,S&T 10-65 only,2097.0000,asr_cancer_incidence,2.4512,2.3206,2.5793
+kenya,70,S&T 10-65 only,2098.0000,asr_cancer_incidence,2.4428,2.3849,2.6767
+kenya,70,S&T 10-65 only,2099.0000,asr_cancer_incidence,2.3891,2.2178,2.5707
+kenya,70,S&T 10-65 only,2100.0000,asr_cancer_incidence,2.4490,2.3385,2.7669
+kenya,70,S&T 10-65 only,2020.0000,cancers,4698.7289,4532.5359,4883.8073
+kenya,70,S&T 10-65 only,2021.0000,cancers,4974.4582,4838.4821,5178.4223
+kenya,70,S&T 10-65 only,2022.0000,cancers,4812.0425,4608.0784,5201.0848
+kenya,70,S&T 10-65 only,2023.0000,cancers,5027.3378,4785.6025,5295.5127
+kenya,70,S&T 10-65 only,2024.0000,cancers,5004.6750,4800.7108,5454.1515
+kenya,70,S&T 10-65 only,2025.0000,cancers,5125.5425,4895.1388,5287.9586
+kenya,70,S&T 10-65 only,2026.0000,cancers,2715.7447,2364.4731,2885.7148
+kenya,70,S&T 10-65 only,2027.0000,cancers,2651.5337,2538.2203,2791.2870
+kenya,70,S&T 10-65 only,2028.0000,cancers,2651.5338,2541.9974,2889.4918
+kenya,70,S&T 10-65 only,2029.0000,cancers,2840.3894,2602.4312,3033.0222
+kenya,70,S&T 10-65 only,2030.0000,cancers,3067.0162,2900.8232,3422.0649
+kenya,70,S&T 10-65 only,2031.0000,cancers,3304.9745,3085.9018,3437.1732
+kenya,70,S&T 10-65 only,2032.0000,cancers,3626.0290,3493.8299,3731.7881
+kenya,70,S&T 10-65 only,2033.0000,cancers,3826.2160,3675.1315,4083.0597
+kenya,70,S&T 10-65 only,2034.0000,cancers,4151.0476,3947.0836,4332.3489
+kenya,70,S&T 10-65 only,2035.0000,cancers,4498.5421,4196.3730,4638.2950
+kenya,70,S&T 10-65 only,2036.0000,cancers,4615.6324,4566.5299,4910.2475
+kenya,70,S&T 10-65 only,2037.0000,cancers,5065.1089,4883.8076,5261.5188
+kenya,70,S&T 10-65 only,2038.0000,cancers,5136.8737,4883.8074,5367.2780
+kenya,70,S&T 10-65 only,2039.0000,cancers,5461.7058,5299.2902,5707.2178
+kenya,70,S&T 10-65 only,2040.0000,cancers,5522.1395,5337.0607,5695.8867
+kenya,70,S&T 10-65 only,2041.0000,cancers,5873.4108,5710.9951,6016.9414
+kenya,70,S&T 10-65 only,2042.0000,cancers,6016.9414,5797.8690,6137.8089
+kenya,70,S&T 10-65 only,2043.0000,cancers,6084.9294,5877.1884,6398.4299
+kenya,70,S&T 10-65 only,2044.0000,cancers,6073.5981,5933.8448,6439.9781
+kenya,70,S&T 10-65 only,2045.0000,cancers,6288.8934,6111.3696,6470.1948
+kenya,70,S&T 10-65 only,2046.0000,cancers,6402.2070,5937.6220,6617.5023
+kenya,70,S&T 10-65 only,2047.0000,cancers,6696.8219,6387.0986,6953.6655
+kenya,70,S&T 10-65 only,2048.0000,cancers,6436.2010,6266.2307,6696.8219
+kenya,70,S&T 10-65 only,2049.0000,cancers,6409.7611,6164.2487,6829.0206
+kenya,70,S&T 10-65 only,2050.0000,cancers,6473.9719,6371.9901,6553.2917
+kenya,70,S&T 10-65 only,2051.0000,cancers,6583.5084,6020.7186,6662.8278
+kenya,70,S&T 10-65 only,2052.0000,cancers,6436.2009,6005.6102,6670.3821
+kenya,70,S&T 10-65 only,2053.0000,cancers,6383.3213,6069.8209,6519.2974
+kenya,70,S&T 10-65 only,2054.0000,cancers,6270.0082,5964.0618,6560.8459
+kenya,70,S&T 10-65 only,2055.0000,cancers,6330.4416,5843.1942,6538.1830
+kenya,70,S&T 10-65 only,2056.0000,cancers,6028.2726,5839.4169,6239.7909
+kenya,70,S&T 10-65 only,2057.0000,cancers,5918.7364,5710.9950,6077.3749
+kenya,70,S&T 10-65 only,2058.0000,cancers,5948.9532,5658.1155,6039.6039
+kenya,70,S&T 10-65 only,2059.0000,cancers,5884.7424,5680.7782,6591.0625
+kenya,70,S&T 10-65 only,2060.0000,cancers,5812.9772,5741.2121,6100.0380
+kenya,70,S&T 10-65 only,2061.0000,cancers,5420.1574,5276.6274,5971.6163
+kenya,70,S&T 10-65 only,2062.0000,cancers,5514.5853,5412.6033,5703.4410
+kenya,70,S&T 10-65 only,2063.0000,cancers,5340.8382,5246.4102,5582.5734
+kenya,70,S&T 10-65 only,2064.0000,cancers,5140.6513,5016.0065,5420.1576
+kenya,70,S&T 10-65 only,2065.0000,cancers,4944.2412,4676.0663,5223.7476
+kenya,70,S&T 10-65 only,2066.0000,cancers,5083.9946,4755.3857,5117.9881
+kenya,70,S&T 10-65 only,2067.0000,cancers,4623.1868,4506.0964,5133.0970
+kenya,70,S&T 10-65 only,2068.0000,cancers,4664.7350,4456.9940,4906.4700
+kenya,70,S&T 10-65 only,2069.0000,cancers,4490.9878,4256.8069,4645.8495
+kenya,70,S&T 10-65 only,2070.0000,cancers,4430.5542,4321.0178,4660.9580
+kenya,70,S&T 10-65 only,2071.0000,cancers,4249.2526,4185.0417,4324.7950
+kenya,70,S&T 10-65 only,2072.0000,cancers,4185.0418,4045.2887,4234.1442
+kenya,70,S&T 10-65 only,2073.0000,cancers,3762.0051,3663.8001,3905.5354
+kenya,70,S&T 10-65 only,2074.0000,cancers,3792.2220,3648.6917,4151.0476
+kenya,70,S&T 10-65 only,2075.0000,cancers,3701.5712,3550.4868,3841.3244
+kenya,70,S&T 10-65 only,2076.0000,cancers,3516.4927,3369.1852,3690.2400
+kenya,70,S&T 10-65 only,2077.0000,cancers,3388.0708,3146.3356,3652.4688
+kenya,70,S&T 10-65 only,2078.0000,cancers,3233.2091,3112.3415,3376.7395
+kenya,70,S&T 10-65 only,2079.0000,cancers,3331.4141,3101.0102,3391.8480
+kenya,70,S&T 10-65 only,2080.0000,cancers,3146.3355,2915.9316,3327.6371
+kenya,70,S&T 10-65 only,2081.0000,cancers,2908.3774,2802.6183,3131.2271
+kenya,70,S&T 10-65 only,2082.0000,cancers,2938.5943,2711.9675,3029.2449
+kenya,70,S&T 10-65 only,2083.0000,cancers,2685.5277,2643.9795,2859.2749
+kenya,70,S&T 10-65 only,2084.0000,cancers,2602.4313,2560.8829,2708.1904
+kenya,70,S&T 10-65 only,2085.0000,cancers,2598.6541,2489.1179,2738.4072
+kenya,70,S&T 10-65 only,2086.0000,cancers,2632.6481,2511.7804,2753.5157
+kenya,70,S&T 10-65 only,2087.0000,cancers,2440.0153,2205.8343,2579.7685
+kenya,70,S&T 10-65 only,2088.0000,cancers,2455.1237,2402.2442,2594.8769
+kenya,70,S&T 10-65 only,2089.0000,cancers,2387.1357,2236.0512,2489.1178
+kenya,70,S&T 10-65 only,2090.0000,cancers,2258.7138,2164.2860,2462.6779
+kenya,70,S&T 10-65 only,2091.0000,cancers,2236.0511,2103.8522,2458.9008
+kenya,70,S&T 10-65 only,2092.0000,cancers,2251.1596,2039.6412,2447.5694
+kenya,70,S&T 10-65 only,2093.0000,cancers,2262.4908,2100.0750,2349.3644
+kenya,70,S&T 10-65 only,2094.0000,cancers,2152.9546,2115.1835,2345.5873
+kenya,70,S&T 10-65 only,2095.0000,cancers,2152.9546,2035.8641,2239.8282
+kenya,70,S&T 10-65 only,2096.0000,cancers,2077.4123,1960.3218,2205.8341
+kenya,70,S&T 10-65 only,2097.0000,cancers,1994.3158,1933.8820,2111.4063
+kenya,70,S&T 10-65 only,2098.0000,cancers,2081.1893,1956.5447,2220.9424
+kenya,70,S&T 10-65 only,2099.0000,cancers,2013.2014,1858.3398,2156.7316
+kenya,70,S&T 10-65 only,2100.0000,cancers,2062.3039,1964.0989,2322.9244

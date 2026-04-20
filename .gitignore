@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Raw sim outputs (large, regeneratable — never commit)
+raw_results/
+
+# Figures (locally regenerable from CSVs)
+figures/
+
+# Top-level results/ is a transient VM-run scratch area.
+# Plot-ready CSVs live under results/v<version>_baseline/ — those ARE tracked.
+results/*.obj
+results/*.pkl
+results/*.sim
+results/*.msim
+results/*.csv
+results/*.zip
+
+# Small calibration-parameter artifacts are seed files for the run scripts.
+!results/kenya_pars*.obj
+!results/nigeria_pars*.obj
+
+# Archives
+*.zip
+
+# Personal
+email.md
