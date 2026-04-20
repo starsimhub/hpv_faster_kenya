@@ -1,0 +1,13 @@
+location,coverage,scenario,metric,value,low,high
+kenya,70,No interventions,cancers,942080.0267,914805.4984,971186.4612
+kenya,70,No interventions,cancer_deaths,731098.0788,709670.5080,755403.8072
+kenya,70,Routine vax only,cancers,368786.0116,352529.3172,383648.9481
+kenya,70,Routine vax only,cancer_deaths,319819.5026,306565.6106,333137.6043
+kenya,70,Catch-up to 30,cancers,266713.3033,253074.1493,279668.8000
+kenya,70,Catch-up to 30,cancer_deaths,236243.3148,224398.2888,248628.4685
+kenya,70,Catch-up to 40,cancers,246048.7169,233172.5398,260110.9081
+kenya,70,Catch-up to 40,cancer_deaths,221006.4418,210211.4533,233429.3649
+kenya,70,Catch-up to 40 + S&T to 65,cancers,199352.2710,188198.4570,210022.6151
+kenya,70,Catch-up to 40 + S&T to 65,cancer_deaths,182495.0006,172474.3179,193308.8734
+kenya,70,S&T 10-65 only,cancers,321764.7294,307762.9731,337054.4835
+kenya,70,S&T 10-65 only,cancer_deaths,281515.7938,268220.3553,296121.8892

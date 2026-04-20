@@ -25,6 +25,7 @@ import pandas as pd
 # Imports from this repository
 import run_sims as rs
 import run_sims_nigeria as rsn
+import utils as ut
 from analyzers import cohort_cancers, person_years, vx_potential
 
 
@@ -363,6 +364,13 @@ if __name__ == '__main__':
 
             sc.saveobj(f'raw_results/scens_{location}_{coverage}.obj', msim_dict)
             print(f'Saved processed results to: raw_results/scens_{location}_{coverage}.obj')
+
+    # Extract plot-ready CSVs (merged across coverages)
+    print('\nExtracting plot-ready CSVs...')
+    mds = {cov: sc.loadobj(f'raw_results/scens_{location}_{cov}.obj') for cov in coverage_levels}
+    ut.merge_coverage_csvs(mds, f'scens_{location}', resfolder='results',
+                           location=location, year_start=2015, ts_metrics=None)
+    print(f'  -> results/scens_{location}_cumulative.csv + _cohort.csv')
 
     T.toc()
     print('\nAll coverage levels complete!')

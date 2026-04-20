@@ -58,7 +58,7 @@ def scale_fonts(figure_height):
     }
 
 
-def plot_tt_comparison(location, coverage=90):
+def plot_tt_comparison(location, coverage=90, resfolder='results/v2.2.6_baseline'):
     """
     Create a 3-panel figure comparing intervention strategies using IARC comparison results.
     Plots medians with uncertainty intervals (fill_between).
@@ -69,7 +69,7 @@ def plot_tt_comparison(location, coverage=90):
     """
 
     # Load IARC comparison results (with medians/intervals from multi-seed runs)
-    msim_dict = sc.loadobj(f'raw_results/iarc_comparison_{location}_{coverage}.obj')
+    msim_dict = ut.load_iarc_obj(location, coverage, resfolder=resfolder)
 
     # Define scenarios to compare (label, scenario key, color)
     scenarios = [
@@ -234,7 +234,7 @@ def plot_tt_comparison(location, coverage=90):
     return fig1, fig2
 
 
-def plot_efficiency_frontier(location, coverage=90):
+def plot_efficiency_frontier(location, coverage=90, resfolder='results/v2.2.6_baseline'):
     """
     Create incremental analysis to identify optimal age targeting.
 
@@ -245,7 +245,7 @@ def plot_efficiency_frontier(location, coverage=90):
     """
 
     # Load data
-    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
+    msim_dict = ut.load_scens_obj(location, coverage, resfolder=resfolder)
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
@@ -402,7 +402,7 @@ def plot_efficiency_frontier(location, coverage=90):
     return fig, axes, df
 
 
-def plot_combined_impact(location, coverage=90):
+def plot_combined_impact(location, coverage=90, resfolder='results/v2.2.6_baseline'):
     """
     Create comprehensive 6-panel combined impact analysis figure.
 
@@ -420,7 +420,7 @@ def plot_combined_impact(location, coverage=90):
     """
 
     # Load data
-    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
+    msim_dict = ut.load_scens_obj(location, coverage, resfolder=resfolder)
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
@@ -718,14 +718,196 @@ def plot_combined_impact(location, coverage=90):
     return fig, (ax_a, ax_b, ax_c, ax_d, ax_e, ax_f), df
 
 
-def plot_heatmaps(location, coverage=90, add_tt=False):
+def plot_combined_impact_2panel(location, coverage=90, resfolder='results/v2.2.6_baseline'):
+    """
+    Create simplified 2-panel figure with panels C and F from the 6-panel version.
+
+    Panel A — NNV by catch-up age band (V only):
+        Shows the efficiency of extending catch-up HPV vaccination upward from age 10 in
+        5-year increments. Dark bars show the incremental NNV: the additional doses needed
+        per additional cancer averted when adding each age cohort on top of all younger
+        cohorts already being vaccinated. Red bars show the total NNV for the overall
+        strategy of vaccinating everyone from age 10 up to that age. The incremental NNV
+        is lowest for the 20-25 band (~53 doses per cancer averted) and rises with age,
+        but the total NNV remains relatively stable because the efficient younger cohorts
+        pull the average down. This suggests that extending catch-up vaccination up to
+        age 45 remains efficient overall, even as the marginal returns diminish.
+
+    Panel B — Which intervention for which age band?
+        Compares the number of cancers averted by three interventions — vaccination only (V),
+        test-and-treat only (TT), and combined test-treat-and-vaccinate (TTV) — for each
+        5-year age band independently. Vaccination dominates for younger age groups (10-30),
+        while test-and-treat becomes increasingly important for older women (35+), where
+        vaccination has limited efficacy but screening and treatment of existing infections
+        can still prevent cancers. The combined TTV strategy consistently averts the most
+        cancers across all age bands.
+    """
+
+    # Load data
+    msim_dict = ut.load_scens_obj(location, coverage, resfolder=resfolder)
+
+    # Define age ranges
+    lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+    age_bands = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+    all_cohorts = ['10_15', '15_20', '20_25', '25_30', '30_35', '35_40',
+                   '40_45', '45_50', '50_55', '55_60']
+
+    # Store results
+    results = []
+
+    for lower in lower_ages:
+        for band in age_bands:
+            upper = lower + band
+            if upper > 60:
+                continue
+
+            scenarios = {
+                'V': f'Catch-up {lower}-{upper}: V',
+                'TT': f'Catch-up {lower}-{upper}: TT',
+                'TTV': f'Catch-up {lower}-{upper}: TTV'
+            }
+
+            for intv_type, scen_key in scenarios.items():
+                if scen_key in msim_dict:
+                    cohorts_in_range = [c for c in all_cohorts
+                                       if int(c.split('_')[0]) >= lower and int(c.split('_')[1]) <= upper]
+
+                    total_cancers = 0
+                    baseline_cancers = 0
+                    for cohort in cohorts_in_range:
+                        key = f'cohort_cancers_{cohort}'
+                        if key in msim_dict[scen_key]:
+                            total_cancers += msim_dict[scen_key][key]
+                        if key in msim_dict['Baseline']:
+                            baseline_cancers += msim_dict['Baseline'][key]
+
+                    cancers_averted = baseline_cancers - total_cancers
+
+                    doses = 0
+                    if 'vaccinations' in msim_dict[scen_key]:
+                        doses = msim_dict[scen_key]['vaccinations'].sum()
+
+                    results.append({
+                        'lower': lower,
+                        'upper': upper,
+                        'intervention': intv_type,
+                        'cancers_averted': cancers_averted,
+                        'doses': doses
+                    })
+
+    df = pd.DataFrame(results)
+
+    # Create 1x2 figure
+    figsize = (16, 9)
+    fonts = scale_fonts(figsize[1] * 1.5)  # Scale up fonts for 2-panel readability
+    ut.set_font(fonts['base'])
+    fig, (ax_c, ax_f) = plt.subplots(1, 2, figsize=figsize)
+
+    colors = {'V': '#3498db', 'TT': '#e74c3c', 'TTV': '#27ae60'}
+    age_band_labels_incr = ['15-20', '20-25', '25-30', '30-35', '35-40', '40-45']
+
+    # ========== Panel A: Incremental NNV (extending from 15 upwards) ==========
+    df_15_v = df[(df['lower'] == 15) & (df['intervention'] == 'V')].sort_values('upper')
+    if len(df_15_v) > 0:
+        uppers = df_15_v['upper'].values
+        cancers = df_15_v['cancers_averted'].values
+        doses = df_15_v['doses'].values
+        incremental_cancers = np.diff(cancers, prepend=0)
+        incremental_doses = np.diff(doses, prepend=0)
+        incremental_nnv = incremental_doses / incremental_cancers
+        incremental_nnv[incremental_cancers == 0] = np.nan
+
+        # Show up to 40-45 age band (first 6 bands starting from 15-20)
+        n_bands = 6
+        x_pos = np.arange(n_bands)
+
+        # Total NNV: total doses / total cancers averted for each scenario
+        total_nnv = doses[:n_bands] / cancers[:n_bands]
+        total_nnv[cancers[:n_bands] == 0] = np.nan
+
+        width = 0.35
+        bars_inc = ax_c.bar(x_pos - width/2, incremental_nnv[:n_bands], width,
+                       color='#34495e', alpha=0.7, edgecolor='black', linewidth=1,
+                       label='Incremental NNV')
+        bars_tot = ax_c.bar(x_pos + width/2, total_nnv, width,
+                       color='#e74c3c', alpha=0.7, edgecolor='black', linewidth=1,
+                       label='Total NNV')
+
+        for bar, val in zip(bars_inc, incremental_nnv[:n_bands]):
+            if not np.isnan(val):
+                ax_c.text(bar.get_x() + bar.get_width() / 2., bar.get_height() + 1,
+                        f'{int(val)}',
+                        ha='center', va='bottom', fontsize=fonts['bar_small'], fontweight='bold',
+                        color='#34495e')
+        for bar, val in zip(bars_tot, total_nnv):
+            if not np.isnan(val):
+                ax_c.text(bar.get_x() + bar.get_width() / 2., bar.get_height() + 1,
+                        f'{int(val)}',
+                        ha='center', va='bottom', fontsize=fonts['bar_small'], fontweight='bold',
+                        color='#e74c3c')
+
+    ax_c.set_ylabel('NNV (doses per cancer averted)', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_c.set_title('A) NNV by catch-up age band\n(V only)', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_c.set_xticks(x_pos)
+    ax_c.set_xticklabels(age_band_labels_incr, rotation=45, ha='right')
+    ax_c.set_ylim(bottom=0, top=165)
+    ax_c.grid(alpha=0.3, linestyle='--', axis='y')
+    ax_c.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_c.legend(fontsize=fonts['legend'], loc='upper left', frameon=False)
+
+    # ========== Panel B (was F): Cancers averted by intervention for each age band ==========
+    age_bands_5yr = [(10, 15), (15, 20), (20, 25), (25, 30), (30, 35),
+                     (35, 40), (40, 45), (45, 50), (50, 55), (55, 60)]
+    band_labels = [f'{l}-{u}' for l, u in age_bands_5yr]
+
+    band_results = {intv: [] for intv in ['V', 'TT', 'TTV']}
+
+    for lower, upper in age_bands_5yr:
+        for intv_type in ['V', 'TT', 'TTV']:
+            df_band = df[(df['lower'] == lower) & (df['upper'] == upper) & (df['intervention'] == intv_type)]
+            if len(df_band) > 0:
+                band_results[intv_type].append(df_band['cancers_averted'].values[0])
+            else:
+                band_results[intv_type].append(0)
+
+    x_pos = np.arange(len(band_labels))
+    width = 0.25
+
+    for i, intv_type in enumerate(['V', 'TT', 'TTV']):
+        offset = width * (i - 1)
+        bars = ax_f.bar(x_pos + offset, band_results[intv_type], width,
+                       label=intv_type, color=colors[intv_type], alpha=0.7)
+
+    ax_f.set_ylabel('Cancers averted', fontsize=fonts['axis_label'], fontweight='bold')
+    ax_f.set_title('B) Which intervention\nfor which age band?', fontsize=fonts['panel_title'], fontweight='bold', loc='left')
+    ax_f.set_xticks(x_pos)
+    ax_f.set_xticklabels(band_labels, rotation=45, ha='right')
+    ax_f.set_ylim(bottom=0)
+    ax_f.grid(alpha=0.3, linestyle='--', axis='y')
+    ax_f.tick_params(axis='both', labelsize=fonts['axis_label'])
+    ax_f.legend(fontsize=fonts['legend'], loc='upper right', frameon=False)
+    sc.SIticks(ax_f)
+
+    plt.suptitle(f'Impact of catch-up interventions - {location.capitalize()}',
+                 fontsize=fonts['suptitle'], fontweight='bold', y=0.995)
+
+    fig_name = f'figures/combined_impact_2panel_{location}_{coverage}.png'
+    fig.tight_layout()
+    sc.savefig(fig_name, dpi=150)
+
+    print(f"\n2-panel combined impact plot saved to: {fig_name}")
+
+    return fig, (ax_c, ax_f), df
+
+
+def plot_heatmaps(location, coverage=90, add_tt=False, resfolder='results/v2.2.6_baseline'):
 
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
 
     # Load catch-up vaccination scenario data
-    msim_dict = sc.loadobj(f'raw_results/scens_{location}_{coverage}.obj')
+    msim_dict = ut.load_scens_obj(location, coverage, resfolder=resfolder)
 
     # Define age ranges
     lower_ages = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]

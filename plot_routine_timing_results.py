@@ -12,74 +12,31 @@ import seaborn as sns
 import sciris as sc
 
 
-def load_and_summarize_results(location='kenya'):
-    """
-    Load results from routine timing analysis and summarize key metrics
-    """
-
-    # Load results
-    results_file = f'raw_results/routine_timing_analysis_{location}.obj'
+def load_and_summarize_results(location='kenya', resfolder='results/v2.2.6_baseline'):
+    """Load plot-ready routine timing CSV and add derived columns used by the plots."""
+    csv_path = f'{resfolder}/routine_timing_{location}.csv'
     try:
-        all_results = sc.loadobj(results_file)
+        df = pd.read_csv(csv_path)
     except FileNotFoundError:
-        print(f'Error: {results_file} not found.')
-        print('Please run run_routine_timing_scenarios.py first.')
+        print(f'Error: {csv_path} not found.')
+        print('Run run_routine_timing_scenarios.py --run-sim first (VM-side).')
         return None
 
-    # Extract key information
-    summary = []
+    df = df.rename(columns={
+        'lower_age': 'catchup_lower',
+        'upper_age': 'catchup_upper',
+        'baseline_cancers_2100': 'baseline_cancers',
+        'scenario_cancers_2100': 'catchup_cancers',
+    })
+    df['catchup_range'] = df['catchup_lower'].astype(int).astype(str) + '-' + df['catchup_upper'].astype(int).astype(str)
+    df['pct_reduction'] = 100 * df['cancers_averted'] / df['baseline_cancers']
 
-    for routine_key, scenarios in all_results.items():
-        # Extract routine start year from key (e.g., 'routine_2019' -> 2019)
-        routine_start = int(routine_key.split('_')[1])
-
-        # Assume catch-up happens in 2026
-        catchup_year = 2026
-        max_routine_age = 10 + (catchup_year - routine_start)
-
-        # Extract baseline cancers
-        baseline_cancers = scenarios['Baseline']['cancers'][-1]  # Total by 2100
-
-        # Loop through catch-up scenarios
-        for scen_label, scen_data in scenarios.items():
-            if scen_label == 'Baseline':
-                continue
-
-            # Extract age range from scenario name (e.g., 'Catchup 10-30' -> (10, 30))
-            age_str = scen_label.split('Catchup ')[1]
-            lower_age, upper_age = map(int, age_str.split('-'))
-
-            # Calculate cancers with catch-up
-            catchup_cancers = scen_data['cancers'][-1]
-
-            # Calculate cancers averted
-            cancers_averted = baseline_cancers - catchup_cancers
-
-            # Calculate overlap with routine vaccination
-            overlap_lower = max(lower_age, 10)
-            overlap_upper = min(upper_age, max_routine_age)
-            if overlap_upper >= overlap_lower:
-                n_overlap = overlap_upper - overlap_lower + 1
-            else:
-                n_overlap = 0
-            n_total = upper_age - lower_age + 1
-            pct_overlap = 100 * n_overlap / n_total
-
-            summary.append({
-                'routine_start': routine_start,
-                'max_routine_age': max_routine_age,
-                'catchup_lower': lower_age,
-                'catchup_upper': upper_age,
-                'catchup_range': f'{lower_age}-{upper_age}',
-                'baseline_cancers': baseline_cancers,
-                'catchup_cancers': catchup_cancers,
-                'cancers_averted': cancers_averted,
-                'pct_reduction': 100 * cancers_averted / baseline_cancers,
-                'pct_overlap': pct_overlap,
-                'pct_eligible': 100 - pct_overlap,
-            })
-
-    df = pd.DataFrame(summary)
+    n_total = (df['catchup_upper'] - df['catchup_lower'] + 1).clip(lower=1)
+    overlap_lower = df['catchup_lower'].clip(lower=10)
+    overlap_upper = df[['catchup_upper', 'max_routine_age']].min(axis=1)
+    n_overlap = (overlap_upper - overlap_lower + 1).clip(lower=0)
+    df['pct_overlap'] = 100 * n_overlap / n_total
+    df['pct_eligible'] = 100 - df['pct_overlap']
     return df
 
 
@@ -225,13 +182,16 @@ def create_summary_table(df, location='kenya'):
 
 
 if __name__ == '__main__':
-
-    location = 'kenya'
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--location', default='kenya')
+    parser.add_argument('--resfolder', default='results/v2.2.6_baseline')
+    args = parser.parse_args()
+    location = args.location
 
     print(f'Loading and analyzing routine timing sensitivity results for {location}...\n')
 
-    # Load and summarize
-    df = load_and_summarize_results(location=location)
+    df = load_and_summarize_results(location=location, resfolder=args.resfolder)
 
     if df is not None:
         # Create summary table
