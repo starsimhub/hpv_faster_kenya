@@ -1,0 +1,57 @@
+location,scenario,start_age,cancers,n_cohort
+kenya,Baseline,9,85.6000,894.8000
+kenya,Baseline,15,85.0000,911.4000
+kenya,Baseline,20,80.8000,820.8000
+kenya,Baseline,25,69.6000,709.2000
+kenya,Baseline,30,65.0000,600.2000
+kenya,Baseline,35,45.8000,527.2000
+kenya,Baseline,40,42.4000,437.8000
+kenya,Vax at 9,9,13.4000,894.8000
+kenya,Vax at 9,15,81.4000,911.4000
+kenya,Vax at 9,20,81.2000,820.8000
+kenya,Vax at 9,25,71.4000,709.2000
+kenya,Vax at 9,30,62.4000,600.2000
+kenya,Vax at 9,35,47.0000,527.2000
+kenya,Vax at 9,40,37.6000,437.8000
+kenya,Vax at 15,9,81.0000,894.8000
+kenya,Vax at 15,15,11.8000,911.4000
+kenya,Vax at 15,20,81.2000,820.8000
+kenya,Vax at 15,25,68.0000,709.2000
+kenya,Vax at 15,30,61.8000,600.2000
+kenya,Vax at 15,35,43.2000,527.2000
+kenya,Vax at 15,40,38.8000,437.8000
+kenya,Vax at 20,9,86.6000,894.8000
+kenya,Vax at 20,15,85.8000,911.4000
+kenya,Vax at 20,20,17.6000,820.8000
+kenya,Vax at 20,25,68.8000,709.2000
+kenya,Vax at 20,30,58.2000,600.2000
+kenya,Vax at 20,35,45.8000,527.2000
+kenya,Vax at 20,40,42.0000,437.8000
+kenya,Vax at 25,9,89.0000,894.8000
+kenya,Vax at 25,15,85.0000,911.4000
+kenya,Vax at 25,20,76.6000,820.8000
+kenya,Vax at 25,25,27.8000,709.2000
+kenya,Vax at 25,30,59.8000,600.2000
+kenya,Vax at 25,35,45.6000,527.2000
+kenya,Vax at 25,40,41.6000,437.8000
+kenya,Vax at 30,9,87.6000,894.8000
+kenya,Vax at 30,15,82.8000,911.4000
+kenya,Vax at 30,20,79.8000,820.8000
+kenya,Vax at 30,25,73.0000,709.2000
+kenya,Vax at 30,30,33.6000,600.2000
+kenya,Vax at 30,35,48.0000,527.2000
+kenya,Vax at 30,40,40.0000,437.8000
+kenya,Vax at 35,9,83.2000,894.8000
+kenya,Vax at 35,15,76.8000,911.4000
+kenya,Vax at 35,20,81.8000,820.8000
+kenya,Vax at 35,25,71.2000,709.2000
+kenya,Vax at 35,30,58.6000,600.2000
+kenya,Vax at 35,35,29.2000,527.2000
+kenya,Vax at 35,40,40.8000,437.8000
+kenya,Vax at 40,9,81.4000,894.8000
+kenya,Vax at 40,15,85.6000,911.4000
+kenya,Vax at 40,20,70.4000,820.8000
+kenya,Vax at 40,25,68.8000,709.2000
+kenya,Vax at 40,30,57.6000,600.2000
+kenya,Vax at 40,35,47.4000,527.2000
+kenya,Vax at 40,40,32.2000,437.8000
